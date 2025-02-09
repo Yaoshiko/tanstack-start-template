@@ -9,7 +9,7 @@ export type PostType = {
 }
 
 export const fetchPost = createServerFn({ method: 'GET' })
-  .validator((d: string) => d)
+  .validator((postId: string) => postId)
   .handler(async ({ data }) => {
     console.info(`Fetching post with id ${data}...`)
     const post = await axios
@@ -29,6 +29,7 @@ export const fetchPost = createServerFn({ method: 'GET' })
 export const fetchPosts = createServerFn({ method: 'GET' }).handler(
   async () => {
     console.info('Fetching posts...')
+    await new Promise((r) => setTimeout(r, 1000))
     return axios
       .get<Array<PostType>>('https://jsonplaceholder.typicode.com/posts')
       .then((r) => r.data.slice(0, 10))

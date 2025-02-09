@@ -1,11 +1,25 @@
 import { Link, Outlet, createRootRoute } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/router-devtools'
-import { Meta, Scripts } from '@tanstack/start'
+import { Meta, Scripts, createServerFn } from '@tanstack/start'
 import * as React from 'react'
-import { DefaultCatchBoundary } from '~/components/DefaultCatchBoundary'
-import { NotFound } from '~/components/NotFound'
+import { DefaultCatchBoundary } from '~/components/DefaultCatchBoundary.js'
+import { NotFound } from '~/components/NotFound.js'
 import appCss from '~/styles/app.css?url'
-import { seo } from '~/utils/seo'
+import { seo } from '~/utils/seo.js'
+import { useAppSession } from '~/utils/session.js'
+
+const fetchUser = createServerFn({ method: 'GET' }).handler(async () => {
+  // We need to auth on the server so we have access to secure cookies
+  const session = await useAppSession()
+
+  if (!session.data.userEmail) {
+    return null
+  }
+
+  return {
+    email: session.data.userEmail,
+  }
+})
 
 export const Route = createRootRoute({
   head: () => ({
@@ -46,6 +60,13 @@ export const Route = createRootRoute({
       { rel: 'icon', href: '/favicon.ico' },
     ],
   }),
+  beforeLoad: async () => {
+    const user = await fetchUser()
+
+    return {
+      user,
+    }
+  },
   errorComponent: (props) => {
     return (
       <RootDocument>
@@ -66,6 +87,8 @@ function RootComponent() {
 }
 
 function RootDocument({ children }: { children: React.ReactNode }) {
+  const { user } = Route.useRouteContext()
+
   return (
     <html>
       <head>
@@ -89,40 +112,17 @@ function RootDocument({ children }: { children: React.ReactNode }) {
             }}
           >
             Posts
-          </Link>{' '}
-          <Link
-            to="/users"
-            activeProps={{
-              className: 'font-bold',
-            }}
-          >
-            Users
-          </Link>{' '}
-          <Link
-            to="/layout-a"
-            activeProps={{
-              className: 'font-bold',
-            }}
-          >
-            Layout
-          </Link>{' '}
-          <Link
-            to="/deferred"
-            activeProps={{
-              className: 'font-bold',
-            }}
-          >
-            Deferred
-          </Link>{' '}
-          <Link
-            // @ts-expect-error
-            to="/this-route-does-not-exist"
-            activeProps={{
-              className: 'font-bold',
-            }}
-          >
-            This Route Does Not Exist
           </Link>
+          <div className="ml-auto">
+            {user ? (
+              <>
+                <span className="mr-2">{user.email}</span>
+                <Link to="/logout">Logout</Link>
+              </>
+            ) : (
+              <Link to="/login">Login</Link>
+            )}
+          </div>
         </div>
         <hr />
         {children}

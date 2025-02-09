@@ -1,17 +1,20 @@
 {
-  "name": "tanstack-start-example-basic",
+  "name": "tanstack-start-example-basic-auth",
   "private": true,
   "sideEffects": false,
   "type": "module",
   "scripts": {
     "dev": "vinxi dev",
     "build": "vinxi build",
-    "start": "vinxi start"
+    "start": "vinxi start",
+    "prisma-generate": "prisma generate"
   },
   "dependencies": {
+    "@prisma/client": "5.22.0",
     "@tanstack/react-router": "^1.101.2",
     "@tanstack/router-devtools": "^1.101.2",
     "@tanstack/start": "^1.101.2",
+    "prisma": "^5.22.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "redaxios": "^0.5.1",
