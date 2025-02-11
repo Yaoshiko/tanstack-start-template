@@ -5,4 +5,5 @@
 - [ ] Implement auth middleware: provide user context
 - [ ] Implement Login/Register forms template: with shadcn + TanStack Form (or zod)
 
-- [x] Configure prettier and linting
+- [x] Configure EsLint
+- [x] Configure prettier

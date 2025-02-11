@@ -1,4 +1,17 @@
 {
+  "editor.rulers": [120],
+
+  /* Linter and conventions. */
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "html",
+    "typescriptreact"
+  ],
+
+  /* TanStack Start. */
   "files.watcherExclude": {
     "**/routeTree.gen.ts": true
   },
