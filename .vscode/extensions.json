@@ -1,0 +1,15 @@
+{
+    "recommendations": [
+        "codeium.codeium",
+        "rodrigovallades.es7-react-js-snippets",
+        "dsznajder.es7-react-js-snippets",
+        "dbaeumer.vscode-eslint",
+        "mhutchie.git-graph",
+        "eamodio.gitlens",
+        "wix.glean",
+        "bradlc.vscode-tailwindcss",
+        "pflannery.vscode-versionlens",
+        "esbenp.prettier-vscode",
+        "styled-components.vscode-styled-components"
+    ]
+}
