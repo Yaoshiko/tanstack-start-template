@@ -4,6 +4,11 @@
   /* Linter and conventions. */
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
+
+  "javascript.format.enable": true,
+  "javascript.validate.enable": true,
+  "typescript.format.enable": true,
+  "typescript.validate.enable": true,
   "eslint.validate": [
     "javascript",
     "javascriptreact",
