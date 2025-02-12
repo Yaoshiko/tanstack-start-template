@@ -11,13 +11,20 @@
     "lint": "eslint app --ignore-pattern .gitignore",
     "lint:fix": "eslint app --fix --ignore-pattern .gitignore",
     "check-types": "tsc --project tsconfig.json --pretty --noEmit",
-    "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc"
+    "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc",
+    "db:run": "docker compose up -d",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:studio": "drizzle-kit studio"
   },
   "dependencies": {
     "@prisma/client": "5.22.0",
     "@tanstack/react-router": "^1.101.2",
     "@tanstack/router-devtools": "^1.101.2",
     "@tanstack/start": "^1.101.2",
+    "dotenv": "^16.4.7",
+    "drizzle-orm": "^0.39.3",
+    "pg": "^8.13.2",
     "prisma": "^5.22.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
@@ -28,9 +35,11 @@
   "devDependencies": {
     "@eslint/js": "^9.20.0",
     "@types/node": "^22.5.4",
+    "@types/pg": "^8.11.11",
     "@types/react": "^19.0.8",
     "@types/react-dom": "^19.0.3",
     "autoprefixer": "^10.4.20",
+    "drizzle-kit": "^0.30.4",
     "eslint": "^9.20.1",
     "eslint-import-resolver-typescript": "^3.7.0",
     "eslint-plugin-import": "^2.31.0",
@@ -40,6 +49,7 @@
     "prettier": "3.5.0",
     "prettier-plugin-tailwindcss": "^0.6.11",
     "tailwindcss": "^3.4.17",
+    "tsx": "^4.19.2",
     "typescript": "^5.7.2",
     "typescript-eslint": "^8.24.0",
     "vite-tsconfig-paths": "^5.1.4"
