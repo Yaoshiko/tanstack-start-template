@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { createServerFn } from '@tanstack/start';
-import { hashPassword, prismaClient } from '~/utils/prisma';
+import { hashPassword, prismaClient } from '~/utils/auth';
 import { Login } from '~/components/Login';
 import { useAppSession } from '~/utils/session';
 

@@ -1,6 +1,5 @@
-// app/services/session.server.ts
 import { useSession } from '@tanstack/start/server';
-import type { User } from '@prisma/client';
+import type { User } from '~/db/schema';
 
 type SessionUser = {
   userEmail: User['email'];
