@@ -1,3 +1,5 @@
+// FIXME: Is it required?
+
 import * as React from 'react';
 
 export function useMutation<TVariables, TData, TError = Error>(opts: {

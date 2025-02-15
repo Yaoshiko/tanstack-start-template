@@ -1,5 +1,5 @@
 {
-  "id": "41795e21-7064-47e2-b20f-dff84e8557d9",
+  "id": "e28ea398-8013-4f42-aea6-4817e2c42f28",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -21,8 +21,21 @@
           "primaryKey": false,
           "notNull": true
         },
-        "timestamptz": {
-          "name": "timestamptz",
+        "password": {
+          "name": "password",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "createdAt": {
+          "name": "createdAt",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": true,

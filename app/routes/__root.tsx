@@ -1,27 +1,15 @@
 import { Link, Outlet, createRootRoute } from '@tanstack/react-router';
 import { TanStackRouterDevtools } from '@tanstack/router-devtools';
-import { Meta, Scripts, createServerFn } from '@tanstack/start';
+import { Meta, Scripts } from '@tanstack/start';
 import * as React from 'react';
 import { DefaultCatchBoundary } from '~/components/DefaultCatchBoundary';
 import { NotFound } from '~/components/NotFound';
 import appCss from '~/styles/app.css?url';
-import { seo } from '~/utils/seo.js';
-import { useAppSession } from '~/utils/session.js';
-
-const fetchUser = createServerFn({ method: 'GET' }).handler(async () => {
-  // We need to auth on the server so we have access to secure cookies
-  const session = await useAppSession();
-
-  if (!session.data.userEmail) {
-    return null;
-  }
-
-  return {
-    email: session.data.userEmail
-  };
-});
+import { seo } from '~/api/seo.js';
+import { fetchUser } from '~/api/auth';
 
 export const Route = createRootRoute({
+  // FIXME: Fix head.
   head: () => ({
     meta: [
       {
@@ -32,9 +20,8 @@ export const Route = createRootRoute({
         content: 'width=device-width, initial-scale=1'
       },
       ...seo({
-        title:
-          'TanStack Start | Type-Safe, Client-First, Full-Stack React Framework',
-        description: `TanStack Start is a type-safe, client-first, full-stack React framework. `
+        title: 'WebApp starter',
+        description: `TanStack generic webapp starter.`
       })
     ],
     links: [
