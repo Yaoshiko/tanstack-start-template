@@ -8,6 +8,8 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
+import { createFileRoute } from '@tanstack/react-router'
+
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
@@ -16,9 +18,13 @@ import { Route as LogoutImport } from './routes/logout'
 import { Route as LoginImport } from './routes/login'
 import { Route as AuthedImport } from './routes/_authed'
 import { Route as IndexImport } from './routes/index'
-import { Route as AuthedTodosImport } from './routes/_authed/todos'
-import { Route as AuthedTodosIndexImport } from './routes/_authed/todos.index'
-import { Route as AuthedTodosTodoIdImport } from './routes/_authed/todos.$todoId'
+import { Route as AuthedTodosLayoutImport } from './routes/_authed/todos/_layout'
+import { Route as AuthedTodosLayoutIndexImport } from './routes/_authed/todos/_layout/index'
+import { Route as AuthedTodosLayoutTodoIdImport } from './routes/_authed/todos/_layout/$todoId'
+
+// Create Virtual Routes
+
+const AuthedTodosImport = createFileRoute('/_authed/todos')()
 
 // Create/Update Routes
 
@@ -57,16 +63,21 @@ const AuthedTodosRoute = AuthedTodosImport.update({
   getParentRoute: () => AuthedRoute,
 } as any)
 
-const AuthedTodosIndexRoute = AuthedTodosIndexImport.update({
-  id: '/',
-  path: '/',
+const AuthedTodosLayoutRoute = AuthedTodosLayoutImport.update({
+  id: '/_layout',
   getParentRoute: () => AuthedTodosRoute,
 } as any)
 
-const AuthedTodosTodoIdRoute = AuthedTodosTodoIdImport.update({
+const AuthedTodosLayoutIndexRoute = AuthedTodosLayoutIndexImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AuthedTodosLayoutRoute,
+} as any)
+
+const AuthedTodosLayoutTodoIdRoute = AuthedTodosLayoutTodoIdImport.update({
   id: '/$todoId',
   path: '/$todoId',
-  getParentRoute: () => AuthedTodosRoute,
+  getParentRoute: () => AuthedTodosLayoutRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
@@ -115,33 +126,51 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthedTodosImport
       parentRoute: typeof AuthedImport
     }
-    '/_authed/todos/$todoId': {
-      id: '/_authed/todos/$todoId'
+    '/_authed/todos/_layout': {
+      id: '/_authed/todos/_layout'
+      path: '/todos'
+      fullPath: '/todos'
+      preLoaderRoute: typeof AuthedTodosLayoutImport
+      parentRoute: typeof AuthedTodosRoute
+    }
+    '/_authed/todos/_layout/$todoId': {
+      id: '/_authed/todos/_layout/$todoId'
       path: '/$todoId'
       fullPath: '/todos/$todoId'
-      preLoaderRoute: typeof AuthedTodosTodoIdImport
-      parentRoute: typeof AuthedTodosImport
+      preLoaderRoute: typeof AuthedTodosLayoutTodoIdImport
+      parentRoute: typeof AuthedTodosLayoutImport
     }
-    '/_authed/todos/': {
-      id: '/_authed/todos/'
+    '/_authed/todos/_layout/': {
+      id: '/_authed/todos/_layout/'
       path: '/'
       fullPath: '/todos/'
-      preLoaderRoute: typeof AuthedTodosIndexImport
-      parentRoute: typeof AuthedTodosImport
+      preLoaderRoute: typeof AuthedTodosLayoutIndexImport
+      parentRoute: typeof AuthedTodosLayoutImport
     }
   }
 }
 
 // Create and export the route tree
 
+interface AuthedTodosLayoutRouteChildren {
+  AuthedTodosLayoutTodoIdRoute: typeof AuthedTodosLayoutTodoIdRoute
+  AuthedTodosLayoutIndexRoute: typeof AuthedTodosLayoutIndexRoute
+}
+
+const AuthedTodosLayoutRouteChildren: AuthedTodosLayoutRouteChildren = {
+  AuthedTodosLayoutTodoIdRoute: AuthedTodosLayoutTodoIdRoute,
+  AuthedTodosLayoutIndexRoute: AuthedTodosLayoutIndexRoute,
+}
+
+const AuthedTodosLayoutRouteWithChildren =
+  AuthedTodosLayoutRoute._addFileChildren(AuthedTodosLayoutRouteChildren)
+
 interface AuthedTodosRouteChildren {
-  AuthedTodosTodoIdRoute: typeof AuthedTodosTodoIdRoute
-  AuthedTodosIndexRoute: typeof AuthedTodosIndexRoute
+  AuthedTodosLayoutRoute: typeof AuthedTodosLayoutRouteWithChildren
 }
 
 const AuthedTodosRouteChildren: AuthedTodosRouteChildren = {
-  AuthedTodosTodoIdRoute: AuthedTodosTodoIdRoute,
-  AuthedTodosIndexRoute: AuthedTodosIndexRoute,
+  AuthedTodosLayoutRoute: AuthedTodosLayoutRouteWithChildren,
 }
 
 const AuthedTodosRouteWithChildren = AuthedTodosRoute._addFileChildren(
@@ -165,9 +194,9 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/logout': typeof LogoutRoute
   '/signup': typeof SignupRoute
-  '/todos': typeof AuthedTodosRouteWithChildren
-  '/todos/$todoId': typeof AuthedTodosTodoIdRoute
-  '/todos/': typeof AuthedTodosIndexRoute
+  '/todos': typeof AuthedTodosLayoutRouteWithChildren
+  '/todos/$todoId': typeof AuthedTodosLayoutTodoIdRoute
+  '/todos/': typeof AuthedTodosLayoutIndexRoute
 }
 
 export interface FileRoutesByTo {
@@ -176,8 +205,8 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/logout': typeof LogoutRoute
   '/signup': typeof SignupRoute
-  '/todos/$todoId': typeof AuthedTodosTodoIdRoute
-  '/todos': typeof AuthedTodosIndexRoute
+  '/todos': typeof AuthedTodosLayoutIndexRoute
+  '/todos/$todoId': typeof AuthedTodosLayoutTodoIdRoute
 }
 
 export interface FileRoutesById {
@@ -188,8 +217,9 @@ export interface FileRoutesById {
   '/logout': typeof LogoutRoute
   '/signup': typeof SignupRoute
   '/_authed/todos': typeof AuthedTodosRouteWithChildren
-  '/_authed/todos/$todoId': typeof AuthedTodosTodoIdRoute
-  '/_authed/todos/': typeof AuthedTodosIndexRoute
+  '/_authed/todos/_layout': typeof AuthedTodosLayoutRouteWithChildren
+  '/_authed/todos/_layout/$todoId': typeof AuthedTodosLayoutTodoIdRoute
+  '/_authed/todos/_layout/': typeof AuthedTodosLayoutIndexRoute
 }
 
 export interface FileRouteTypes {
@@ -204,7 +234,7 @@ export interface FileRouteTypes {
     | '/todos/$todoId'
     | '/todos/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '' | '/login' | '/logout' | '/signup' | '/todos/$todoId' | '/todos'
+  to: '/' | '' | '/login' | '/logout' | '/signup' | '/todos' | '/todos/$todoId'
   id:
     | '__root__'
     | '/'
@@ -213,8 +243,9 @@ export interface FileRouteTypes {
     | '/logout'
     | '/signup'
     | '/_authed/todos'
-    | '/_authed/todos/$todoId'
-    | '/_authed/todos/'
+    | '/_authed/todos/_layout'
+    | '/_authed/todos/_layout/$todoId'
+    | '/_authed/todos/_layout/'
   fileRoutesById: FileRoutesById
 }
 
@@ -270,20 +301,27 @@ export const routeTree = rootRoute
       "filePath": "signup.tsx"
     },
     "/_authed/todos": {
-      "filePath": "_authed/todos.tsx",
+      "filePath": "_authed/todos",
       "parent": "/_authed",
       "children": [
-        "/_authed/todos/$todoId",
-        "/_authed/todos/"
+        "/_authed/todos/_layout"
       ]
     },
-    "/_authed/todos/$todoId": {
-      "filePath": "_authed/todos.$todoId.tsx",
-      "parent": "/_authed/todos"
+    "/_authed/todos/_layout": {
+      "filePath": "_authed/todos/_layout.tsx",
+      "parent": "/_authed/todos",
+      "children": [
+        "/_authed/todos/_layout/$todoId",
+        "/_authed/todos/_layout/"
+      ]
     },
-    "/_authed/todos/": {
-      "filePath": "_authed/todos.index.tsx",
-      "parent": "/_authed/todos"
+    "/_authed/todos/_layout/$todoId": {
+      "filePath": "_authed/todos/_layout/$todoId.tsx",
+      "parent": "/_authed/todos/_layout"
+    },
+    "/_authed/todos/_layout/": {
+      "filePath": "_authed/todos/_layout/index.tsx",
+      "parent": "/_authed/todos/_layout"
     }
   }
 }

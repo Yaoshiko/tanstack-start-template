@@ -18,3 +18,6 @@ export const todos = pgTable('todos', {
   createdAt: timestamp().notNull().defaultNow(),
   updatedAt: timestamp().notNull().defaultNow()
 });
+
+export type User = typeof users.$inferSelect;
+export type Todo = typeof todos.$inferSelect;

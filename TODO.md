@@ -4,10 +4,11 @@
 - [ ] Replace auth with BetterAuth
 - [ ] Implement auth middleware: provide user context
 - [ ] Implement Login/Register forms template: with shadcn + TanStack Form (or zod)
+- [ ] Add ReactScan dependency
 - [ ] Deploy:
 
   - [ ] Evaluate provider (Netlify vs Vercel vs Cloudflare pages)
-  - [ ] Create free-tier DB (Neon Postgres?)
+  - [ ] Create free-tier DB (Neon Postgres? Cloudflare R2?)
 
 - [x] Configure EsLint
 - [x] Configure prettier

@@ -21,6 +21,7 @@
   "dependencies": {
     "@tanstack/react-query": "^5.66.0",
     "@tanstack/react-router": "^1.104.0",
+    "@tanstack/react-router-with-query": "^1.105.0",
     "@tanstack/router-devtools": "^1.104.0",
     "@tanstack/start": "^1.104.0",
     "dotenv": "^16.4.7",

@@ -10,11 +10,16 @@ async function main() {
   await reset(db, schema);
 
   console.log('Randomly seeding database...');
-  await seed(db, schema, { seed: SEED }).refine(() => ({
+  await seed(db, schema, { seed: SEED }).refine((ctx) => ({
     users: {
       count: 10,
       with: {
         todos: 5
+      }
+    },
+    todos: {
+      columns: {
+        content: ctx.loremIpsum()
       }
     }
   }));
