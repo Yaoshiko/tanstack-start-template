@@ -1,7 +1,7 @@
-// FIXME: Is it required?
-
 import * as React from 'react';
 
+// FIXME: Is it required? Is it replaced by useServerFn?
+// https://tanstack.com/start/latest/docs/framework/react/server-functions#calling-server-functions-from-hooks-and-components
 export function useMutation<TVariables, TData, TError = Error>(opts: {
   fn: (variables: TVariables) => Promise<TData>;
   onSuccess?: (ctx: { data: TData }) => void | Promise<void>;
@@ -27,9 +27,9 @@ export function useMutation<TVariables, TData, TError = Error>(opts: {
         setError(undefined);
         setData(data);
         return data;
-      } catch (err: any) {
+      } catch (err) {
         setStatus('error');
-        setError(err);
+        setError(err as TError);
       }
     },
     [opts.fn]

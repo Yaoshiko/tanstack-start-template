@@ -19,6 +19,7 @@
     "db:seed": "npx tsx app/db/seed.ts"
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.66.0",
     "@tanstack/react-router": "^1.104.0",
     "@tanstack/router-devtools": "^1.104.0",
     "@tanstack/start": "^1.104.0",

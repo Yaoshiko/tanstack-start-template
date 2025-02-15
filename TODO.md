@@ -1,12 +1,5 @@
 # TODO
 
-- [ ] Migrate Prisma to Drizzle
-
-  - [x] Postgres docker compose for local development
-  - [x] Schema and migrations management
-  - [ ] Seed data (and reset status) scripts
-  - [ ] Data layer APIs and usage example
-
 - [ ] Dependency bump
 - [ ] Replace auth with BetterAuth
 - [ ] Implement auth middleware: provide user context
@@ -18,3 +11,8 @@
 
 - [x] Configure EsLint
 - [x] Configure prettier
+- [x] Migrate Prisma to Drizzle
+  - [x] Postgres docker compose for local development
+  - [x] Schema and migrations management
+  - [x] Seed data (and reset status) scripts
+  - [x] Data layer APIs and usage example

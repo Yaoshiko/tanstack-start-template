@@ -10,7 +10,14 @@ async function main() {
   await reset(db, schema);
 
   console.log('Randomly seeding database...');
-  await seed(db, schema, { seed: SEED });
+  await seed(db, schema, { seed: SEED }).refine(() => ({
+    users: {
+      count: 10,
+      with: {
+        todos: 5
+      }
+    }
+  }));
 
   console.log('Applying custom seeding...');
   const user = (await db.select().from(schema.users).limit(1))[0]!;

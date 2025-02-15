@@ -1,10 +1,10 @@
 import { ErrorComponent, createFileRoute } from '@tanstack/react-router';
 import type { ErrorComponentProps } from '@tanstack/react-router';
 import { NotFound } from '~/components/NotFound';
-import { fetchPost } from '~/api/posts.js';
+import { fetchTodoById } from '~/api/todos.js';
 
-export const Route = createFileRoute('/_authed/posts/$postId')({
-  loader: ({ params: { postId } }) => fetchPost({ data: postId }),
+export const Route = createFileRoute('/_authed/todos/$todoId')({
+  loader: ({ params: { todoId } }) => fetchTodoById({ data: todoId }),
   errorComponent: PostErrorComponent,
   component: PostComponent,
   notFoundComponent: () => {
@@ -17,12 +17,12 @@ export function PostErrorComponent({ error }: ErrorComponentProps) {
 }
 
 function PostComponent() {
-  const post = Route.useLoaderData();
+  const todo = Route.useLoaderData();
 
   return (
     <div className="space-y-2">
-      <h4 className="text-xl font-bold underline">{post.title}</h4>
-      <div className="text-sm">{post.body}</div>
+      <h4 className="text-xl font-bold underline">{todo.id}</h4>
+      <div className="text-sm">{todo.content}</div>
     </div>
   );
 }

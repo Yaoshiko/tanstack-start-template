@@ -1,10 +1,10 @@
 import { createServerFn } from '@tanstack/start';
 import crypto from 'node:crypto';
-import { useAppSession } from './session';
 import { redirect } from '@tanstack/react-router';
 import { db, users } from '~/db';
 import { eq } from 'drizzle-orm';
 import { z } from 'vinxi';
+import { useAppSession } from './session';
 
 // TODO: Refactor auth APIs and middleware with BetterAuth.
 //       https://www.better-auth.com/

@@ -8,3 +8,13 @@ export const users = pgTable('users', {
   updatedAt: timestamp().notNull().defaultNow(),
   createdAt: timestamp().notNull().defaultNow()
 });
+
+export const todos = pgTable('todos', {
+  id: uuid().primaryKey().defaultRandom(),
+  userId: uuid()
+    .notNull()
+    .references(() => users.id),
+  content: varchar({ length: 255 }).notNull(),
+  createdAt: timestamp().notNull().defaultNow(),
+  updatedAt: timestamp().notNull().defaultNow()
+});

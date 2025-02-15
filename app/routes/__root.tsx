@@ -5,8 +5,8 @@ import * as React from 'react';
 import { DefaultCatchBoundary } from '~/components/DefaultCatchBoundary';
 import { NotFound } from '~/components/NotFound';
 import appCss from '~/styles/app.css?url';
-import { seo } from '~/api/seo.js';
-import { fetchUser } from '~/api/auth';
+import { seo } from '~/utils/seo';
+import { fetchUser } from '~/auth/api';
 
 export const Route = createRootRoute({
   // FIXME: Fix head.
@@ -93,12 +93,12 @@ function RootDocument({ children }: { children: React.ReactNode }) {
             Home
           </Link>{' '}
           <Link
-            to="/posts"
+            to="/todos"
             activeProps={{
               className: 'font-bold'
             }}
           >
-            Posts
+            Todos
           </Link>
           <div className="ml-auto">
             {user ? (
