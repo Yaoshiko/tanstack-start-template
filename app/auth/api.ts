@@ -3,7 +3,7 @@ import crypto from 'node:crypto';
 import { redirect } from '@tanstack/react-router';
 import { db, users } from '~/db';
 import { eq } from 'drizzle-orm';
-import { z } from 'vinxi';
+import { z } from 'zod';
 import { useAppSession } from './session';
 
 // TODO: Refactor auth APIs and middleware with BetterAuth.

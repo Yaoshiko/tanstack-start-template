@@ -17,7 +17,7 @@ export const Route = createFileRoute('/_authed/todos/_layout/$todoId')({
   }
 });
 
-export function TodoErrorComponent({ error }: ErrorComponentProps) {
+function TodoErrorComponent({ error }: ErrorComponentProps) {
   return <ErrorComponent error={error} />;
 }
 
