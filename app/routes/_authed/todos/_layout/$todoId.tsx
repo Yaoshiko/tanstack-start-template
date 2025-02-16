@@ -1,6 +1,6 @@
 import { ErrorComponent, createFileRoute } from '@tanstack/react-router';
 import type { ErrorComponentProps } from '@tanstack/react-router';
-import { NotFound } from '~/components/NotFound';
+import { NotFound } from '~/lib/components/NotFound';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { Suspense } from 'react';
 import { fetchTodoOpts } from '~/api/queries';

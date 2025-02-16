@@ -1,12 +1,37 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { useServerFn } from '@tanstack/start';
 import { useMutation } from '~/hooks/useMutation';
-import { Auth } from '~/components/Auth';
-import { signupFn } from '~/auth/api';
+import { Auth } from '~/lib/components/Auth';
+import { signupFn } from '~/lib/auth/api';
+import { authClient } from '~/lib/auth/client';
 
 export const Route = createFileRoute('/signup')({
-  component: SignupComp
+  component: SignUp
 });
+
+function SignUp() {
+  const { redirect } = Route.useSearch();
+  const navigate = Route.useNavigate();
+
+  const signIn = async () => {
+    const res = await authClient.signUp.email({
+      email: 'nicola.barletta@outlook.it',
+      password: 'password',
+      name: 'Nicola Barletta'
+    });
+    if (res.data) {
+      console.log('Sign in completed', res.data.user);
+      navigate({
+        to: redirect,
+        replace: true
+      });
+    } else {
+      console.log('Sign up error ', res.error);
+    }
+  };
+
+  return <button onClick={signIn}>Mock sign up</button>;
+}
 
 function SignupComp() {
   const signupMutation = useMutation({

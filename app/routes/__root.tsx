@@ -1,16 +1,17 @@
 import {
+  HeadContent,
   Link,
   Outlet,
+  Scripts,
   createRootRouteWithContext
 } from '@tanstack/react-router';
 import { TanStackRouterDevtools } from '@tanstack/router-devtools';
-import { Meta, Scripts } from '@tanstack/start';
 import * as React from 'react';
-import { DefaultCatchBoundary } from '~/components/DefaultCatchBoundary';
-import { NotFound } from '~/components/NotFound';
+import { DefaultCatchBoundary } from '~/lib/components/DefaultCatchBoundary';
+import { NotFound } from '~/lib/components/NotFound';
 import appCss from '~/styles/app.css?url';
-import { seo } from '~/utils/seo';
-import { fetchUser } from '~/auth/api';
+import { seo } from '~/lib/utils/seo';
+import { fetchUser } from '~/lib/auth/api';
 import { QueryClient } from '@tanstack/react-query';
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
@@ -87,7 +88,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
   return (
     <html>
       <head>
-        <Meta />
+        <HeadContent />
       </head>
       <body>
         <div className="flex gap-2 p-2 text-lg">
