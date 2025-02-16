@@ -1,17 +1,23 @@
-import { Link, Outlet, createFileRoute } from '@tanstack/react-router';
+import {
+  Link,
+  Outlet,
+  createFileRoute,
+  useRouter
+} from '@tanstack/react-router';
 import { fetchTodos } from '~/api/todos.js';
 import { Todo } from '~/db';
 
 export const Route = createFileRoute('/_authed/todos/_layout')({
-  // staleTime: 30_000,
+  staleTime: 30_000, // Prevent refetching all todos at every route load.
   loader: async () => {
-    console.log('Outer loader');
+    console.log('Loading all todos...');
     return await fetchTodos();
   },
   component: TodosComponent
 });
 
 function TodosComponent() {
+  const router = useRouter();
   const todos = Route.useLoaderData();
 
   return (
@@ -35,7 +41,10 @@ function TodosComponent() {
         })}
       </ul>
       <hr />
-      <Outlet />
+      <div className="flex flex-col gap-y-8">
+        <button onClick={() => router.invalidate()}>Re-fetch all todos</button>
+        <Outlet />
+      </div>
     </div>
   );
 }

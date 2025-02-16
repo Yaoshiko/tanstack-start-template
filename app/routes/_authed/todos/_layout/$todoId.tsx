@@ -1,26 +1,14 @@
-import {
-  ErrorComponent,
-  createFileRoute,
-  useParams
-} from '@tanstack/react-router';
+import { ErrorComponent, createFileRoute } from '@tanstack/react-router';
 import type { ErrorComponentProps } from '@tanstack/react-router';
 import { NotFound } from '~/components/NotFound';
-import { fetchTodoById } from '~/api/todos.js';
-import { queryOptions, useSuspenseQuery } from '@tanstack/react-query';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import { Suspense } from 'react';
-import { useServerFn } from '@tanstack/start';
-
-function getQueryOptions(todoId: string, fn) {
-  return queryOptions({
-    queryKey: ['todo', todoId],
-    queryFn: () => fn({ data: todoId })
-  });
-}
+import { fetchTodoOpts } from '~/api/queries';
 
 export const Route = createFileRoute('/_authed/todos/_layout/$todoId')({
   loader: ({ context, params: { todoId } }) => {
-    console.log('Inner loader', todoId);
-    context.queryClient.prefetchQuery(getQueryOptions(todoId, fetchTodoById));
+    console.log('Loader todo ', todoId);
+    context.queryClient.prefetchQuery(fetchTodoOpts(todoId));
   },
   errorComponent: TodoErrorComponent,
   component: TodoComponent,
@@ -34,9 +22,6 @@ export function TodoErrorComponent({ error }: ErrorComponentProps) {
 }
 
 function TodoComponent() {
-  const todo = Route.useLoaderData();
-  console.log('here', todo);
-
   return (
     <div className="space-y-2">
       <Suspense fallback={<div>Loading...</div>}>
@@ -47,11 +32,8 @@ function TodoComponent() {
 }
 
 function Deferred() {
-  const { todoId } = useParams({});
-  const todo = useSuspenseQuery(
-    getQueryOptions(todoId, useServerFn(fetchTodoById))
-  );
-  console.log(todo);
+  const { todoId } = Route.useParams();
+  const todo = useSuspenseQuery(fetchTodoOpts(todoId));
 
   return (
     <>
