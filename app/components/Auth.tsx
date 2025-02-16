@@ -28,7 +28,7 @@ export function Auth({
               type="email"
               name="email"
               id="email"
-              className="w-full rounded border border-gray-500/20 bg-white px-2 py-1 dark:bg-gray-800"
+              className="w-full rounded-sm border border-gray-500/20 bg-white px-2 py-1 dark:bg-gray-800"
             />
           </div>
           <div>
@@ -39,12 +39,12 @@ export function Auth({
               type="password"
               name="password"
               id="password"
-              className="w-full rounded border border-gray-500/20 bg-white px-2 py-1 dark:bg-gray-800"
+              className="w-full rounded-sm border border-gray-500/20 bg-white px-2 py-1 dark:bg-gray-800"
             />
           </div>
           <button
             type="submit"
-            className="w-full rounded bg-cyan-600 py-2 font-black uppercase text-white"
+            className="w-full rounded-sm bg-cyan-600 py-2 font-black uppercase text-white"
             disabled={status === 'pending'}
           >
             {status === 'pending' ? '...' : actionText}
