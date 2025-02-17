@@ -1,22 +1,19 @@
 import {
   HeadContent,
-  Link,
   Outlet,
   Scripts,
   createRootRouteWithContext
 } from '@tanstack/react-router';
 import { TanStackRouterDevtools } from '@tanstack/router-devtools';
-import * as React from 'react';
 import { DefaultCatchBoundary } from '~/lib/components/DefaultCatchBoundary';
 import { NotFound } from '~/lib/components/NotFound';
-import appCss from '~/styles/app.css?url';
+import css from '~/styles/app.css?url';
 import { seo } from '~/lib/utils/seo';
 import { fetchUser } from '~/lib/auth/api';
 import { QueryClient } from '@tanstack/react-query';
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   {
-    // FIXME: Fix head.
     head: () => ({
       meta: [
         {
@@ -32,7 +29,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         })
       ],
       links: [
-        { rel: 'stylesheet', href: appCss },
+        { rel: 'stylesheet', href: css },
         {
           rel: 'apple-touch-icon',
           sizes: '180x180',
@@ -63,11 +60,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       };
     },
     errorComponent: (props) => {
-      return (
-        <RootDocument>
-          <DefaultCatchBoundary {...props} />
-        </RootDocument>
-      );
+      return <DefaultCatchBoundary {...props} />;
     },
     notFoundComponent: () => <NotFound />,
     component: RootComponent
@@ -76,52 +69,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootComponent() {
   return (
-    <RootDocument>
-      <Outlet />
-    </RootDocument>
-  );
-}
-
-function RootDocument({ children }: { children: React.ReactNode }) {
-  const { user } = Route.useRouteContext();
-
-  return (
     <html>
       <head>
         <HeadContent />
       </head>
       <body>
-        <div className="flex gap-2 p-2 text-lg">
-          <Link
-            to="/"
-            activeProps={{
-              className: 'font-bold'
-            }}
-            activeOptions={{ exact: true }}
-          >
-            Home
-          </Link>{' '}
-          <Link
-            to="/todos"
-            activeProps={{
-              className: 'font-bold'
-            }}
-          >
-            Todos
-          </Link>
-          <div className="ml-auto">
-            {user ? (
-              <>
-                <span className="mr-2">{user.email}</span>
-                <Link to="/logout">Logout</Link>
-              </>
-            ) : (
-              <Link to="/login">Login</Link>
-            )}
-          </div>
-        </div>
-        <hr />
-        {children}
+        <Outlet />
         <TanStackRouterDevtools position="bottom-right" />
         <Scripts />
       </body>

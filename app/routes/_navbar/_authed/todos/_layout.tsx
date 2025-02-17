@@ -7,7 +7,7 @@ import {
 import { fetchTodos } from '~/api/todos.js';
 import { Todo } from '~/db';
 
-export const Route = createFileRoute('/_authed/todos/_layout')({
+export const Route = createFileRoute('/_navbar/_authed/todos/_layout')({
   staleTime: 30_000, // Prevent refetching all todos at every route load.
   loader: async () => {
     console.log('Loading all todos...');

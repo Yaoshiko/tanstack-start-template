@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router';
 
-export const Route = createFileRoute('/_authed')({
+export const Route = createFileRoute('/_navbar/_authed')({
   beforeLoad: ({ context }) => {
     // TODO: Throw or redirect directly if not authenticated.
     // if (!context.user) {

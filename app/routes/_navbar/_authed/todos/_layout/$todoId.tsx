@@ -5,7 +5,7 @@ import { useSuspenseQuery } from '@tanstack/react-query';
 import { Suspense } from 'react';
 import { fetchTodoOpts } from '~/api/queries';
 
-export const Route = createFileRoute('/_authed/todos/_layout/$todoId')({
+export const Route = createFileRoute('/_navbar/_authed/todos/_layout/$todoId')({
   loader: ({ context, params: { todoId } }) => {
     console.log('Loader todo ', todoId);
     context.queryClient.prefetchQuery(fetchTodoOpts(todoId));

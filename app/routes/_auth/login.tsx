@@ -2,6 +2,7 @@ import { createFileRoute } from '@tanstack/react-router';
 import { z } from 'zod';
 import { zodValidator } from '@tanstack/zod-adapter';
 import { authClient } from '~/lib/auth/client';
+import { LoginForm } from '~/lib/components/login-form';
 
 const searchParamsValidator = z.object({
   redirect: z
@@ -10,7 +11,7 @@ const searchParamsValidator = z.object({
     .transform((v) => decodeURIComponent(v))
 });
 
-export const Route = createFileRoute('/login')({
+export const Route = createFileRoute('/_auth/login')({
   validateSearch: zodValidator(searchParamsValidator),
   component: Login
 });
@@ -36,7 +37,9 @@ function Login() {
   };
 
   return (
-    <button onClick={signIn}>Mock sign in</button>
+    <div className="flex min-h-screen items-center justify-center">
+      <LoginForm />
+    </div>
     // <Auth
     //   actionText="Login"
     //   status={loginMutation.status}

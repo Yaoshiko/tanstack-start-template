@@ -13,256 +13,287 @@ import { createFileRoute } from '@tanstack/react-router'
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as SignupImport } from './routes/signup'
-import { Route as LogoutImport } from './routes/logout'
-import { Route as LoginImport } from './routes/login'
-import { Route as AuthedImport } from './routes/_authed'
-import { Route as IndexImport } from './routes/index'
-import { Route as AuthedTodosLayoutImport } from './routes/_authed/todos/_layout'
-import { Route as AuthedTodosLayoutIndexImport } from './routes/_authed/todos/_layout/index'
-import { Route as AuthedTodosLayoutTodoIdImport } from './routes/_authed/todos/_layout/$todoId'
+import { Route as NavbarImport } from './routes/_navbar'
+import { Route as NavbarIndexImport } from './routes/_navbar/index'
+import { Route as NavbarAuthedImport } from './routes/_navbar/_authed'
+import { Route as AuthSignupImport } from './routes/_auth/signup'
+import { Route as AuthLogoutImport } from './routes/_auth/logout'
+import { Route as AuthLoginImport } from './routes/_auth/login'
+import { Route as NavbarAuthedTodosLayoutImport } from './routes/_navbar/_authed/todos/_layout'
+import { Route as NavbarAuthedTodosLayoutIndexImport } from './routes/_navbar/_authed/todos/_layout/index'
+import { Route as NavbarAuthedTodosLayoutTodoIdImport } from './routes/_navbar/_authed/todos/_layout/$todoId'
 
 // Create Virtual Routes
 
-const AuthedTodosImport = createFileRoute('/_authed/todos')()
+const NavbarAuthedTodosImport = createFileRoute('/_navbar/_authed/todos')()
 
 // Create/Update Routes
 
-const SignupRoute = SignupImport.update({
-  id: '/signup',
+const NavbarRoute = NavbarImport.update({
+  id: '/_navbar',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const NavbarIndexRoute = NavbarIndexImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => NavbarRoute,
+} as any)
+
+const NavbarAuthedRoute = NavbarAuthedImport.update({
+  id: '/_authed',
+  getParentRoute: () => NavbarRoute,
+} as any)
+
+const AuthSignupRoute = AuthSignupImport.update({
+  id: '/_auth/signup',
   path: '/signup',
   getParentRoute: () => rootRoute,
 } as any)
 
-const LogoutRoute = LogoutImport.update({
-  id: '/logout',
+const AuthLogoutRoute = AuthLogoutImport.update({
+  id: '/_auth/logout',
   path: '/logout',
   getParentRoute: () => rootRoute,
 } as any)
 
-const LoginRoute = LoginImport.update({
-  id: '/login',
+const AuthLoginRoute = AuthLoginImport.update({
+  id: '/_auth/login',
   path: '/login',
   getParentRoute: () => rootRoute,
 } as any)
 
-const AuthedRoute = AuthedImport.update({
-  id: '/_authed',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const IndexRoute = IndexImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const AuthedTodosRoute = AuthedTodosImport.update({
+const NavbarAuthedTodosRoute = NavbarAuthedTodosImport.update({
   id: '/todos',
   path: '/todos',
-  getParentRoute: () => AuthedRoute,
+  getParentRoute: () => NavbarAuthedRoute,
 } as any)
 
-const AuthedTodosLayoutRoute = AuthedTodosLayoutImport.update({
+const NavbarAuthedTodosLayoutRoute = NavbarAuthedTodosLayoutImport.update({
   id: '/_layout',
-  getParentRoute: () => AuthedTodosRoute,
+  getParentRoute: () => NavbarAuthedTodosRoute,
 } as any)
 
-const AuthedTodosLayoutIndexRoute = AuthedTodosLayoutIndexImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => AuthedTodosLayoutRoute,
-} as any)
+const NavbarAuthedTodosLayoutIndexRoute =
+  NavbarAuthedTodosLayoutIndexImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => NavbarAuthedTodosLayoutRoute,
+  } as any)
 
-const AuthedTodosLayoutTodoIdRoute = AuthedTodosLayoutTodoIdImport.update({
-  id: '/$todoId',
-  path: '/$todoId',
-  getParentRoute: () => AuthedTodosLayoutRoute,
-} as any)
+const NavbarAuthedTodosLayoutTodoIdRoute =
+  NavbarAuthedTodosLayoutTodoIdImport.update({
+    id: '/$todoId',
+    path: '/$todoId',
+    getParentRoute: () => NavbarAuthedTodosLayoutRoute,
+  } as any)
 
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexImport
-      parentRoute: typeof rootRoute
-    }
-    '/_authed': {
-      id: '/_authed'
+    '/_navbar': {
+      id: '/_navbar'
       path: ''
       fullPath: ''
-      preLoaderRoute: typeof AuthedImport
+      preLoaderRoute: typeof NavbarImport
       parentRoute: typeof rootRoute
     }
-    '/login': {
-      id: '/login'
+    '/_auth/login': {
+      id: '/_auth/login'
       path: '/login'
       fullPath: '/login'
-      preLoaderRoute: typeof LoginImport
+      preLoaderRoute: typeof AuthLoginImport
       parentRoute: typeof rootRoute
     }
-    '/logout': {
-      id: '/logout'
+    '/_auth/logout': {
+      id: '/_auth/logout'
       path: '/logout'
       fullPath: '/logout'
-      preLoaderRoute: typeof LogoutImport
+      preLoaderRoute: typeof AuthLogoutImport
       parentRoute: typeof rootRoute
     }
-    '/signup': {
-      id: '/signup'
+    '/_auth/signup': {
+      id: '/_auth/signup'
       path: '/signup'
       fullPath: '/signup'
-      preLoaderRoute: typeof SignupImport
+      preLoaderRoute: typeof AuthSignupImport
       parentRoute: typeof rootRoute
     }
-    '/_authed/todos': {
-      id: '/_authed/todos'
+    '/_navbar/_authed': {
+      id: '/_navbar/_authed'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof NavbarAuthedImport
+      parentRoute: typeof NavbarImport
+    }
+    '/_navbar/': {
+      id: '/_navbar/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof NavbarIndexImport
+      parentRoute: typeof NavbarImport
+    }
+    '/_navbar/_authed/todos': {
+      id: '/_navbar/_authed/todos'
       path: '/todos'
       fullPath: '/todos'
-      preLoaderRoute: typeof AuthedTodosImport
-      parentRoute: typeof AuthedImport
+      preLoaderRoute: typeof NavbarAuthedTodosImport
+      parentRoute: typeof NavbarAuthedImport
     }
-    '/_authed/todos/_layout': {
-      id: '/_authed/todos/_layout'
+    '/_navbar/_authed/todos/_layout': {
+      id: '/_navbar/_authed/todos/_layout'
       path: '/todos'
       fullPath: '/todos'
-      preLoaderRoute: typeof AuthedTodosLayoutImport
-      parentRoute: typeof AuthedTodosRoute
+      preLoaderRoute: typeof NavbarAuthedTodosLayoutImport
+      parentRoute: typeof NavbarAuthedTodosRoute
     }
-    '/_authed/todos/_layout/$todoId': {
-      id: '/_authed/todos/_layout/$todoId'
+    '/_navbar/_authed/todos/_layout/$todoId': {
+      id: '/_navbar/_authed/todos/_layout/$todoId'
       path: '/$todoId'
       fullPath: '/todos/$todoId'
-      preLoaderRoute: typeof AuthedTodosLayoutTodoIdImport
-      parentRoute: typeof AuthedTodosLayoutImport
+      preLoaderRoute: typeof NavbarAuthedTodosLayoutTodoIdImport
+      parentRoute: typeof NavbarAuthedTodosLayoutImport
     }
-    '/_authed/todos/_layout/': {
-      id: '/_authed/todos/_layout/'
+    '/_navbar/_authed/todos/_layout/': {
+      id: '/_navbar/_authed/todos/_layout/'
       path: '/'
       fullPath: '/todos/'
-      preLoaderRoute: typeof AuthedTodosLayoutIndexImport
-      parentRoute: typeof AuthedTodosLayoutImport
+      preLoaderRoute: typeof NavbarAuthedTodosLayoutIndexImport
+      parentRoute: typeof NavbarAuthedTodosLayoutImport
     }
   }
 }
 
 // Create and export the route tree
 
-interface AuthedTodosLayoutRouteChildren {
-  AuthedTodosLayoutTodoIdRoute: typeof AuthedTodosLayoutTodoIdRoute
-  AuthedTodosLayoutIndexRoute: typeof AuthedTodosLayoutIndexRoute
+interface NavbarAuthedTodosLayoutRouteChildren {
+  NavbarAuthedTodosLayoutTodoIdRoute: typeof NavbarAuthedTodosLayoutTodoIdRoute
+  NavbarAuthedTodosLayoutIndexRoute: typeof NavbarAuthedTodosLayoutIndexRoute
 }
 
-const AuthedTodosLayoutRouteChildren: AuthedTodosLayoutRouteChildren = {
-  AuthedTodosLayoutTodoIdRoute: AuthedTodosLayoutTodoIdRoute,
-  AuthedTodosLayoutIndexRoute: AuthedTodosLayoutIndexRoute,
+const NavbarAuthedTodosLayoutRouteChildren: NavbarAuthedTodosLayoutRouteChildren =
+  {
+    NavbarAuthedTodosLayoutTodoIdRoute: NavbarAuthedTodosLayoutTodoIdRoute,
+    NavbarAuthedTodosLayoutIndexRoute: NavbarAuthedTodosLayoutIndexRoute,
+  }
+
+const NavbarAuthedTodosLayoutRouteWithChildren =
+  NavbarAuthedTodosLayoutRoute._addFileChildren(
+    NavbarAuthedTodosLayoutRouteChildren,
+  )
+
+interface NavbarAuthedTodosRouteChildren {
+  NavbarAuthedTodosLayoutRoute: typeof NavbarAuthedTodosLayoutRouteWithChildren
 }
 
-const AuthedTodosLayoutRouteWithChildren =
-  AuthedTodosLayoutRoute._addFileChildren(AuthedTodosLayoutRouteChildren)
-
-interface AuthedTodosRouteChildren {
-  AuthedTodosLayoutRoute: typeof AuthedTodosLayoutRouteWithChildren
+const NavbarAuthedTodosRouteChildren: NavbarAuthedTodosRouteChildren = {
+  NavbarAuthedTodosLayoutRoute: NavbarAuthedTodosLayoutRouteWithChildren,
 }
 
-const AuthedTodosRouteChildren: AuthedTodosRouteChildren = {
-  AuthedTodosLayoutRoute: AuthedTodosLayoutRouteWithChildren,
+const NavbarAuthedTodosRouteWithChildren =
+  NavbarAuthedTodosRoute._addFileChildren(NavbarAuthedTodosRouteChildren)
+
+interface NavbarAuthedRouteChildren {
+  NavbarAuthedTodosRoute: typeof NavbarAuthedTodosRouteWithChildren
 }
 
-const AuthedTodosRouteWithChildren = AuthedTodosRoute._addFileChildren(
-  AuthedTodosRouteChildren,
+const NavbarAuthedRouteChildren: NavbarAuthedRouteChildren = {
+  NavbarAuthedTodosRoute: NavbarAuthedTodosRouteWithChildren,
+}
+
+const NavbarAuthedRouteWithChildren = NavbarAuthedRoute._addFileChildren(
+  NavbarAuthedRouteChildren,
 )
 
-interface AuthedRouteChildren {
-  AuthedTodosRoute: typeof AuthedTodosRouteWithChildren
+interface NavbarRouteChildren {
+  NavbarAuthedRoute: typeof NavbarAuthedRouteWithChildren
+  NavbarIndexRoute: typeof NavbarIndexRoute
 }
 
-const AuthedRouteChildren: AuthedRouteChildren = {
-  AuthedTodosRoute: AuthedTodosRouteWithChildren,
+const NavbarRouteChildren: NavbarRouteChildren = {
+  NavbarAuthedRoute: NavbarAuthedRouteWithChildren,
+  NavbarIndexRoute: NavbarIndexRoute,
 }
 
-const AuthedRouteWithChildren =
-  AuthedRoute._addFileChildren(AuthedRouteChildren)
+const NavbarRouteWithChildren =
+  NavbarRoute._addFileChildren(NavbarRouteChildren)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '': typeof AuthedRouteWithChildren
-  '/login': typeof LoginRoute
-  '/logout': typeof LogoutRoute
-  '/signup': typeof SignupRoute
-  '/todos': typeof AuthedTodosLayoutRouteWithChildren
-  '/todos/$todoId': typeof AuthedTodosLayoutTodoIdRoute
-  '/todos/': typeof AuthedTodosLayoutIndexRoute
+  '': typeof NavbarAuthedRouteWithChildren
+  '/login': typeof AuthLoginRoute
+  '/logout': typeof AuthLogoutRoute
+  '/signup': typeof AuthSignupRoute
+  '/': typeof NavbarIndexRoute
+  '/todos': typeof NavbarAuthedTodosLayoutRouteWithChildren
+  '/todos/$todoId': typeof NavbarAuthedTodosLayoutTodoIdRoute
+  '/todos/': typeof NavbarAuthedTodosLayoutIndexRoute
 }
 
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '': typeof AuthedRouteWithChildren
-  '/login': typeof LoginRoute
-  '/logout': typeof LogoutRoute
-  '/signup': typeof SignupRoute
-  '/todos': typeof AuthedTodosLayoutIndexRoute
-  '/todos/$todoId': typeof AuthedTodosLayoutTodoIdRoute
+  '/login': typeof AuthLoginRoute
+  '/logout': typeof AuthLogoutRoute
+  '/signup': typeof AuthSignupRoute
+  '': typeof NavbarAuthedRouteWithChildren
+  '/': typeof NavbarIndexRoute
+  '/todos': typeof NavbarAuthedTodosLayoutIndexRoute
+  '/todos/$todoId': typeof NavbarAuthedTodosLayoutTodoIdRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
-  '/': typeof IndexRoute
-  '/_authed': typeof AuthedRouteWithChildren
-  '/login': typeof LoginRoute
-  '/logout': typeof LogoutRoute
-  '/signup': typeof SignupRoute
-  '/_authed/todos': typeof AuthedTodosRouteWithChildren
-  '/_authed/todos/_layout': typeof AuthedTodosLayoutRouteWithChildren
-  '/_authed/todos/_layout/$todoId': typeof AuthedTodosLayoutTodoIdRoute
-  '/_authed/todos/_layout/': typeof AuthedTodosLayoutIndexRoute
+  '/_navbar': typeof NavbarRouteWithChildren
+  '/_auth/login': typeof AuthLoginRoute
+  '/_auth/logout': typeof AuthLogoutRoute
+  '/_auth/signup': typeof AuthSignupRoute
+  '/_navbar/_authed': typeof NavbarAuthedRouteWithChildren
+  '/_navbar/': typeof NavbarIndexRoute
+  '/_navbar/_authed/todos': typeof NavbarAuthedTodosRouteWithChildren
+  '/_navbar/_authed/todos/_layout': typeof NavbarAuthedTodosLayoutRouteWithChildren
+  '/_navbar/_authed/todos/_layout/$todoId': typeof NavbarAuthedTodosLayoutTodoIdRoute
+  '/_navbar/_authed/todos/_layout/': typeof NavbarAuthedTodosLayoutIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    | '/'
     | ''
     | '/login'
     | '/logout'
     | '/signup'
+    | '/'
     | '/todos'
     | '/todos/$todoId'
     | '/todos/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '' | '/login' | '/logout' | '/signup' | '/todos' | '/todos/$todoId'
+  to: '/login' | '/logout' | '/signup' | '' | '/' | '/todos' | '/todos/$todoId'
   id:
     | '__root__'
-    | '/'
-    | '/_authed'
-    | '/login'
-    | '/logout'
-    | '/signup'
-    | '/_authed/todos'
-    | '/_authed/todos/_layout'
-    | '/_authed/todos/_layout/$todoId'
-    | '/_authed/todos/_layout/'
+    | '/_navbar'
+    | '/_auth/login'
+    | '/_auth/logout'
+    | '/_auth/signup'
+    | '/_navbar/_authed'
+    | '/_navbar/'
+    | '/_navbar/_authed/todos'
+    | '/_navbar/_authed/todos/_layout'
+    | '/_navbar/_authed/todos/_layout/$todoId'
+    | '/_navbar/_authed/todos/_layout/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  AuthedRoute: typeof AuthedRouteWithChildren
-  LoginRoute: typeof LoginRoute
-  LogoutRoute: typeof LogoutRoute
-  SignupRoute: typeof SignupRoute
+  NavbarRoute: typeof NavbarRouteWithChildren
+  AuthLoginRoute: typeof AuthLoginRoute
+  AuthLogoutRoute: typeof AuthLogoutRoute
+  AuthSignupRoute: typeof AuthSignupRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
-  AuthedRoute: AuthedRouteWithChildren,
-  LoginRoute: LoginRoute,
-  LogoutRoute: LogoutRoute,
-  SignupRoute: SignupRoute,
+  NavbarRoute: NavbarRouteWithChildren,
+  AuthLoginRoute: AuthLoginRoute,
+  AuthLogoutRoute: AuthLogoutRoute,
+  AuthSignupRoute: AuthSignupRoute,
 }
 
 export const routeTree = rootRoute
@@ -275,53 +306,61 @@ export const routeTree = rootRoute
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
-        "/",
-        "/_authed",
-        "/login",
-        "/logout",
-        "/signup"
+        "/_navbar",
+        "/_auth/login",
+        "/_auth/logout",
+        "/_auth/signup"
       ]
     },
-    "/": {
-      "filePath": "index.tsx"
-    },
-    "/_authed": {
-      "filePath": "_authed.tsx",
+    "/_navbar": {
+      "filePath": "_navbar.tsx",
       "children": [
-        "/_authed/todos"
+        "/_navbar/_authed",
+        "/_navbar/"
       ]
     },
-    "/login": {
-      "filePath": "login.tsx"
+    "/_auth/login": {
+      "filePath": "_auth/login.tsx"
     },
-    "/logout": {
-      "filePath": "logout.tsx"
+    "/_auth/logout": {
+      "filePath": "_auth/logout.tsx"
     },
-    "/signup": {
-      "filePath": "signup.tsx"
+    "/_auth/signup": {
+      "filePath": "_auth/signup.tsx"
     },
-    "/_authed/todos": {
-      "filePath": "_authed/todos",
-      "parent": "/_authed",
+    "/_navbar/_authed": {
+      "filePath": "_navbar/_authed.tsx",
+      "parent": "/_navbar",
       "children": [
-        "/_authed/todos/_layout"
+        "/_navbar/_authed/todos"
       ]
     },
-    "/_authed/todos/_layout": {
-      "filePath": "_authed/todos/_layout.tsx",
-      "parent": "/_authed/todos",
+    "/_navbar/": {
+      "filePath": "_navbar/index.tsx",
+      "parent": "/_navbar"
+    },
+    "/_navbar/_authed/todos": {
+      "filePath": "_navbar/_authed/todos",
+      "parent": "/_navbar/_authed",
       "children": [
-        "/_authed/todos/_layout/$todoId",
-        "/_authed/todos/_layout/"
+        "/_navbar/_authed/todos/_layout"
       ]
     },
-    "/_authed/todos/_layout/$todoId": {
-      "filePath": "_authed/todos/_layout/$todoId.tsx",
-      "parent": "/_authed/todos/_layout"
+    "/_navbar/_authed/todos/_layout": {
+      "filePath": "_navbar/_authed/todos/_layout.tsx",
+      "parent": "/_navbar/_authed/todos",
+      "children": [
+        "/_navbar/_authed/todos/_layout/$todoId",
+        "/_navbar/_authed/todos/_layout/"
+      ]
     },
-    "/_authed/todos/_layout/": {
-      "filePath": "_authed/todos/_layout/index.tsx",
-      "parent": "/_authed/todos/_layout"
+    "/_navbar/_authed/todos/_layout/$todoId": {
+      "filePath": "_navbar/_authed/todos/_layout/$todoId.tsx",
+      "parent": "/_navbar/_authed/todos/_layout"
+    },
+    "/_navbar/_authed/todos/_layout/": {
+      "filePath": "_navbar/_authed/todos/_layout/index.tsx",
+      "parent": "/_navbar/_authed/todos/_layout"
     }
   }
 }

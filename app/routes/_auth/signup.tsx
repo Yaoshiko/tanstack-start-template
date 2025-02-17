@@ -5,7 +5,7 @@ import { Auth } from '~/lib/components/Auth';
 import { signupFn } from '~/lib/auth/api';
 import { authClient } from '~/lib/auth/client';
 
-export const Route = createFileRoute('/signup')({
+export const Route = createFileRoute('/_auth/signup')({
   component: SignUp
 });
 
