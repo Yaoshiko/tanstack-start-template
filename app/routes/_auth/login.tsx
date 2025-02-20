@@ -1,8 +1,8 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { z } from 'zod';
 import { zodValidator } from '@tanstack/zod-adapter';
-import { authClient } from '~/lib/auth/client';
-import { LoginForm } from '~/lib/components/login-form';
+import { authClient } from '@/lib/auth/client';
+import { LoginForm } from '@/components/login-form';
 
 const searchParamsValidator = z.object({
   redirect: z

@@ -1,5 +1,5 @@
 import { useSession } from '@tanstack/start/server';
-import type { User } from '~/db/schema';
+import type { User } from '@/db/schema';
 
 type SessionUser = {
   userEmail: User['email'];

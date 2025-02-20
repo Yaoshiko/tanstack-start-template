@@ -1,7 +1,7 @@
 import { createServerFn } from '@tanstack/start';
 import crypto from 'node:crypto';
 import { redirect } from '@tanstack/react-router';
-import { db, users } from '~/db';
+import { db, users } from '@/db';
 import { eq } from 'drizzle-orm';
 import { z } from 'zod';
 import { useAppSession } from './session';

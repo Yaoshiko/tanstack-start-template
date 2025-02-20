@@ -1,5 +1,5 @@
 import { createServerFn } from '@tanstack/start';
-import { getTodoById, getTodos } from '~/db/queries';
+import { getTodoById, getTodos } from '@/db/queries';
 
 export type PostType = {
   id: string;

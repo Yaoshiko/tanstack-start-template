@@ -1,9 +1,9 @@
 import { ErrorComponent, createFileRoute } from '@tanstack/react-router';
 import type { ErrorComponentProps } from '@tanstack/react-router';
-import { NotFound } from '~/lib/components/NotFound';
+import { NotFound } from '@/components/not-found';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { Suspense } from 'react';
-import { fetchTodoOpts } from '~/api/queries';
+import { fetchTodoOpts } from '@/api/queries';
 
 export const Route = createFileRoute('/_navbar/_authed/todos/_layout/$todoId')({
   loader: ({ context, params: { todoId } }) => {
