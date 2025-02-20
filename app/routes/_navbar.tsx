@@ -216,6 +216,7 @@ const Navbar1 = ({
             </Button>
           </div>
         </nav>
+        {/** Mobile. */}
         <div className="block lg:hidden">
           <div className="flex items-center justify-between">
             <a href={logo.url} className="flex items-center gap-2">
