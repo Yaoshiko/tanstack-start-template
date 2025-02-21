@@ -25,9 +25,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 );
 
 function RootComponent() {
-  const { user } = Route.useRouteContext();
-  console.log('TODO: Remove auth buttons if logged in', user);
-
   return (
     <>
       <Navbar />
@@ -36,11 +33,16 @@ function RootComponent() {
   );
 }
 
-// TODO: Define type-safe Link data structure to share nav items among desktop and mobile versions.
 function Navbar() {
+  const { user } = Route.useRouteContext();
   const title = 'Starter';
   const logoSrc = 'donut.svg';
   const logoAlt = 'donut';
+  const items = [
+    { label: 'To-Do list', href: '/todos' },
+    { label: 'Sandbox', href: '/' },
+    { label: 'About', href: '/', light: true }
+  ];
 
   return (
     <section className="p-2">
@@ -54,29 +56,32 @@ function Navbar() {
             <div className="flex items-center">
               <NavigationMenu>
                 <NavigationMenuList>
-                  <Link
-                    to="/todos"
-                    className="group bg-background text-muted-foreground hover:bg-muted hover:text-accent-foreground inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 font-medium transition-colors"
-                  >
-                    To-Do list
-                  </Link>
-                  <Link
-                    to="."
-                    className="group bg-background text-muted-foreground hover:bg-muted hover:text-accent-foreground inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 font-medium transition-colors"
-                  >
-                    About
-                  </Link>
+                  {items.map(({ label, href }) => (
+                    <Link
+                      key={label}
+                      to={href}
+                      className="group bg-background text-muted-foreground hover:bg-muted hover:text-accent-foreground inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 font-medium transition-colors"
+                    >
+                      {label}
+                    </Link>
+                  ))}
                 </NavigationMenuList>
               </NavigationMenu>
             </div>
           </div>
           <div className="flex gap-2">
-            <Button asChild variant="outline">
-              <Link to="/login">Log in</Link>
-            </Button>
-            <Button asChild>
-              <Link to="/signup">Sign up</Link>
-            </Button>
+            {user ? (
+              <>
+                <Button asChild variant="outline">
+                  <Link to="/login">Log in</Link>
+                </Button>
+                <Button asChild>
+                  <Link to="/signup">Sign up</Link>
+                </Button>
+              </>
+            ) : (
+              <span>Welcome back!</span>
+            )}
           </div>
         </nav>
         {/** Mobile. */}
@@ -100,28 +105,32 @@ function Navbar() {
                       <span className="text-lg font-semibold">{title}</span>
                     </Link>
                   </SheetTitle>
-                  {['Just', 'An example'].map((title) => (
-                    <Link
-                      key={title}
-                      to="."
-                      className="hover:bg-muted hover:text-accent-foreground inline-flex h-10 items-center gap-2 rounded-md px-4 py-2 text-sm font-medium whitespace-nowrap transition-colors"
-                    >
-                      {title}
-                    </Link>
-                  ))}
+                  {items
+                    .filter((item) => !item.light)
+                    .map(({ label, href }) => (
+                      <Link
+                        key={label}
+                        to={href}
+                        className="hover:bg-muted hover:text-accent-foreground inline-flex h-10 items-center gap-2 rounded-md px-4 py-2 text-sm font-medium whitespace-nowrap transition-colors"
+                      >
+                        {label}
+                      </Link>
+                    ))}
                 </SheetHeader>
                 <div className="my-6 flex flex-col gap-6">
                   <div className="border-t py-4">
                     <div className="grid grid-cols-2 justify-start">
-                      {['Just', 'An example'].map((title) => (
-                        <Link
-                          key={title}
-                          to="."
-                          className="text-muted-foreground hover:bg-muted hover:text-accent-foreground inline-flex h-10 items-center gap-2 rounded-md px-4 py-2 text-sm font-medium whitespace-nowrap transition-colors"
-                        >
-                          {title}
-                        </Link>
-                      ))}
+                      {items
+                        .filter((item) => item.light)
+                        .map(({ label, href }) => (
+                          <Link
+                            key={label}
+                            to={href}
+                            className="text-muted-foreground hover:bg-muted hover:text-accent-foreground inline-flex h-10 items-center gap-2 rounded-md px-4 py-2 text-sm font-medium whitespace-nowrap transition-colors"
+                          >
+                            {label}
+                          </Link>
+                        ))}
                     </div>
                   </div>
                   <div className="flex flex-col gap-3">

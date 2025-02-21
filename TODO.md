@@ -1,7 +1,7 @@
 # TODO
 
 - [x] Dependency bump
-- [ ] Replace auth with BetterAuth
+- [x] Replace auth with BetterAuth
   - [ ] Implement auth middleware: provide user context
 - [ ] Implement Login/Register forms template: with shadcn + TanStack Form (or zod)
 - [ ] Add ReactScan dependency
@@ -18,3 +18,4 @@
   - [x] Seed data (and reset status) scripts
   - [x] Data layer APIs and usage example
 - [ ] Configure data layer with createIsomorphicFn to combine SSR and client APIs: https://discordapp.com/channels/719702312431386674/1340798353679843469
+- [ ] Type-safe environment variables
