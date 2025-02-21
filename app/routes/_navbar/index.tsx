@@ -16,20 +16,17 @@ function Home() {
           <div className="magicpattern absolute inset-x-0 top-0 -z-10 flex h-full w-full items-center justify-center opacity-100" />
           <div className="mx-auto flex max-w-5xl flex-col items-center">
             <div className="z-10 flex flex-col items-center gap-6 text-center">
-              <img
-                src="https://shadcnblocks.com/images/block/block-1.svg"
-                alt="logo"
-                className="h-16"
-              />
+              <img src="donut.svg" alt="logo" className="h-16" />
               <Badge variant="outline">Hey, you</Badge>
               <div>
                 <h1 className="mb-6 text-2xl font-bold text-pretty lg:text-5xl">
                   Free donuts!
                 </h1>
                 <p className="text-muted-foreground lg:text-xl">
-                  I&apos;m sorry, donuts are over. But you can enjoy a beautiful
-                  ToDo app to be used as a Tanstack Start template for whatever
-                  you&apos;re building.
+                  I&apos;m sorry, donuts are over...
+                  <br /> But you can enjoy a beautiful To-Do list app to be used
+                  as a Tanstack Start template for whatever you&apos;re
+                  building.
                 </p>
               </div>
               <div className="mt-4 flex justify-center gap-2">
