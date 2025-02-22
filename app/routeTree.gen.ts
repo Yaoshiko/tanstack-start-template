@@ -13,9 +13,9 @@ import { createFileRoute } from '@tanstack/react-router'
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as SandboxImport } from './routes/sandbox'
 import { Route as NavbarImport } from './routes/_navbar'
 import { Route as NavbarIndexImport } from './routes/_navbar/index'
-import { Route as NavbarSandboxImport } from './routes/_navbar/sandbox'
 import { Route as NavbarAboutImport } from './routes/_navbar/about'
 import { Route as NavbarAuthedImport } from './routes/_navbar/_authed'
 import { Route as AuthSignupImport } from './routes/_auth/signup'
@@ -31,6 +31,12 @@ const NavbarAuthedRecipeImport = createFileRoute('/_navbar/_authed/recipe')()
 
 // Create/Update Routes
 
+const SandboxRoute = SandboxImport.update({
+  id: '/sandbox',
+  path: '/sandbox',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const NavbarRoute = NavbarImport.update({
   id: '/_navbar',
   getParentRoute: () => rootRoute,
@@ -39,12 +45,6 @@ const NavbarRoute = NavbarImport.update({
 const NavbarIndexRoute = NavbarIndexImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => NavbarRoute,
-} as any)
-
-const NavbarSandboxRoute = NavbarSandboxImport.update({
-  id: '/sandbox',
-  path: '/sandbox',
   getParentRoute: () => NavbarRoute,
 } as any)
 
@@ -113,6 +113,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NavbarImport
       parentRoute: typeof rootRoute
     }
+    '/sandbox': {
+      id: '/sandbox'
+      path: '/sandbox'
+      fullPath: '/sandbox'
+      preLoaderRoute: typeof SandboxImport
+      parentRoute: typeof rootRoute
+    }
     '/_auth/login': {
       id: '/_auth/login'
       path: '/login'
@@ -146,13 +153,6 @@ declare module '@tanstack/react-router' {
       path: '/about'
       fullPath: '/about'
       preLoaderRoute: typeof NavbarAboutImport
-      parentRoute: typeof NavbarImport
-    }
-    '/_navbar/sandbox': {
-      id: '/_navbar/sandbox'
-      path: '/sandbox'
-      fullPath: '/sandbox'
-      preLoaderRoute: typeof NavbarSandboxImport
       parentRoute: typeof NavbarImport
     }
     '/_navbar/': {
@@ -238,14 +238,12 @@ const NavbarAuthedRouteWithChildren = NavbarAuthedRoute._addFileChildren(
 interface NavbarRouteChildren {
   NavbarAuthedRoute: typeof NavbarAuthedRouteWithChildren
   NavbarAboutRoute: typeof NavbarAboutRoute
-  NavbarSandboxRoute: typeof NavbarSandboxRoute
   NavbarIndexRoute: typeof NavbarIndexRoute
 }
 
 const NavbarRouteChildren: NavbarRouteChildren = {
   NavbarAuthedRoute: NavbarAuthedRouteWithChildren,
   NavbarAboutRoute: NavbarAboutRoute,
-  NavbarSandboxRoute: NavbarSandboxRoute,
   NavbarIndexRoute: NavbarIndexRoute,
 }
 
@@ -254,11 +252,11 @@ const NavbarRouteWithChildren =
 
 export interface FileRoutesByFullPath {
   '': typeof NavbarAuthedRouteWithChildren
+  '/sandbox': typeof SandboxRoute
   '/login': typeof AuthLoginRoute
   '/logout': typeof AuthLogoutRoute
   '/signup': typeof AuthSignupRoute
   '/about': typeof NavbarAboutRoute
-  '/sandbox': typeof NavbarSandboxRoute
   '/': typeof NavbarIndexRoute
   '/recipe': typeof NavbarAuthedRecipeLayoutRouteWithChildren
   '/recipe/$recipeId': typeof NavbarAuthedRecipeLayoutRecipeIdRoute
@@ -266,12 +264,12 @@ export interface FileRoutesByFullPath {
 }
 
 export interface FileRoutesByTo {
+  '/sandbox': typeof SandboxRoute
   '/login': typeof AuthLoginRoute
   '/logout': typeof AuthLogoutRoute
   '/signup': typeof AuthSignupRoute
   '': typeof NavbarAuthedRouteWithChildren
   '/about': typeof NavbarAboutRoute
-  '/sandbox': typeof NavbarSandboxRoute
   '/': typeof NavbarIndexRoute
   '/recipe': typeof NavbarAuthedRecipeLayoutIndexRoute
   '/recipe/$recipeId': typeof NavbarAuthedRecipeLayoutRecipeIdRoute
@@ -280,12 +278,12 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/_navbar': typeof NavbarRouteWithChildren
+  '/sandbox': typeof SandboxRoute
   '/_auth/login': typeof AuthLoginRoute
   '/_auth/logout': typeof AuthLogoutRoute
   '/_auth/signup': typeof AuthSignupRoute
   '/_navbar/_authed': typeof NavbarAuthedRouteWithChildren
   '/_navbar/about': typeof NavbarAboutRoute
-  '/_navbar/sandbox': typeof NavbarSandboxRoute
   '/_navbar/': typeof NavbarIndexRoute
   '/_navbar/_authed/recipe': typeof NavbarAuthedRecipeRouteWithChildren
   '/_navbar/_authed/recipe/_layout': typeof NavbarAuthedRecipeLayoutRouteWithChildren
@@ -297,35 +295,35 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | ''
+    | '/sandbox'
     | '/login'
     | '/logout'
     | '/signup'
     | '/about'
-    | '/sandbox'
     | '/'
     | '/recipe'
     | '/recipe/$recipeId'
     | '/recipe/'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | '/sandbox'
     | '/login'
     | '/logout'
     | '/signup'
     | ''
     | '/about'
-    | '/sandbox'
     | '/'
     | '/recipe'
     | '/recipe/$recipeId'
   id:
     | '__root__'
     | '/_navbar'
+    | '/sandbox'
     | '/_auth/login'
     | '/_auth/logout'
     | '/_auth/signup'
     | '/_navbar/_authed'
     | '/_navbar/about'
-    | '/_navbar/sandbox'
     | '/_navbar/'
     | '/_navbar/_authed/recipe'
     | '/_navbar/_authed/recipe/_layout'
@@ -336,6 +334,7 @@ export interface FileRouteTypes {
 
 export interface RootRouteChildren {
   NavbarRoute: typeof NavbarRouteWithChildren
+  SandboxRoute: typeof SandboxRoute
   AuthLoginRoute: typeof AuthLoginRoute
   AuthLogoutRoute: typeof AuthLogoutRoute
   AuthSignupRoute: typeof AuthSignupRoute
@@ -343,6 +342,7 @@ export interface RootRouteChildren {
 
 const rootRouteChildren: RootRouteChildren = {
   NavbarRoute: NavbarRouteWithChildren,
+  SandboxRoute: SandboxRoute,
   AuthLoginRoute: AuthLoginRoute,
   AuthLogoutRoute: AuthLogoutRoute,
   AuthSignupRoute: AuthSignupRoute,
@@ -359,6 +359,7 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/_navbar",
+        "/sandbox",
         "/_auth/login",
         "/_auth/logout",
         "/_auth/signup"
@@ -369,9 +370,11 @@ export const routeTree = rootRoute
       "children": [
         "/_navbar/_authed",
         "/_navbar/about",
-        "/_navbar/sandbox",
         "/_navbar/"
       ]
+    },
+    "/sandbox": {
+      "filePath": "sandbox.tsx"
     },
     "/_auth/login": {
       "filePath": "_auth/login.tsx"
@@ -391,10 +394,6 @@ export const routeTree = rootRoute
     },
     "/_navbar/about": {
       "filePath": "_navbar/about.tsx",
-      "parent": "/_navbar"
-    },
-    "/_navbar/sandbox": {
-      "filePath": "_navbar/sandbox.tsx",
       "parent": "/_navbar"
     },
     "/_navbar/": {

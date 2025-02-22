@@ -20,7 +20,7 @@ function RecipesComponent() {
   const recipes = Route.useLoaderData();
 
   return (
-    <>
+    <div className="h-full w-full">
       <hr />
       <div className="flex gap-2 p-2">
         <ul className="list-disc pl-4">
@@ -47,6 +47,6 @@ function RecipesComponent() {
           <Outlet />
         </div>
       </div>
-    </>
+    </div>
   );
 }
