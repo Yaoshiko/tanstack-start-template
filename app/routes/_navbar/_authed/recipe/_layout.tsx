@@ -24,7 +24,7 @@ function RecipesComponent() {
     <>
       <hr />
       <div className="flex h-full">
-        <div className="border-right flex h-full w-48 flex-col border-r border-gray-200">
+        <div className="no-scrollbar border-right flex h-full flex-col overflow-y-auto border-r border-gray-200 lg:w-80">
           {recipes.map(({ id, title }) => (
             <Link
               key={id}

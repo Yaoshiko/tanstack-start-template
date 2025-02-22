@@ -39,12 +39,11 @@ function RootComponent() {
 function Navbar() {
   const { user } = Route.useRouteContext();
   const title = 'Starter';
-  const logoSrc = 'donut.svg';
   const logoAlt = 'donut';
+  const logoSrc = '/donut.svg';
   const items = [
     { label: 'Recipes', href: '/recipe' },
-    { label: 'Sandbox', href: '/sandbox' },
-    { label: 'About', href: '/about', light: true }
+    { label: 'Sandbox', href: '/sandbox', light: true }
   ];
 
   return (

@@ -7,7 +7,7 @@ import {
 import { TanStackRouterDevtools } from '@tanstack/router-devtools';
 import { DefaultCatchBoundary } from '@/components/default-catch-boundary';
 import { NotFound } from '@/components/not-found';
-import css from '@/styles/global.css?url';
+import css from '@/styles/app.css?url';
 import { seo } from '@/lib/seo';
 import { fetchUser } from '@/lib/auth/api';
 import { QueryClient } from '@tanstack/react-query';

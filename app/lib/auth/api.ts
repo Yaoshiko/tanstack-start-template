@@ -1,7 +1,7 @@
 import { createServerFn } from '@tanstack/start';
 import crypto from 'node:crypto';
 import { redirect } from '@tanstack/react-router';
-import { db, users } from '@/db';
+import { db } from '@/db';
 import { eq } from 'drizzle-orm';
 import { z } from 'zod';
 import { useAppSession } from './session';
@@ -35,37 +35,40 @@ export const fetchUser = createServerFn({ method: 'GET' }).handler(async () => {
 export const loginFn = createServerFn()
   .validator((d: unknown) => d as { email: string; password: string })
   .handler(async ({ data }) => {
-    // Find the user
-    const user = (
-      await db.select().from(users).where(eq(users.email, data.email)).limit(1)
-    )[0]!;
+    return {
+      userEmail: 'TODO'
+    };
+    // // Find the user
+    // const user = (
+    //   await db.select().from(users).where(eq(users.email, data.email)).limit(1)
+    // )[0]!;
 
-    // Check if the user exists
-    if (!user) {
-      return {
-        error: true,
-        userNotFound: true,
-        message: 'User not found'
-      };
-    }
+    // // Check if the user exists
+    // if (!user) {
+    //   return {
+    //     error: true,
+    //     userNotFound: true,
+    //     message: 'User not found'
+    //   };
+    // }
 
-    // Check if the password is correct
-    const hashedPassword = await hashPassword(data.password);
+    // // Check if the password is correct
+    // const hashedPassword = await hashPassword(data.password);
 
-    if (user.password !== hashedPassword) {
-      return {
-        error: true,
-        message: 'Incorrect password'
-      };
-    }
+    // if (user.password !== hashedPassword) {
+    //   return {
+    //     error: true,
+    //     message: 'Incorrect password'
+    //   };
+    // }
 
-    // Create a session
-    const session = await useAppSession();
+    // // Create a session
+    // const session = await useAppSession();
 
-    // Store the user's email in the session
-    await session.update({
-      userEmail: user.email
-    });
+    // // Store the user's email in the session
+    // await session.update({
+    //   userEmail: user.email
+    // });
   });
 
 const signupSchema = z.object({
