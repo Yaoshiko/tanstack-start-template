@@ -24,7 +24,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           content: 'width=device-width, initial-scale=1'
         },
         ...seo({
-          title: 'Tanstack starter',
+          title: 'Starter',
           description: `TanStack generic webapp starter.`
         })
       ],
@@ -74,7 +74,9 @@ function RootComponent() {
         <HeadContent />
       </head>
       <body>
-        <Outlet />
+        <div className="h-screen">
+          <Outlet />
+        </div>
         <TanStackRouterDevtools position="bottom-right" />
         <Scripts />
       </body>

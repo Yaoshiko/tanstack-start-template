@@ -29,7 +29,9 @@ function RootComponent() {
   return (
     <>
       <Navbar />
-      <Outlet />
+      <div className="h-full">
+        <Outlet />
+      </div>
     </>
   );
 }

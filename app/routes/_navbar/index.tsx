@@ -23,7 +23,11 @@ function Home() {
                   Free donuts!
                 </h1>
                 <p className="text-muted-foreground lg:text-xl">
-                  I&apos;m sorry, you got Rick-Rolled...
+                  I&apos;m sorry, you got{' '}
+                  <a href="https://youtu.be/dQw4w9WgXcQ?si=QI5RgbjfHrI0dgDo">
+                    Rick-Rolled
+                  </a>
+                  ...
                   <br /> But you can enjoy a beautiful meaningless app to be
                   used as a Tanstack Start template for whatever you need!
                 </p>

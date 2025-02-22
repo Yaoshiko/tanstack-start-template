@@ -19,34 +19,33 @@ function RecipesComponent() {
   const router = useRouter();
   const recipes = Route.useLoaderData();
 
+  // TODO: Show only sidebar when on mobile (to let him select one)
   return (
-    <div className="h-full w-full">
+    <>
       <hr />
-      <div className="flex gap-2 p-2">
-        <ul className="list-disc pl-4">
+      <div className="flex h-full">
+        <div className="border-right flex h-full w-48 flex-col border-r border-gray-200">
           {recipes.map(({ id, title }) => (
-            <li key={id} className="whitespace-nowrap">
-              <Link
-                to="/recipe/$recipeId"
-                params={{
-                  recipeId: id
-                }}
-                className="block py-1 text-blue-800 hover:text-blue-600"
-                activeProps={{ className: 'text-black font-bold' }}
-              >
-                <div>{title}</div>
-              </Link>
-            </li>
+            <Link
+              key={id}
+              className="items-center px-4 py-2 whitespace-nowrap hover:bg-slate-100"
+              to="/recipe/$recipeId"
+              params={{
+                recipeId: id
+              }}
+              activeProps={{
+                className: 'text-black font-bold bg-slate-50'
+              }}
+            >
+              {title}
+            </Link>
           ))}
-        </ul>
+        </div>
         <hr />
-        <div className="flex flex-col gap-y-8">
-          <button onClick={() => router.invalidate()}>
-            Re-fetch all recipes
-          </button>
+        <div className="m-12">
           <Outlet />
         </div>
       </div>
-    </div>
+    </>
   );
 }
