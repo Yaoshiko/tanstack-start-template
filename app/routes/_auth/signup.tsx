@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { useServerFn } from '@tanstack/start';
-import { useMutation } from '@/hooks/useMutation';
+import { useMutation } from '@/hooks/use-mutation';
 import { Auth } from '@/components/auth';
 import { signupFn } from '@/lib/auth/api';
 import { authClient } from '@/lib/auth/client';

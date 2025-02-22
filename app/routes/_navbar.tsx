@@ -17,6 +17,7 @@ import {
   SheetTitle,
   SheetTrigger
 } from '@/components/ui/sheet';
+import { Label } from '@/components/ui/label';
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   {
@@ -40,8 +41,8 @@ function Navbar() {
   const logoAlt = 'donut';
   const items = [
     { label: 'To-Do list', href: '/todos' },
-    { label: 'Sandbox', href: '/' },
-    { label: 'About', href: '/', light: true }
+    { label: 'Sandbox', href: '/sandbox' },
+    { label: 'About', href: '/about', light: true }
   ];
 
   return (
@@ -70,7 +71,7 @@ function Navbar() {
             </div>
           </div>
           <div className="flex gap-2">
-            {user ? (
+            {!user ? (
               <>
                 <Button asChild variant="outline">
                   <Link to="/login">Log in</Link>
@@ -80,7 +81,12 @@ function Navbar() {
                 </Button>
               </>
             ) : (
-              <span>Welcome back!</span>
+              <div className="flex items-center gap-2">
+                <Label className="text-md">Hello, {user.email}!</Label>
+                <Button asChild>
+                  <Link to="/">Log out</Link>
+                </Button>
+              </div>
             )}
           </div>
         </nav>

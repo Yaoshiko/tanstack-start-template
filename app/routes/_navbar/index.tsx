@@ -23,10 +23,9 @@ function Home() {
                   Free donuts!
                 </h1>
                 <p className="text-muted-foreground lg:text-xl">
-                  I&apos;m sorry, donuts are over...
-                  <br /> But you can enjoy a beautiful To-Do list app to be used
-                  as a Tanstack Start template for whatever you&apos;re
-                  building.
+                  I&apos;m sorry, you got Rick-Rolled...
+                  <br /> But you can enjoy a beautiful meaningless app to be
+                  used as a Tanstack Start template for whatever you need!
                 </p>
               </div>
               <div className="mt-4 flex justify-center gap-2">
