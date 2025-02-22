@@ -1,16 +1,15 @@
 import { eq } from 'drizzle-orm';
-import { db, todos } from './index';
+import { db, recipe } from './index';
 
-export async function getUser() {
-  throw new Error('Not implemented');
+export function getRecipeTitles() {
+  // TODO: Add filter by userId.
+  return db
+    .select({ id: recipe.id, title: recipe.title })
+    .from(recipe)
+    .orderBy(recipe.createdAt);
 }
 
-export function getTodos() {
+export async function getRecipe(recipeId: string) {
   // TODO: Add filter by userId.
-  return db.select().from(todos).orderBy(todos.createdAt);
-}
-
-export async function getTodoById(todoId: string) {
-  // TODO: Add filter by userId.
-  return (await db.select().from(todos).where(eq(todos.id, todoId)))[0]!;
+  return (await db.select().from(recipe).where(eq(recipe.id, recipeId)))[0]!;
 }

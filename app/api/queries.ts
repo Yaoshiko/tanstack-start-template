@@ -1,11 +1,11 @@
 // Collection of react-query options.
 
 import { queryOptions } from '@tanstack/react-query';
-import { fetchTodoById } from './todos';
+import { fetchRecipe } from './recipes';
 
-export function fetchTodoOpts(todoId: string) {
+export function fetchRecipeOpts(recipeId: string) {
   return queryOptions({
-    queryKey: ['todo', todoId],
-    queryFn: () => fetchTodoById({ data: todoId })
+    queryKey: ['recipeId', recipeId],
+    queryFn: () => fetchRecipe({ data: recipeId })
   });
 }

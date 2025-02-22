@@ -40,7 +40,7 @@ function Navbar() {
   const logoSrc = 'donut.svg';
   const logoAlt = 'donut';
   const items = [
-    { label: 'To-Do list', href: '/todos' },
+    { label: 'Recipes', href: '/recipe' },
     { label: 'Sandbox', href: '/sandbox' },
     { label: 'About', href: '/about', light: true }
   ];

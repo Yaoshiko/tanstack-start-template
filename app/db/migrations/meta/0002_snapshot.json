@@ -1,6 +1,6 @@
 {
-  "id": "5b7a40f5-519b-44c4-b9a3-37faa12044d3",
-  "prevId": "3938a43a-6656-4e82-a20b-4aa5a48be17c",
+  "id": "e128e7e2-245f-4762-86ef-02d74e3c728e",
+  "prevId": "ec7630ff-5826-4af5-a392-6deb7a565e5c",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -304,8 +304,8 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.todos": {
-      "name": "todos",
+    "public.recipe": {
+      "name": "recipe",
       "schema": "",
       "columns": {
         "id": {
@@ -317,13 +317,19 @@
         },
         "userId": {
           "name": "userId",
-          "type": "uuid",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "title": {
+          "name": "title",
+          "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
         },
         "content": {
           "name": "content",
-          "type": "varchar(255)",
+          "type": "varchar",
           "primaryKey": false,
           "notNull": true
         },
@@ -344,10 +350,10 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "todos_userId_users_id_fk": {
-          "name": "todos_userId_users_id_fk",
-          "tableFrom": "todos",
-          "tableTo": "users",
+        "recipe_userId_user_id_fk": {
+          "name": "recipe_userId_user_id_fk",
+          "tableFrom": "recipe",
+          "tableTo": "user",
           "columnsFrom": [
             "userId"
           ],
@@ -360,60 +366,6 @@
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
-      "policies": {},
-      "checkConstraints": {},
-      "isRLSEnabled": false
-    },
-    "public.users": {
-      "name": "users",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "uuid",
-          "primaryKey": true,
-          "notNull": true,
-          "default": "gen_random_uuid()"
-        },
-        "email": {
-          "name": "email",
-          "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "password": {
-          "name": "password",
-          "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "updatedAt": {
-          "name": "updatedAt",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        },
-        "createdAt": {
-          "name": "createdAt",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {
-        "users_email_unique": {
-          "name": "users_email_unique",
-          "nullsNotDistinct": false,
-          "columns": [
-            "email"
-          ]
-        }
-      },
       "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false

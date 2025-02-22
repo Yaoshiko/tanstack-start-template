@@ -1,23 +1,15 @@
-import { uuid, pgTable, varchar, timestamp } from 'drizzle-orm/pg-core';
+import { uuid, pgTable, varchar, timestamp, text } from 'drizzle-orm/pg-core';
+import { user } from './auth-schema';
 
-export const users = pgTable('users', {
+export const recipe = pgTable('recipe', {
   id: uuid().primaryKey().defaultRandom(),
-  email: varchar({ length: 255 }).notNull().unique(),
-  password: varchar({ length: 255 }).notNull(),
-
-  updatedAt: timestamp().notNull().defaultNow(),
-  createdAt: timestamp().notNull().defaultNow()
-});
-
-export const todos = pgTable('todos', {
-  id: uuid().primaryKey().defaultRandom(),
-  userId: uuid()
+  userId: text()
     .notNull()
-    .references(() => users.id),
-  content: varchar({ length: 255 }).notNull(),
+    .references(() => user.id),
+  title: varchar({ length: 255 }).notNull(),
+  content: varchar().notNull(),
   createdAt: timestamp().notNull().defaultNow(),
   updatedAt: timestamp().notNull().defaultNow()
 });
 
-export type User = typeof users.$inferSelect;
-export type Todo = typeof todos.$inferSelect;
+export type Recipe = typeof recipe.$inferSelect;

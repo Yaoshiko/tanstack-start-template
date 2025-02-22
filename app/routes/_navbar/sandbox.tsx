@@ -7,8 +7,8 @@ export const Route = createFileRoute('/_navbar/about copy')({
 function RouteComponent() {
   return (
     <div>
-      TODO: Sidebar (https://ui.shadcn.com/blocks/sidebar) to showcase different
-      UI components or UX patterns
+      TODO: <a href="https://ui.shadcn.com/blocks/sidebar">Sidebar</a> to
+      showcase different UI components or UX patterns
     </div>
   );
 }

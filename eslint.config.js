@@ -16,7 +16,9 @@ export default [
   {
     settings: {
       'import/resolver': {
-        typescript: { alwaysTryTypes: true }
+        typescript: {
+          alwaysTryTypes: true
+        }
       }
     },
     rules: {

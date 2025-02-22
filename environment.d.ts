@@ -4,8 +4,8 @@ declare global {
     interface ProcessEnv {
       DATABASE_URL: string;
       // Emulated delay to explore TanStack SWR features.
-      FETCH_TODOS_DELAY: number;
-      FETCH_TODO_BY_ID_DELAY: number;
+      FETCH_RECIPES_DELAY: number;
+      FETCH_RECIPE_DELAY: number;
     }
   }
 }

@@ -21,13 +21,13 @@ import { Route as NavbarAuthedImport } from './routes/_navbar/_authed'
 import { Route as AuthSignupImport } from './routes/_auth/signup'
 import { Route as AuthLogoutImport } from './routes/_auth/logout'
 import { Route as AuthLoginImport } from './routes/_auth/login'
-import { Route as NavbarAuthedTodosLayoutImport } from './routes/_navbar/_authed/todos/_layout'
-import { Route as NavbarAuthedTodosLayoutIndexImport } from './routes/_navbar/_authed/todos/_layout/index'
-import { Route as NavbarAuthedTodosLayoutTodoIdImport } from './routes/_navbar/_authed/todos/_layout/$todoId'
+import { Route as NavbarAuthedRecipeLayoutImport } from './routes/_navbar/_authed/recipe/_layout'
+import { Route as NavbarAuthedRecipeLayoutIndexImport } from './routes/_navbar/_authed/recipe/_layout/index'
+import { Route as NavbarAuthedRecipeLayoutRecipeIdImport } from './routes/_navbar/_authed/recipe/_layout/$recipeId'
 
 // Create Virtual Routes
 
-const NavbarAuthedTodosImport = createFileRoute('/_navbar/_authed/todos')()
+const NavbarAuthedRecipeImport = createFileRoute('/_navbar/_authed/recipe')()
 
 // Create/Update Routes
 
@@ -77,29 +77,29 @@ const AuthLoginRoute = AuthLoginImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const NavbarAuthedTodosRoute = NavbarAuthedTodosImport.update({
-  id: '/todos',
-  path: '/todos',
+const NavbarAuthedRecipeRoute = NavbarAuthedRecipeImport.update({
+  id: '/recipe',
+  path: '/recipe',
   getParentRoute: () => NavbarAuthedRoute,
 } as any)
 
-const NavbarAuthedTodosLayoutRoute = NavbarAuthedTodosLayoutImport.update({
+const NavbarAuthedRecipeLayoutRoute = NavbarAuthedRecipeLayoutImport.update({
   id: '/_layout',
-  getParentRoute: () => NavbarAuthedTodosRoute,
+  getParentRoute: () => NavbarAuthedRecipeRoute,
 } as any)
 
-const NavbarAuthedTodosLayoutIndexRoute =
-  NavbarAuthedTodosLayoutIndexImport.update({
+const NavbarAuthedRecipeLayoutIndexRoute =
+  NavbarAuthedRecipeLayoutIndexImport.update({
     id: '/',
     path: '/',
-    getParentRoute: () => NavbarAuthedTodosLayoutRoute,
+    getParentRoute: () => NavbarAuthedRecipeLayoutRoute,
   } as any)
 
-const NavbarAuthedTodosLayoutTodoIdRoute =
-  NavbarAuthedTodosLayoutTodoIdImport.update({
-    id: '/$todoId',
-    path: '/$todoId',
-    getParentRoute: () => NavbarAuthedTodosLayoutRoute,
+const NavbarAuthedRecipeLayoutRecipeIdRoute =
+  NavbarAuthedRecipeLayoutRecipeIdImport.update({
+    id: '/$recipeId',
+    path: '/$recipeId',
+    getParentRoute: () => NavbarAuthedRecipeLayoutRoute,
   } as any)
 
 // Populate the FileRoutesByPath interface
@@ -162,72 +162,73 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NavbarIndexImport
       parentRoute: typeof NavbarImport
     }
-    '/_navbar/_authed/todos': {
-      id: '/_navbar/_authed/todos'
-      path: '/todos'
-      fullPath: '/todos'
-      preLoaderRoute: typeof NavbarAuthedTodosImport
+    '/_navbar/_authed/recipe': {
+      id: '/_navbar/_authed/recipe'
+      path: '/recipe'
+      fullPath: '/recipe'
+      preLoaderRoute: typeof NavbarAuthedRecipeImport
       parentRoute: typeof NavbarAuthedImport
     }
-    '/_navbar/_authed/todos/_layout': {
-      id: '/_navbar/_authed/todos/_layout'
-      path: '/todos'
-      fullPath: '/todos'
-      preLoaderRoute: typeof NavbarAuthedTodosLayoutImport
-      parentRoute: typeof NavbarAuthedTodosRoute
+    '/_navbar/_authed/recipe/_layout': {
+      id: '/_navbar/_authed/recipe/_layout'
+      path: '/recipe'
+      fullPath: '/recipe'
+      preLoaderRoute: typeof NavbarAuthedRecipeLayoutImport
+      parentRoute: typeof NavbarAuthedRecipeRoute
     }
-    '/_navbar/_authed/todos/_layout/$todoId': {
-      id: '/_navbar/_authed/todos/_layout/$todoId'
-      path: '/$todoId'
-      fullPath: '/todos/$todoId'
-      preLoaderRoute: typeof NavbarAuthedTodosLayoutTodoIdImport
-      parentRoute: typeof NavbarAuthedTodosLayoutImport
+    '/_navbar/_authed/recipe/_layout/$recipeId': {
+      id: '/_navbar/_authed/recipe/_layout/$recipeId'
+      path: '/$recipeId'
+      fullPath: '/recipe/$recipeId'
+      preLoaderRoute: typeof NavbarAuthedRecipeLayoutRecipeIdImport
+      parentRoute: typeof NavbarAuthedRecipeLayoutImport
     }
-    '/_navbar/_authed/todos/_layout/': {
-      id: '/_navbar/_authed/todos/_layout/'
+    '/_navbar/_authed/recipe/_layout/': {
+      id: '/_navbar/_authed/recipe/_layout/'
       path: '/'
-      fullPath: '/todos/'
-      preLoaderRoute: typeof NavbarAuthedTodosLayoutIndexImport
-      parentRoute: typeof NavbarAuthedTodosLayoutImport
+      fullPath: '/recipe/'
+      preLoaderRoute: typeof NavbarAuthedRecipeLayoutIndexImport
+      parentRoute: typeof NavbarAuthedRecipeLayoutImport
     }
   }
 }
 
 // Create and export the route tree
 
-interface NavbarAuthedTodosLayoutRouteChildren {
-  NavbarAuthedTodosLayoutTodoIdRoute: typeof NavbarAuthedTodosLayoutTodoIdRoute
-  NavbarAuthedTodosLayoutIndexRoute: typeof NavbarAuthedTodosLayoutIndexRoute
+interface NavbarAuthedRecipeLayoutRouteChildren {
+  NavbarAuthedRecipeLayoutRecipeIdRoute: typeof NavbarAuthedRecipeLayoutRecipeIdRoute
+  NavbarAuthedRecipeLayoutIndexRoute: typeof NavbarAuthedRecipeLayoutIndexRoute
 }
 
-const NavbarAuthedTodosLayoutRouteChildren: NavbarAuthedTodosLayoutRouteChildren =
+const NavbarAuthedRecipeLayoutRouteChildren: NavbarAuthedRecipeLayoutRouteChildren =
   {
-    NavbarAuthedTodosLayoutTodoIdRoute: NavbarAuthedTodosLayoutTodoIdRoute,
-    NavbarAuthedTodosLayoutIndexRoute: NavbarAuthedTodosLayoutIndexRoute,
+    NavbarAuthedRecipeLayoutRecipeIdRoute:
+      NavbarAuthedRecipeLayoutRecipeIdRoute,
+    NavbarAuthedRecipeLayoutIndexRoute: NavbarAuthedRecipeLayoutIndexRoute,
   }
 
-const NavbarAuthedTodosLayoutRouteWithChildren =
-  NavbarAuthedTodosLayoutRoute._addFileChildren(
-    NavbarAuthedTodosLayoutRouteChildren,
+const NavbarAuthedRecipeLayoutRouteWithChildren =
+  NavbarAuthedRecipeLayoutRoute._addFileChildren(
+    NavbarAuthedRecipeLayoutRouteChildren,
   )
 
-interface NavbarAuthedTodosRouteChildren {
-  NavbarAuthedTodosLayoutRoute: typeof NavbarAuthedTodosLayoutRouteWithChildren
+interface NavbarAuthedRecipeRouteChildren {
+  NavbarAuthedRecipeLayoutRoute: typeof NavbarAuthedRecipeLayoutRouteWithChildren
 }
 
-const NavbarAuthedTodosRouteChildren: NavbarAuthedTodosRouteChildren = {
-  NavbarAuthedTodosLayoutRoute: NavbarAuthedTodosLayoutRouteWithChildren,
+const NavbarAuthedRecipeRouteChildren: NavbarAuthedRecipeRouteChildren = {
+  NavbarAuthedRecipeLayoutRoute: NavbarAuthedRecipeLayoutRouteWithChildren,
 }
 
-const NavbarAuthedTodosRouteWithChildren =
-  NavbarAuthedTodosRoute._addFileChildren(NavbarAuthedTodosRouteChildren)
+const NavbarAuthedRecipeRouteWithChildren =
+  NavbarAuthedRecipeRoute._addFileChildren(NavbarAuthedRecipeRouteChildren)
 
 interface NavbarAuthedRouteChildren {
-  NavbarAuthedTodosRoute: typeof NavbarAuthedTodosRouteWithChildren
+  NavbarAuthedRecipeRoute: typeof NavbarAuthedRecipeRouteWithChildren
 }
 
 const NavbarAuthedRouteChildren: NavbarAuthedRouteChildren = {
-  NavbarAuthedTodosRoute: NavbarAuthedTodosRouteWithChildren,
+  NavbarAuthedRecipeRoute: NavbarAuthedRecipeRouteWithChildren,
 }
 
 const NavbarAuthedRouteWithChildren = NavbarAuthedRoute._addFileChildren(
@@ -259,9 +260,9 @@ export interface FileRoutesByFullPath {
   '/about': typeof NavbarAboutRoute
   '/sandbox': typeof NavbarSandboxRoute
   '/': typeof NavbarIndexRoute
-  '/todos': typeof NavbarAuthedTodosLayoutRouteWithChildren
-  '/todos/$todoId': typeof NavbarAuthedTodosLayoutTodoIdRoute
-  '/todos/': typeof NavbarAuthedTodosLayoutIndexRoute
+  '/recipe': typeof NavbarAuthedRecipeLayoutRouteWithChildren
+  '/recipe/$recipeId': typeof NavbarAuthedRecipeLayoutRecipeIdRoute
+  '/recipe/': typeof NavbarAuthedRecipeLayoutIndexRoute
 }
 
 export interface FileRoutesByTo {
@@ -272,8 +273,8 @@ export interface FileRoutesByTo {
   '/about': typeof NavbarAboutRoute
   '/sandbox': typeof NavbarSandboxRoute
   '/': typeof NavbarIndexRoute
-  '/todos': typeof NavbarAuthedTodosLayoutIndexRoute
-  '/todos/$todoId': typeof NavbarAuthedTodosLayoutTodoIdRoute
+  '/recipe': typeof NavbarAuthedRecipeLayoutIndexRoute
+  '/recipe/$recipeId': typeof NavbarAuthedRecipeLayoutRecipeIdRoute
 }
 
 export interface FileRoutesById {
@@ -286,10 +287,10 @@ export interface FileRoutesById {
   '/_navbar/about': typeof NavbarAboutRoute
   '/_navbar/sandbox': typeof NavbarSandboxRoute
   '/_navbar/': typeof NavbarIndexRoute
-  '/_navbar/_authed/todos': typeof NavbarAuthedTodosRouteWithChildren
-  '/_navbar/_authed/todos/_layout': typeof NavbarAuthedTodosLayoutRouteWithChildren
-  '/_navbar/_authed/todos/_layout/$todoId': typeof NavbarAuthedTodosLayoutTodoIdRoute
-  '/_navbar/_authed/todos/_layout/': typeof NavbarAuthedTodosLayoutIndexRoute
+  '/_navbar/_authed/recipe': typeof NavbarAuthedRecipeRouteWithChildren
+  '/_navbar/_authed/recipe/_layout': typeof NavbarAuthedRecipeLayoutRouteWithChildren
+  '/_navbar/_authed/recipe/_layout/$recipeId': typeof NavbarAuthedRecipeLayoutRecipeIdRoute
+  '/_navbar/_authed/recipe/_layout/': typeof NavbarAuthedRecipeLayoutIndexRoute
 }
 
 export interface FileRouteTypes {
@@ -302,9 +303,9 @@ export interface FileRouteTypes {
     | '/about'
     | '/sandbox'
     | '/'
-    | '/todos'
-    | '/todos/$todoId'
-    | '/todos/'
+    | '/recipe'
+    | '/recipe/$recipeId'
+    | '/recipe/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/login'
@@ -314,8 +315,8 @@ export interface FileRouteTypes {
     | '/about'
     | '/sandbox'
     | '/'
-    | '/todos'
-    | '/todos/$todoId'
+    | '/recipe'
+    | '/recipe/$recipeId'
   id:
     | '__root__'
     | '/_navbar'
@@ -326,10 +327,10 @@ export interface FileRouteTypes {
     | '/_navbar/about'
     | '/_navbar/sandbox'
     | '/_navbar/'
-    | '/_navbar/_authed/todos'
-    | '/_navbar/_authed/todos/_layout'
-    | '/_navbar/_authed/todos/_layout/$todoId'
-    | '/_navbar/_authed/todos/_layout/'
+    | '/_navbar/_authed/recipe'
+    | '/_navbar/_authed/recipe/_layout'
+    | '/_navbar/_authed/recipe/_layout/$recipeId'
+    | '/_navbar/_authed/recipe/_layout/'
   fileRoutesById: FileRoutesById
 }
 
@@ -385,7 +386,7 @@ export const routeTree = rootRoute
       "filePath": "_navbar/_authed.tsx",
       "parent": "/_navbar",
       "children": [
-        "/_navbar/_authed/todos"
+        "/_navbar/_authed/recipe"
       ]
     },
     "/_navbar/about": {
@@ -400,28 +401,28 @@ export const routeTree = rootRoute
       "filePath": "_navbar/index.tsx",
       "parent": "/_navbar"
     },
-    "/_navbar/_authed/todos": {
-      "filePath": "_navbar/_authed/todos",
+    "/_navbar/_authed/recipe": {
+      "filePath": "_navbar/_authed/recipe",
       "parent": "/_navbar/_authed",
       "children": [
-        "/_navbar/_authed/todos/_layout"
+        "/_navbar/_authed/recipe/_layout"
       ]
     },
-    "/_navbar/_authed/todos/_layout": {
-      "filePath": "_navbar/_authed/todos/_layout.tsx",
-      "parent": "/_navbar/_authed/todos",
+    "/_navbar/_authed/recipe/_layout": {
+      "filePath": "_navbar/_authed/recipe/_layout.tsx",
+      "parent": "/_navbar/_authed/recipe",
       "children": [
-        "/_navbar/_authed/todos/_layout/$todoId",
-        "/_navbar/_authed/todos/_layout/"
+        "/_navbar/_authed/recipe/_layout/$recipeId",
+        "/_navbar/_authed/recipe/_layout/"
       ]
     },
-    "/_navbar/_authed/todos/_layout/$todoId": {
-      "filePath": "_navbar/_authed/todos/_layout/$todoId.tsx",
-      "parent": "/_navbar/_authed/todos/_layout"
+    "/_navbar/_authed/recipe/_layout/$recipeId": {
+      "filePath": "_navbar/_authed/recipe/_layout/$recipeId.tsx",
+      "parent": "/_navbar/_authed/recipe/_layout"
     },
-    "/_navbar/_authed/todos/_layout/": {
-      "filePath": "_navbar/_authed/todos/_layout/index.tsx",
-      "parent": "/_navbar/_authed/todos/_layout"
+    "/_navbar/_authed/recipe/_layout/": {
+      "filePath": "_navbar/_authed/recipe/_layout/index.tsx",
+      "parent": "/_navbar/_authed/recipe/_layout"
     }
   }
 }
