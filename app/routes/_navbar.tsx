@@ -12,6 +12,7 @@ import {
 } from '@/components/ui/navigation-menu';
 import {
   Sheet,
+  SheetClose,
   SheetContent,
   SheetHeader,
   SheetTitle,
@@ -27,12 +28,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootComponent() {
   return (
-    <>
+    <div className="flex h-full flex-col">
       <Navbar />
-      <div className="h-full">
+      <hr />
+      <div className="no-scrollbar h-full overflow-y-auto">
         <Outlet />
       </div>
-    </>
+    </div>
   );
 }
 
@@ -53,16 +55,19 @@ function Navbar() {
           <div className="flex items-center gap-6">
             <Link to="/" className="flex items-center gap-2">
               <img src={logoSrc} className="w-8" alt={logoAlt} />
-              <span className="text-lg font-semibold">{title}</span>
+              <span className="text-xl font-extrabold">{title}</span>
             </Link>
-            <div className="flex items-center">
+            <div className="text-muted-foreground flex items-center font-medium">
               <NavigationMenu>
                 <NavigationMenuList>
                   {items.map(({ label, href }) => (
                     <Link
                       key={label}
                       to={href}
-                      className="group bg-background text-muted-foreground hover:bg-muted hover:text-accent-foreground inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 font-medium transition-colors"
+                      className="group bg-background hover:bg-muted hover:text-accent-foreground active:text-accent-foreground inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 transition-colors"
+                      activeProps={{
+                        className: 'text-accent-foreground font-bold'
+                      }}
                     >
                       {label}
                     </Link>
@@ -71,7 +76,7 @@ function Navbar() {
               </NavigationMenu>
             </div>
           </div>
-          <div className="flex gap-2">
+          <div className="flex items-center gap-2">
             {!user ? (
               <>
                 <Button asChild variant="outline">
@@ -115,13 +120,14 @@ function Navbar() {
                   {items
                     .filter((item) => !item.light)
                     .map(({ label, href }) => (
-                      <Link
-                        key={label}
-                        to={href}
-                        className="hover:bg-muted hover:text-accent-foreground inline-flex h-10 items-center gap-2 rounded-md px-4 py-2 text-sm font-medium whitespace-nowrap transition-colors"
-                      >
-                        {label}
-                      </Link>
+                      <SheetClose asChild key={label}>
+                        <Link
+                          to={href}
+                          className="hover:bg-muted hover:text-accent-foreground inline-flex h-10 items-center gap-2 rounded-md px-4 py-2 text-sm font-medium whitespace-nowrap transition-colors"
+                        >
+                          {label}
+                        </Link>
+                      </SheetClose>
                     ))}
                 </SheetHeader>
                 <div className="my-6 flex flex-col gap-6">

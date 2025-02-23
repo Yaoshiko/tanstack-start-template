@@ -16,33 +16,31 @@ export const Route = createFileRoute('/_navbar/_authed/recipe/_layout')({
 });
 
 function RecipesComponent() {
-  const router = useRouter();
   const recipes = Route.useLoaderData();
 
   // TODO: Show only sidebar when on mobile (to let him select one)
   return (
     <>
-      <hr />
-      <div className="flex h-full">
-        <div className="no-scrollbar border-right flex h-full flex-col overflow-y-auto border-r border-gray-200 lg:w-80">
+      <div className="flex min-h-full">
+        <div className="no-scrollbar border-right text-muted-foreground flex min-h-full flex-col overflow-y-hidden border-r border-gray-200 lg:w-80">
           {recipes.map(({ id, title }) => (
             <Link
               key={id}
-              className="items-center px-4 py-2 whitespace-nowrap hover:bg-slate-100"
+              className="hover:bg-muted hover:text-accent-foreground items-center px-4 py-2 whitespace-nowrap"
               to="/recipe/$recipeId"
               params={{
                 recipeId: id
               }}
               activeProps={{
-                className: 'text-black font-bold bg-slate-50'
+                className: 'text-accent-foreground font-bold bg-muted'
               }}
             >
               {title}
             </Link>
           ))}
         </div>
-        <hr />
-        <div className="m-12">
+        <hr className="h-full" />
+        <div className="m-12 grow">
           <Outlet />
         </div>
       </div>
