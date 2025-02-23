@@ -39,7 +39,7 @@ function Deferred() {
 
   return (
     <>
-      <h4 className="text-xl font-bold underline">{recipe.data.id}</h4>
+      <h4 className="text-xl font-bold underline">{recipe.data.title}</h4>
       <div className="text-sm">{recipe.data.content}</div>
     </>
   );

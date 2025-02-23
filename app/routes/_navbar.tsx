@@ -112,10 +112,12 @@ function Navbar() {
               <SheetContent className="overflow-y-auto">
                 <SheetHeader>
                   <SheetTitle>
-                    <Link to="/" className="flex items-center gap-2">
-                      <img src={logoSrc} className="w-8" alt={logoAlt} />
-                      <span className="text-lg font-semibold">{title}</span>
-                    </Link>
+                    <SheetClose asChild>
+                      <Link to="/" className="flex items-center gap-2">
+                        <img src={logoSrc} className="w-8" alt={logoAlt} />
+                        <span className="text-lg font-semibold">{title}</span>
+                      </Link>
+                    </SheetClose>
                   </SheetTitle>
                   {items
                     .filter((item) => !item.light)
