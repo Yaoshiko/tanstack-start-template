@@ -9,6 +9,7 @@ import {
 import { TanStackRouterDevtools } from '@tanstack/router-devtools';
 import { DefaultCatchBoundary } from '@/components/default-catch-boundary';
 import { NotFound } from '@/components/not-found';
+import { Toaster } from '@/components/ui/sonner';
 import css from '@/styles/app.css?url';
 import { seo } from '@/lib/seo';
 import { QueryClient } from '@tanstack/react-query';
@@ -91,9 +92,10 @@ function RootComponent() {
         <HeadContent />
       </head>
       <body>
-        <div className="h-screen">
+        <main className="h-screen">
           <Outlet />
-        </div>
+        </main>
+        <Toaster />
         <TanStackRouterDevtools position="bottom-right" />
         <Scripts />
       </body>

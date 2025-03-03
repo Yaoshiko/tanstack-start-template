@@ -9,6 +9,8 @@ import { Form } from '@/components/form/form';
 import { FieldSet } from '@/components/form/field-set';
 import { FieldError } from '@/components/form/field-error';
 import { useEffect } from 'react';
+import { LoadingButton } from '@/components/loading-button';
+import { toast } from 'sonner';
 
 const searchParamsSchema = z.object({
   redirect: z
@@ -43,8 +45,8 @@ function SignUp() {
       firstName: 'Nicola',
       lastName: 'Barletta',
       email: 'nicola.barletta@outlook.it',
-      password: 'test',
-      confirmPassword: 'test'
+      password: 'testtest',
+      confirmPassword: 'testtest'
     },
     validators: {
       onChange: signupSchema
@@ -64,7 +66,7 @@ function SignUp() {
           replace: true
         });
       } else {
-        console.log('Sign up error ', res.error);
+        toast.error(res.error?.message);
       }
     }
   });
@@ -215,14 +217,18 @@ function SignUp() {
             )}
           </form.Field>
         </FieldSet>
-        {/* TODO: Manage loading*/}
         <form.Subscribe
           selector={(state) => [state.canSubmit, state.isSubmitting]}
         >
           {([canSubmit, isSubmitting]) => (
-            <Button type="submit" className="w-full" disabled={!canSubmit}>
+            <LoadingButton
+              type="submit"
+              className="w-full"
+              loading={isSubmitting}
+              disabled={!canSubmit}
+            >
               Sign up
-            </Button>
+            </LoadingButton>
           )}
         </form.Subscribe>
         <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
