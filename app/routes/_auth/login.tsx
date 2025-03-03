@@ -1,10 +1,15 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { z } from 'zod';
-import { zodValidator } from '@tanstack/zod-adapter';
+import { createFileRoute, Link } from '@tanstack/react-router';
 import { authClient } from '@/lib/auth/client';
 import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
-import { Label } from '@radix-ui/react-label';
+import { Input } from '@/components/ui/input';
+import { useForm } from '@tanstack/react-form';
+import { z } from 'zod';
+import { zodValidator } from '@tanstack/zod-adapter';
+import { Form } from '@/components/form/form';
+import { FieldSet } from '@/components/form/field-set';
+import { FieldError } from '@/components/form/field-error';
+import { LoadingButton } from '@/components/loading-button';
+import { toast } from 'sonner';
 
 const searchParamsSchema = z.object({
   redirect: z
@@ -13,117 +18,124 @@ const searchParamsSchema = z.object({
     .transform((v) => decodeURIComponent(v))
 });
 
-const loginSchema = z.object({
+const signinSchema = z.object({
   email: z.string().email(),
-  password: z.string()
+  password: z.string().min(8)
 });
 
 export const Route = createFileRoute('/_auth/login')({
   validateSearch: zodValidator(searchParamsSchema),
-  component: Login
+  component: SignUp
 });
 
-function Login() {
+function SignUp() {
   const { redirect } = Route.useSearch();
   const navigate = Route.useNavigate();
-
-  const signIn = async () => {
-    const res = await authClient.signIn.email({
-      email: 'nicola.barletta@outlook.it',
-      password: 'password'
-    });
-    if (res.data?.user) {
-      console.log('Sign in completed', res.data.user);
-      navigate({
-        to: redirect,
-        replace: true
+  const form = useForm({
+    defaultValues: {
+      email: '',
+      password: ''
+    },
+    validators: {
+      onChange: signinSchema
+    },
+    onSubmit: async ({ value }) => {
+      const res = await authClient.signIn.email({
+        email: value.email,
+        password: value.password
       });
-    } else {
-      console.log('Sign in error ', res.error);
+      if (res.data) {
+        navigate({
+          to: redirect,
+          replace: true
+        });
+      } else {
+        toast.error(res.error?.message ?? 'Sign in failed');
+      }
     }
-  };
+  });
 
   return (
-    <div className="flex min-h-screen items-center justify-center">
-      <LoginForm />
-    </div>
-    // <Auth
-    //   actionText="Login"
-    //   status={loginMutation.status}
-    //   onSubmit={(e) => {
-    //     const formData = new FormData(e.target as HTMLFormElement);
-
-    //     loginMutation.mutate({
-    //       email: formData.get('email') as string,
-    //       password: formData.get('password') as string
-    //     });
-    //   }}
-    //   afterSubmit={
-    //     loginMutation.data ? (
-    //       <>
-    //         <div className="text-red-400">{loginMutation.data.message}</div>
-    //         {loginMutation.data.userNotFound ? (
-    //           <div>
-    //             <button
-    //               className="text-blue-500"
-    //               onClick={(e) => {
-    //                 const formData = new FormData(
-    //                   (e.target as HTMLButtonElement).form!
-    //                 );
-
-    //                 signupMutation.mutate({
-    //                   email: formData.get('email') as string,
-    //                   password: formData.get('password') as string
-    //                 });
-    //               }}
-    //               type="button"
-    //             >
-    //               Sign up instead?
-    //             </button>
-    //           </div>
-    //         ) : null}
-    //       </>
-    //     ) : null
-    //   }
-    // />
-  );
-}
-
-export function LoginForm({
-  className,
-  ...props
-}: React.ComponentPropsWithoutRef<'form'>) {
-  return (
-    <form className={cn('flex flex-col gap-6', className)} {...props}>
-      <div className="flex flex-col items-center gap-2 text-center">
-        <h1 className="text-2xl font-bold">Login to your account</h1>
-        <p className="text-muted-foreground text-sm text-balance">
-          Enter your email below to login to your account
-        </p>
-      </div>
-      <div className="grid gap-6">
-        <div className="grid gap-2">
-          <Label htmlFor="email">Email</Label>
-          <Input id="email" type="email" placeholder="m@example.com" required />
+    <div className="flex h-screen items-center justify-center">
+      <Form
+        className="mx-12 w-full sm:mx-0 sm:w-1/3 lg:w-1/5"
+        onSubmit={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          void form.handleSubmit();
+        }}
+      >
+        <div className="flex flex-col items-center gap-2 text-center">
+          <h1 className="text-2xl font-bold">Sign in</h1>
+          <p className="text-muted-foreground text-sm text-balance">
+            You&apos;re just a few clicks away
+          </p>
         </div>
-        <div className="grid gap-2">
-          <div className="flex items-center">
-            <Label htmlFor="password">Password</Label>
-            <a
-              href="#"
-              className="ml-auto text-sm underline-offset-4 hover:underline"
+        <FieldSet label="Email">
+          <form.Field name="email">
+            {(field) => (
+              <>
+                <Input
+                  type="email"
+                  id={field.name}
+                  placeholder="mr.bean@donuts.com"
+                  value={field.state.value}
+                  onChange={(e) => field.handleChange(e.target.value)}
+                  onBlur={field.handleBlur}
+                  required
+                />
+                <FieldError
+                  isDirty={field.state.meta.isDirty}
+                  isBlurred={field.state.meta.isBlurred}
+                  error={field.state.meta.errors
+                    .map((e) => e?.message)
+                    .find((e) => !!e)}
+                />
+              </>
+            )}
+          </form.Field>
+        </FieldSet>
+        <FieldSet label="Password">
+          <form.Field name="password">
+            {(field) => (
+              <>
+                <Input
+                  type="password"
+                  id={field.name}
+                  placeholder="******"
+                  value={field.state.value}
+                  onChange={(e) => field.handleChange(e.target.value)}
+                  onBlur={field.handleBlur}
+                  required
+                />
+                <FieldError
+                  isDirty={field.state.meta.isDirty}
+                  isBlurred={field.state.meta.isBlurred}
+                  error={field.state.meta.errors
+                    .map((e) => e?.message)
+                    .find((e) => !!e)}
+                />
+              </>
+            )}
+          </form.Field>
+        </FieldSet>
+        <form.Subscribe
+          selector={(state) => [state.canSubmit, state.isSubmitting]}
+        >
+          {([canSubmit, isSubmitting]) => (
+            <LoadingButton
+              type="submit"
+              className="w-full"
+              loading={isSubmitting}
+              disabled={!canSubmit}
             >
-              Forgot your password?
-            </a>
-          </div>
-          <Input id="password" type="password" required />
-        </div>
-        <Button type="submit" className="w-full">
-          Login
-        </Button>
+              Sign in
+            </LoadingButton>
+          )}
+        </form.Subscribe>
         <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
           <span className="bg-background relative z-10 px-2">
-            Or continue with
+            Or sign in with
           </span>
         </div>
         <Button variant="outline" className="w-full">
@@ -133,15 +145,15 @@ export function LoginForm({
               fill="currentColor"
             />
           </svg>
-          Login with GitHub
+          Sign in with GitHub
         </Button>
-      </div>
-      <div className="text-center text-sm">
-        Don&apos;t have an account?{' '}
-        <a href="#" className="underline underline-offset-4">
-          Sign up
-        </a>
-      </div>
-    </form>
+        <div className="text-center text-sm">
+          Don&apos;t have an account?{' '}
+          <Link to="/signup" className="underline underline-offset-4">
+            Sign up
+          </Link>
+        </div>
+      </Form>
+    </div>
   );
 }

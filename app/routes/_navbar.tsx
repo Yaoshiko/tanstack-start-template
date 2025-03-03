@@ -19,6 +19,9 @@ import {
   SheetTrigger
 } from '@/components/ui/sheet';
 import { Label } from '@/components/ui/label';
+import { authClient } from '@/lib/auth/client';
+import { toast } from 'sonner';
+import { useState } from 'react';
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   {
@@ -39,7 +42,10 @@ function RootComponent() {
 }
 
 function Navbar() {
+  const navigate = Route.useNavigate();
   const { user } = Route.useRouteContext();
+  const [open, setOpen] = useState<boolean>(false);
+
   const title = 'Starter';
   const logoAlt = 'donut';
   const logoSrc = '/donut.svg';
@@ -47,6 +53,16 @@ function Navbar() {
     { label: 'Recipes', href: '/recipe' },
     { label: 'Sandbox', href: '/sandbox', light: true }
   ];
+
+  const handleLogout = async () => {
+    setOpen(false);
+    const res = await authClient.signOut();
+    if (res.data) {
+      navigate({ to: '/' });
+    } else {
+      toast.error(res.error?.message ?? 'Sign out failed');
+    }
+  };
 
   return (
     <section className="p-2">
@@ -88,10 +104,8 @@ function Navbar() {
               </>
             ) : (
               <div className="flex items-center gap-2">
-                <Label className="text-md">Hello, {user.email}!</Label>
-                <Button asChild>
-                  <Link to="/">Log out</Link>
-                </Button>
+                <Label className="text-md">Hello, {user.name}!</Label>
+                <Button onClick={handleLogout}>Log out</Button>
               </div>
             )}
           </div>
@@ -103,7 +117,7 @@ function Navbar() {
               <img src={logoSrc} className="w-8" alt={logoAlt} />
               <span className="text-lg font-semibold">{title}</span>
             </Link>
-            <Sheet>
+            <Sheet open={open} onOpenChange={setOpen}>
               <SheetTrigger asChild>
                 <Button variant="outline" size="icon">
                   <Menu className="size-4" />
@@ -134,14 +148,14 @@ function Navbar() {
                 </SheetHeader>
                 <div className="my-6 flex flex-col gap-6">
                   <div className="border-t py-4">
-                    <div className="grid grid-cols-2 justify-start">
+                    <div className="justify-start">
                       {items
                         .filter((item) => item.light)
                         .map(({ label, href }) => (
                           <Link
                             key={label}
                             to={href}
-                            className="text-muted-foreground hover:bg-muted hover:text-accent-foreground inline-flex h-10 items-center gap-2 rounded-md px-4 py-2 text-sm font-medium whitespace-nowrap transition-colors"
+                            className="text-muted-foreground hover:bg-muted hover:text-accent-foreground inline-flex h-10 w-full items-center gap-2 rounded-md px-4 py-2 text-sm font-medium whitespace-nowrap transition-colors"
                           >
                             {label}
                           </Link>
@@ -149,12 +163,20 @@ function Navbar() {
                     </div>
                   </div>
                   <div className="flex flex-col gap-3">
-                    <Button asChild variant="outline">
-                      <Link to="/login">Log in</Link>
-                    </Button>
-                    <Button asChild>
-                      <Link to="/signup">Sign up</Link>
-                    </Button>
+                    {!user ? (
+                      <>
+                        <Button asChild variant="outline">
+                          <Link to="/login">Log in</Link>
+                        </Button>
+                        <Button asChild>
+                          <Link to="/signup">Sign up</Link>
+                        </Button>
+                      </>
+                    ) : (
+                      <>
+                        <Button onClick={handleLogout}>Log out</Button>
+                      </>
+                    )}
                   </div>
                 </div>
               </SheetContent>

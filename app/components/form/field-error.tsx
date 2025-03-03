@@ -15,8 +15,8 @@ export function FieldError({
   className
 }: FieldErrorProps) {
   return (
-    //isDirty &&
-    // isBlurred &&
+    isDirty &&
+    isBlurred &&
     !!error && (
       <Label className={cn('text-destructive italic', className)}>
         {error}

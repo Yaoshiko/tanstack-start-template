@@ -8,7 +8,6 @@ import { zodValidator } from '@tanstack/zod-adapter';
 import { Form } from '@/components/form/form';
 import { FieldSet } from '@/components/form/field-set';
 import { FieldError } from '@/components/form/field-error';
-import { useEffect } from 'react';
 import { LoadingButton } from '@/components/loading-button';
 import { toast } from 'sonner';
 
@@ -42,45 +41,32 @@ function SignUp() {
   const navigate = Route.useNavigate();
   const form = useForm({
     defaultValues: {
-      firstName: 'Nicola',
-      lastName: 'Barletta',
-      email: 'nicola.barletta@outlook.it',
-      password: 'testtest',
-      confirmPassword: 'testtest'
+      firstName: '',
+      lastName: '',
+      email: '',
+      password: '',
+      confirmPassword: ''
     },
     validators: {
       onChange: signupSchema
     },
-    onSubmitInvalid: (e) => console.log('invalid form', e, form.state),
     onSubmit: async ({ value }) => {
-      console.log('here');
       const res = await authClient.signUp.email({
         name: `${value.firstName} ${value.lastName}`,
         email: value.email,
         password: value.password
       });
       if (res.data) {
-        console.log('Sign up completed', res.data.user);
         navigate({
           to: redirect,
           replace: true
         });
       } else {
-        toast.error(res.error?.message);
+        toast.error(res.error?.message ?? 'Sign up failed');
       }
     }
   });
 
-  useEffect(() => {
-    if (form.state.isFormValid) {
-      console.log('form is valid');
-    } else {
-      console.log('form invalid');
-    }
-  }, [form.state.isFormValid]);
-  console.log('re-render', form.state.isValid);
-
-  // TODO: Abstract common auth UI as component and share with login.
   return (
     <div className="flex h-screen items-center justify-center">
       <Form
