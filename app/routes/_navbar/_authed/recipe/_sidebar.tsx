@@ -1,11 +1,8 @@
 import { Link, Outlet, createFileRoute } from '@tanstack/react-router';
-import { fetchRecipeTitles } from '@/api/recipes.js';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { fetchRecipeTitles } from '@/api/recipes';
 import { cn } from '@/lib/utils';
-import { isDeclarationStatement } from 'typescript';
-import { is } from 'drizzle-orm';
 
-export const Route = createFileRoute('/_navbar/_authed/recipe/_layout')({
+export const Route = createFileRoute('/_navbar/_authed/recipe/_sidebar')({
   staleTime: 30_000, // Prevent refetching all recipes at every route load.
   loader: async () => {
     console.log('Loading all recipes...');
@@ -17,6 +14,7 @@ export const Route = createFileRoute('/_navbar/_authed/recipe/_layout')({
 function RecipesComponent() {
   const recipes = Route.useLoaderData();
   // FIXME: Find a better way to detect if route match is exact.
+  //        `matches` argument in beforeLoad seems an option.
   const isDefault = Object.keys(Route.useMatch().params).length == 0;
 
   return (

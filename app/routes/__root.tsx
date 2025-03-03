@@ -1,3 +1,5 @@
+// react-scan must be imported before React and TanStack Start
+import { scan } from 'react-scan';
 import {
   HeadContent,
   Outlet,
@@ -9,8 +11,10 @@ import { DefaultCatchBoundary } from '@/components/default-catch-boundary';
 import { NotFound } from '@/components/not-found';
 import css from '@/styles/app.css?url';
 import { seo } from '@/lib/seo';
-import { fetchUser } from '@/lib/auth/api';
 import { QueryClient } from '@tanstack/react-query';
+import { useEffect } from 'react';
+import {} from 'better-auth';
+import { authClient } from '@/lib/auth/client';
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   {
@@ -52,11 +56,17 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       ]
     }),
     beforeLoad: async ({ context }) => {
-      const user = await fetchUser();
+      const session = await authClient.getSession();
+      if (session.error) {
+        console.warn(
+          'Unexpected exception while loading session',
+          session.error
+        );
+      }
 
       return {
-        ...context,
-        user
+        user: session?.data?.user,
+        ...context
       };
     },
     errorComponent: (props) => {
@@ -68,6 +78,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 );
 
 function RootComponent() {
+  useEffect(() => {
+    // Make sure to run this only after hydration
+    scan({
+      enabled: true
+    });
+  }, []);
+
   return (
     <html>
       <head>

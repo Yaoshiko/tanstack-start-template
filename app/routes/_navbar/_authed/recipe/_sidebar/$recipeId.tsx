@@ -6,7 +6,7 @@ import { Suspense } from 'react';
 import { fetchRecipeOpts } from '@/api/queries';
 
 export const Route = createFileRoute(
-  '/_navbar/_authed/recipe/_layout/$recipeId'
+  '/_navbar/_authed/recipe/_sidebar/$recipeId'
 )({
   loader: ({ context, params: { recipeId } }) => {
     console.log('Loader recipe ', recipeId);

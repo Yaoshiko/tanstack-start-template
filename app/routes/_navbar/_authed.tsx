@@ -1,18 +1,15 @@
-import { createFileRoute } from '@tanstack/react-router';
+import { createFileRoute, redirect } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/_navbar/_authed')({
-  beforeLoad: ({ context }) => {
+  beforeLoad: ({ context, location }) => {
     // TODO: Throw or redirect directly if not authenticated.
-    // if (!context.user) {
-    //   throw new Error('Not authenticated');
-    // }
-  },
-  errorComponent: ({ error }) => {
-    // TODO: Redirect to login page.
-    // if (error.message === 'Not authenticated') {
-    //   return <Login />;
-    // }
+    if (!context.user) {
+      throw redirect({
+        to: '/login',
+        search: { redirect: location.href }
+      });
+    }
 
-    throw error;
+    return context;
   }
 });
