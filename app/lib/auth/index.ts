@@ -3,6 +3,7 @@ import { drizzleAdapter } from 'better-auth/adapters/drizzle';
 import { db } from '@/db';
 import * as authSchema from '@/db/auth-schema';
 import { getWebRequest } from '@tanstack/start/server';
+import { createServerFn } from '@tanstack/start';
 
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
@@ -18,7 +19,7 @@ export const auth = betterAuth({
   }
 });
 
-export const getLoggedUser = async () => {
+export const getUser = createServerFn({ method: 'GET' }).handler(async () => {
   const { headers } = getWebRequest()!;
   const session = await auth.api.getSession({
     headers,
@@ -29,4 +30,4 @@ export const getLoggedUser = async () => {
     }
   });
   return session?.user;
-};
+});

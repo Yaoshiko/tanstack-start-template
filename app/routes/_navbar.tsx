@@ -1,9 +1,4 @@
-import {
-  createFileRoute,
-  createRootRouteWithContext,
-  Link,
-  Outlet
-} from '@tanstack/react-router';
+import { createFileRoute, Link, Outlet } from '@tanstack/react-router';
 import { Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
@@ -39,7 +34,7 @@ function RootComponent() {
   );
 }
 
-async function Navbar() {
+function Navbar() {
   const context = Route.useRouteContext();
   console.log('Context in the navbar', context);
   const navigate = Route.useNavigate();
