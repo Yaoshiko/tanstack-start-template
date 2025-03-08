@@ -1,6 +1,6 @@
 import { createMiddleware } from '@tanstack/start';
 import { setResponseStatus } from '@tanstack/start/server';
-import { getUser } from '.';
+import { getUser } from './api';
 
 /**
  * Middleware to force authentication on a server function, and add the user to the context.

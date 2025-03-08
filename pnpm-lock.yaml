@@ -59,9 +59,6 @@ importers:
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
-      dotenv:
-        specifier: ^16.4.7
-        version: 16.4.7
       drizzle-orm:
         specifier: ^0.39.3
         version: 0.39.3(@prisma/client@5.22.0(prisma@5.22.0))(@types/pg@8.11.11)(kysely@0.27.5)(pg@8.13.3)(prisma@5.22.0)

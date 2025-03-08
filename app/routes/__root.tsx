@@ -13,7 +13,7 @@ import { Toaster } from '@/components/ui/sonner';
 import css from '@/styles/app.css?url';
 import { seo } from '@/lib/seo';
 import { useEffect } from 'react';
-import { getUser } from '@/lib/auth';
+import { getUser } from '@/lib/auth/api';
 
 export const Route = createRootRouteWithContext()({
   head: () => ({
@@ -54,13 +54,6 @@ export const Route = createRootRouteWithContext()({
     ]
   }),
   beforeLoad: async () => {
-    // FIXME: This call is breaking the client-side with the following error.
-    /*
-    cli-options.js:4 Uncaught (in promise) TypeError: Cannot read properties of undefined (reading 'reduce')
-    at optionMatcher (cli-options.js:4:15)
-    at config.js:6:7
-    at config.js:9:1
-    */
     const user = await getUser();
     return {
       user
