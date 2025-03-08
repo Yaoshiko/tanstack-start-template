@@ -14,8 +14,7 @@ import css from '@/styles/app.css?url';
 import { seo } from '@/lib/seo';
 import { QueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
-import {} from 'better-auth';
-import { authClient } from '@/lib/auth/client';
+import { getLoggedUser } from '@/lib/auth';
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   {
@@ -56,18 +55,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         { rel: 'icon', href: '/favicon.ico' }
       ]
     }),
-    beforeLoad: async ({ context }) => {
-      const session = await authClient.getSession();
-      if (session.error) {
-        console.warn(
-          'Unexpected exception while loading session',
-          session.error
-        );
-      }
-
+    beforeLoad: async () => {
+      const user = await getLoggedUser();
       return {
-        user: session?.data?.user,
-        ...context
+        user
       };
     },
     errorComponent: (props) => {

@@ -20,3 +20,4 @@
 - [ ] Configure data layer with createIsomorphicFn to combine SSR and client APIs: https://discordapp.com/channels/719702312431386674/1340798353679843469
 - [x] Type-safe environment variables
 - [ ] Manage abort controllers
+- [ ] Improve logging (https://github.com/pinojs/pino)

@@ -1,11 +1,16 @@
 import { createMiddleware } from '@tanstack/start';
+import { setResponseStatus } from '@tanstack/start/server';
+import { getLoggedUser } from '.';
 
-export const authMiddleware = createMiddleware().server(
-  async ({ next, data, context }) => {
-    // FIXME: I could pass the required role/other context info from the previous middleware.
-    console.debug('Verifying auth request', data, context);
-
-    // TODO: Check if the user is authenticated. If not, redirect to login page or just to an unauthorized one.
-    return await next();
+/**
+ * Middleware to force authentication on a server function, and add the user to the context.
+ */
+export const authMiddleware = createMiddleware().server(async ({ next }) => {
+  const user = await getLoggedUser();
+  if (!user) {
+    setResponseStatus(401);
+    throw new Error('Unauthorized');
   }
-);
+
+  return next({ context: { user: user } });
+});

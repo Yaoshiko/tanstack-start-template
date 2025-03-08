@@ -1,9 +1,9 @@
 import {
+  createFileRoute,
   createRootRouteWithContext,
   Link,
   Outlet
 } from '@tanstack/react-router';
-import { QueryClient } from '@tanstack/react-query';
 import { Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
@@ -23,11 +23,9 @@ import { authClient } from '@/lib/auth/client';
 import { toast } from 'sonner';
 import { useState } from 'react';
 
-export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
-  {
-    component: RootComponent
-  }
-);
+export const Route = createFileRoute('/_navbar')({
+  component: RootComponent
+});
 
 function RootComponent() {
   return (
@@ -41,9 +39,12 @@ function RootComponent() {
   );
 }
 
-function Navbar() {
+async function Navbar() {
+  const context = Route.useRouteContext();
+  console.log('Context in the navbar', context);
   const navigate = Route.useNavigate();
-  const { user } = Route.useRouteContext();
+  const user = context.user;
+  console.log('User in the navbar', user);
   const [open, setOpen] = useState<boolean>(false);
 
   const title = 'Starter';
@@ -57,6 +58,7 @@ function Navbar() {
   const handleLogout = async () => {
     setOpen(false);
     const res = await authClient.signOut();
+    console.log('Sign out', res);
     if (res.data) {
       navigate({ to: '/' });
     } else {

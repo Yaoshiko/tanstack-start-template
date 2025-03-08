@@ -2,7 +2,14 @@
 declare global {
   namespace NodeJS {
     interface ProcessEnv {
+      // Better-auth.
+      BETTER_AUTH_SECRET: string;
+      BETTER_AUTH_URL: string;
+
+      // Data layer.
       DATABASE_URL: string;
+
+      // App-specific.
       // Emulated delay to explore TanStack SWR features.
       FETCH_RECIPES_DELAY: number;
       FETCH_RECIPE_DELAY: number;
