@@ -4,6 +4,7 @@
 - [x] Replace auth with BetterAuth
   - [x] Implement auth middleware: provide user context
   - [x] Prevent session re-fetching on client (cache it or retrieve it from cookie)
+  - [x] Manage custom user fields
   - [ ] Implement mail sender
 - [x] Implement Login/Register forms template: with shadcn + TanStack Form (or zod)
 - [x] Add ReactScan dependency

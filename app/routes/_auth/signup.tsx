@@ -62,6 +62,8 @@ function SignUp() {
     onSubmit: async ({ value }) => {
       const res = await authClient.signUp.email({
         name: `${value.firstName} ${value.lastName}`,
+        firstName: value.firstName,
+        lastName: value.lastName,
         email: value.email,
         password: value.password
       });

@@ -1,5 +1,5 @@
 {
-  "id": "83236a03-0a24-4e92-878e-4d35f256d640",
+  "id": "b1dd2354-e19d-451a-ba1a-081d8044ff32",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -237,6 +237,18 @@
           "type": "timestamp",
           "primaryKey": false,
           "notNull": true
+        },
+        "first_name": {
+          "name": "first_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "last_name": {
+          "name": "last_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
         }
       },
       "indexes": {},
@@ -304,8 +316,8 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.recipes": {
-      "name": "recipes",
+    "public.recipe": {
+      "name": "recipe",
       "schema": "",
       "columns": {
         "id": {
@@ -329,7 +341,7 @@
         },
         "content": {
           "name": "content",
-          "type": "varchar(255)",
+          "type": "varchar",
           "primaryKey": false,
           "notNull": true
         },
@@ -350,9 +362,9 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "recipes_userId_user_id_fk": {
-          "name": "recipes_userId_user_id_fk",
-          "tableFrom": "recipes",
+        "recipe_userId_user_id_fk": {
+          "name": "recipe_userId_user_id_fk",
+          "tableFrom": "recipe",
           "tableTo": "user",
           "columnsFrom": [
             "userId"

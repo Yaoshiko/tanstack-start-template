@@ -1,1 +1,0 @@
-ALTER TABLE "recipe" ALTER COLUMN "content" SET DATA TYPE varchar;

@@ -1,9 +1,24 @@
 import { QueryClient, queryOptions } from '@tanstack/react-query';
 import { createAuthClient } from 'better-auth/react';
+import { inferAdditionalFields } from 'better-auth/client/plugins';
 
 const AUTH_QUERY_KEY = 'user';
 
-export const authClient = createAuthClient({});
+export const authClient = createAuthClient({
+  baseURL: process.env.BETTER_AUTH_URL,
+  plugins: [
+    inferAdditionalFields({
+      user: {
+        firstName: {
+          type: 'string'
+        },
+        lastName: {
+          type: 'string'
+        }
+      }
+    })
+  ]
+});
 
 export const fetchUserOpts = queryOptions({
   queryKey: [AUTH_QUERY_KEY],

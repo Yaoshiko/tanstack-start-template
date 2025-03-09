@@ -7,7 +7,9 @@ export const user = pgTable('user', {
   emailVerified: boolean('email_verified').notNull(),
   image: text('image'),
   createdAt: timestamp('created_at').notNull(),
-  updatedAt: timestamp('updated_at').notNull()
+  updatedAt: timestamp('updated_at').notNull(),
+  firstName: text('first_name').notNull(),
+  lastName: text('last_name').notNull()
 });
 
 export const session = pgTable('session', {

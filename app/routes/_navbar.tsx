@@ -43,7 +43,7 @@ function Navbar() {
   const logoAlt = 'donut';
   const logoSrc = '/donut.svg';
   const items = [
-    { label: 'Recipes', href: '/recipe' }
+    { label: 'Recipes', href: '/recipe', light: false }
     // TODO: Implement a sandbox as playground.
     // { label: 'Sandbox', href: '/sandbox', light: true }
   ];
@@ -100,8 +100,10 @@ function Navbar() {
               </>
             ) : (
               <div className="flex items-center gap-2">
-                <Label className="text-md">Hello, {user.name}!</Label>
-                <Button onClick={handleLogout}>Log out</Button>
+                <Label className="text-md">Hello, {user.firstName}!</Label>
+                <Button className="cursor-pointer" onClick={handleLogout}>
+                  Log out
+                </Button>
               </div>
             )}
           </div>

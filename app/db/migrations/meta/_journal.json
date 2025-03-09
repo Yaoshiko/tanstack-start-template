@@ -5,22 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1740222905576,
-      "tag": "0000_absurd_machine_man",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1740229969721,
-      "tag": "0001_greedy_tiger_shark",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1740248690304,
-      "tag": "0002_supreme_kabuki",
+      "when": 1741531831634,
+      "tag": "0000_classy_jimmy_woo",
       "breakpoints": true
     }
   ]
