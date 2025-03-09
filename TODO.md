@@ -2,8 +2,10 @@
 
 - [x] Dependency bump
 - [x] Replace auth with BetterAuth
-  - [ ] Implement auth middleware: provide user context
-- [ ] Implement Login/Register forms template: with shadcn + TanStack Form (or zod)
+  - [x] Implement auth middleware: provide user context
+  - [x] Prevent session re-fetching on client (cache it or retrieve it from cookie)
+  - [ ] Implement mail sender
+- [x] Implement Login/Register forms template: with shadcn + TanStack Form (or zod)
 - [x] Add ReactScan dependency
 - [ ] Deploy:
 

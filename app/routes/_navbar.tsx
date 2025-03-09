@@ -14,7 +14,7 @@ import {
   SheetTrigger
 } from '@/components/ui/sheet';
 import { Label } from '@/components/ui/label';
-import { authClient } from '@/lib/auth/client';
+import { authClient, invalidateAuthCache } from '@/lib/auth/client';
 import { toast } from 'sonner';
 import { useState } from 'react';
 
@@ -35,11 +35,8 @@ function RootComponent() {
 }
 
 function Navbar() {
-  const context = Route.useRouteContext();
-  console.log('Context in the navbar', context);
+  const { queryClient, user } = Route.useRouteContext();
   const navigate = Route.useNavigate();
-  const user = context.user;
-  console.log('User in the navbar', user);
   const [open, setOpen] = useState<boolean>(false);
 
   const title = 'Starter';
@@ -53,8 +50,9 @@ function Navbar() {
   const handleLogout = async () => {
     setOpen(false);
     const res = await authClient.signOut();
-    console.log('Sign out', res);
+    console.log('User signed out', res);
     if (res.data) {
+      await invalidateAuthCache(queryClient);
       navigate({ to: '/' });
     } else {
       toast.error(res.error?.message ?? 'Sign out failed');

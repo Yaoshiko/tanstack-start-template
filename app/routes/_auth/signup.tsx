@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from '@tanstack/react-router';
+import { createFileRoute, Link, redirect } from '@tanstack/react-router';
 import { authClient } from '@/lib/auth/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -33,7 +33,16 @@ const signupSchema = z
 
 export const Route = createFileRoute('/_auth/signup')({
   validateSearch: zodValidator(searchParamsSchema),
-  component: SignUp
+  component: SignUp,
+  beforeLoad: async ({ context, search }) => {
+    if (context.user) {
+      // User already logged in.
+      throw redirect({
+        to: search.redirect,
+        replace: true
+      });
+    }
+  }
 });
 
 function SignUp() {

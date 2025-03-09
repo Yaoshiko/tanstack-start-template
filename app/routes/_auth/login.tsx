@@ -1,5 +1,5 @@
-import { createFileRoute, Link } from '@tanstack/react-router';
-import { authClient } from '@/lib/auth/client';
+import { createFileRoute, Link, redirect } from '@tanstack/react-router';
+import { authClient, invalidateAuthCache } from '@/lib/auth/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useForm } from '@tanstack/react-form';
@@ -25,10 +25,20 @@ const signinSchema = z.object({
 
 export const Route = createFileRoute('/_auth/login')({
   validateSearch: zodValidator(searchParamsSchema),
+  beforeLoad: async ({ context, search }) => {
+    if (context.user) {
+      // User already logged in.
+      throw redirect({
+        to: search.redirect,
+        replace: true
+      });
+    }
+  },
   component: SignUp
 });
 
 function SignUp() {
+  const { queryClient } = Route.useRouteContext();
   const { redirect } = Route.useSearch();
   const navigate = Route.useNavigate();
   const form = useForm({
@@ -45,6 +55,8 @@ function SignUp() {
         password: value.password
       });
       if (res.data) {
+        console.log('User signed in', res.data.user);
+        await invalidateAuthCache(queryClient);
         navigate({
           to: redirect,
           replace: true

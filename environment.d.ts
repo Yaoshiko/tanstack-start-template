@@ -5,6 +5,8 @@ declare global {
       // Better-auth.
       BETTER_AUTH_SECRET: string;
       BETTER_AUTH_URL: string;
+      /** Auth cookies duration in seconds. */
+      BETTER_AUTH_COOKIE_CACHE: number;
 
       // Data layer.
       DATABASE_URL: string;
