@@ -43,8 +43,9 @@ function Navbar() {
   const logoAlt = 'donut';
   const logoSrc = '/donut.svg';
   const items = [
-    { label: 'Recipes', href: '/recipe' },
-    { label: 'Sandbox', href: '/sandbox', light: true }
+    { label: 'Recipes', href: '/recipe' }
+    // TODO: Implement a sandbox as playground.
+    // { label: 'Sandbox', href: '/sandbox', light: true }
   ];
 
   const handleLogout = async () => {
