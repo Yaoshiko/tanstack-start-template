@@ -21,6 +21,7 @@ import { Route as AuthSignupImport } from './routes/_auth/signup'
 import { Route as AuthLoginImport } from './routes/_auth/login'
 import { Route as NavbarAuthedRecipeSidebarImport } from './routes/_navbar/_authed/recipe/_sidebar'
 import { Route as NavbarAuthedRecipeSidebarIndexImport } from './routes/_navbar/_authed/recipe/_sidebar/index'
+import { Route as NavbarAuthedRecipeSidebarNewImport } from './routes/_navbar/_authed/recipe/_sidebar/new'
 import { Route as NavbarAuthedRecipeSidebarRecipeIdImport } from './routes/_navbar/_authed/recipe/_sidebar/$recipeId'
 
 // Create Virtual Routes
@@ -78,6 +79,13 @@ const NavbarAuthedRecipeSidebarIndexRoute =
   NavbarAuthedRecipeSidebarIndexImport.update({
     id: '/',
     path: '/',
+    getParentRoute: () => NavbarAuthedRecipeSidebarRoute,
+  } as any)
+
+const NavbarAuthedRecipeSidebarNewRoute =
+  NavbarAuthedRecipeSidebarNewImport.update({
+    id: '/new',
+    path: '/new',
     getParentRoute: () => NavbarAuthedRecipeSidebarRoute,
   } as any)
 
@@ -155,6 +163,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NavbarAuthedRecipeSidebarRecipeIdImport
       parentRoute: typeof NavbarAuthedRecipeSidebarImport
     }
+    '/_navbar/_authed/recipe/_sidebar/new': {
+      id: '/_navbar/_authed/recipe/_sidebar/new'
+      path: '/new'
+      fullPath: '/recipe/new'
+      preLoaderRoute: typeof NavbarAuthedRecipeSidebarNewImport
+      parentRoute: typeof NavbarAuthedRecipeSidebarImport
+    }
     '/_navbar/_authed/recipe/_sidebar/': {
       id: '/_navbar/_authed/recipe/_sidebar/'
       path: '/'
@@ -169,6 +184,7 @@ declare module '@tanstack/react-router' {
 
 interface NavbarAuthedRecipeSidebarRouteChildren {
   NavbarAuthedRecipeSidebarRecipeIdRoute: typeof NavbarAuthedRecipeSidebarRecipeIdRoute
+  NavbarAuthedRecipeSidebarNewRoute: typeof NavbarAuthedRecipeSidebarNewRoute
   NavbarAuthedRecipeSidebarIndexRoute: typeof NavbarAuthedRecipeSidebarIndexRoute
 }
 
@@ -176,6 +192,7 @@ const NavbarAuthedRecipeSidebarRouteChildren: NavbarAuthedRecipeSidebarRouteChil
   {
     NavbarAuthedRecipeSidebarRecipeIdRoute:
       NavbarAuthedRecipeSidebarRecipeIdRoute,
+    NavbarAuthedRecipeSidebarNewRoute: NavbarAuthedRecipeSidebarNewRoute,
     NavbarAuthedRecipeSidebarIndexRoute: NavbarAuthedRecipeSidebarIndexRoute,
   }
 
@@ -228,6 +245,7 @@ export interface FileRoutesByFullPath {
   '/': typeof NavbarIndexRoute
   '/recipe': typeof NavbarAuthedRecipeSidebarRouteWithChildren
   '/recipe/$recipeId': typeof NavbarAuthedRecipeSidebarRecipeIdRoute
+  '/recipe/new': typeof NavbarAuthedRecipeSidebarNewRoute
   '/recipe/': typeof NavbarAuthedRecipeSidebarIndexRoute
 }
 
@@ -239,6 +257,7 @@ export interface FileRoutesByTo {
   '/': typeof NavbarIndexRoute
   '/recipe': typeof NavbarAuthedRecipeSidebarIndexRoute
   '/recipe/$recipeId': typeof NavbarAuthedRecipeSidebarRecipeIdRoute
+  '/recipe/new': typeof NavbarAuthedRecipeSidebarNewRoute
 }
 
 export interface FileRoutesById {
@@ -252,6 +271,7 @@ export interface FileRoutesById {
   '/_navbar/_authed/recipe': typeof NavbarAuthedRecipeRouteWithChildren
   '/_navbar/_authed/recipe/_sidebar': typeof NavbarAuthedRecipeSidebarRouteWithChildren
   '/_navbar/_authed/recipe/_sidebar/$recipeId': typeof NavbarAuthedRecipeSidebarRecipeIdRoute
+  '/_navbar/_authed/recipe/_sidebar/new': typeof NavbarAuthedRecipeSidebarNewRoute
   '/_navbar/_authed/recipe/_sidebar/': typeof NavbarAuthedRecipeSidebarIndexRoute
 }
 
@@ -265,6 +285,7 @@ export interface FileRouteTypes {
     | '/'
     | '/recipe'
     | '/recipe/$recipeId'
+    | '/recipe/new'
     | '/recipe/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -275,6 +296,7 @@ export interface FileRouteTypes {
     | '/'
     | '/recipe'
     | '/recipe/$recipeId'
+    | '/recipe/new'
   id:
     | '__root__'
     | '/_navbar'
@@ -286,6 +308,7 @@ export interface FileRouteTypes {
     | '/_navbar/_authed/recipe'
     | '/_navbar/_authed/recipe/_sidebar'
     | '/_navbar/_authed/recipe/_sidebar/$recipeId'
+    | '/_navbar/_authed/recipe/_sidebar/new'
     | '/_navbar/_authed/recipe/_sidebar/'
   fileRoutesById: FileRoutesById
 }
@@ -359,11 +382,16 @@ export const routeTree = rootRoute
       "parent": "/_navbar/_authed/recipe",
       "children": [
         "/_navbar/_authed/recipe/_sidebar/$recipeId",
+        "/_navbar/_authed/recipe/_sidebar/new",
         "/_navbar/_authed/recipe/_sidebar/"
       ]
     },
     "/_navbar/_authed/recipe/_sidebar/$recipeId": {
       "filePath": "_navbar/_authed/recipe/_sidebar/$recipeId.tsx",
+      "parent": "/_navbar/_authed/recipe/_sidebar"
+    },
+    "/_navbar/_authed/recipe/_sidebar/new": {
+      "filePath": "_navbar/_authed/recipe/_sidebar/new.tsx",
       "parent": "/_navbar/_authed/recipe/_sidebar"
     },
     "/_navbar/_authed/recipe/_sidebar/": {

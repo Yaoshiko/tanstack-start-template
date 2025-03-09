@@ -1,15 +1,19 @@
-import { eq } from 'drizzle-orm';
+import { and, eq } from 'drizzle-orm';
 import { db, recipe } from './index';
 
-export function getRecipeTitles() {
-  // TODO: Add filter by userId.
+export function getRecipeTitles(userId: string) {
   return db
     .select({ id: recipe.id, title: recipe.title })
     .from(recipe)
+    .where(eq(recipe.userId, userId))
     .orderBy(recipe.createdAt);
 }
 
-export async function getRecipe(recipeId: string) {
-  // TODO: Add filter by userId.
-  return (await db.select().from(recipe).where(eq(recipe.id, recipeId)))[0]!;
+export async function getRecipe(userId: string, recipeId: string) {
+  return (
+    await db
+      .select()
+      .from(recipe)
+      .where(and(eq(recipe.userId, userId), eq(recipe.id, recipeId)))
+  )[0]!;
 }

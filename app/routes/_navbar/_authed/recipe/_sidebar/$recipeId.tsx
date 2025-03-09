@@ -5,6 +5,8 @@ import { useSuspenseQuery } from '@tanstack/react-query';
 import { Suspense } from 'react';
 import { fetchRecipeOpts } from '@/api/queries';
 
+// FIXME: Refactor this.
+
 export const Route = createFileRoute(
   '/_navbar/_authed/recipe/_sidebar/$recipeId'
 )({
@@ -40,7 +42,7 @@ function Deferred() {
   return (
     <>
       <h4 className="text-xl font-bold underline">{recipe.data.title}</h4>
-      <div className="text-sm">{recipe.data.content}</div>
+      <div className="text-sm whitespace-pre-line">{recipe.data.content}</div>
     </>
   );
 }

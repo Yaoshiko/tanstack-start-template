@@ -71,11 +71,7 @@ function SignUp() {
     <div className="flex h-screen items-center justify-center">
       <Form
         className="mx-12 w-full sm:mx-0 sm:w-1/3 lg:w-1/5"
-        onSubmit={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          void form.handleSubmit();
-        }}
+        onSubmit={form.handleSubmit}
       >
         <div className="flex flex-col items-center gap-2 text-center">
           <h1 className="text-2xl font-bold">Sign in</h1>

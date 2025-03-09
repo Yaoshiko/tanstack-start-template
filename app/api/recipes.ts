@@ -1,8 +1,10 @@
 import { createServerFn } from '@tanstack/start';
 import { getRecipeTitles, getRecipe } from '@/db/queries';
 import { authMiddleware } from '@/lib/auth/middleware';
+import { delay } from '@/lib/utils';
+import { recipeSchema } from '@/lib/validators/recipe';
+import { insertRecipe } from '@/db/mutations';
 
-// TODO: Add auth middleware and pass userId to data-layer APIs.
 // TODO: Check on createIsomophicFn.
 
 export const fetchRecipe = createServerFn({ method: 'GET' })
@@ -11,7 +13,7 @@ export const fetchRecipe = createServerFn({ method: 'GET' })
   .handler(async ({ context, data: recipeId }) => {
     console.info(`Fetching recipe ${recipeId} for user ${context.user.id}...`);
     await delay(process.env.FETCH_RECIPE_DELAY);
-    return await getRecipe(recipeId);
+    return await getRecipe(context.user.id, recipeId);
   });
 
 export const fetchRecipeTitles = createServerFn({ method: 'GET' })
@@ -19,9 +21,15 @@ export const fetchRecipeTitles = createServerFn({ method: 'GET' })
   .handler(async ({ context }) => {
     console.log(`Fetching recipe titles for user ${context.user.id}...`);
     await delay(process.env.FETCH_RECIPES_DELAY);
-    return await getRecipeTitles();
+    return await getRecipeTitles(context.user.id);
   });
 
-function delay(ms: number) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
+export const createRecipe = createServerFn({ method: 'POST' })
+  .middleware([authMiddleware])
+  .validator(recipeSchema)
+  .handler(async ({ context, data: recipe }) => {
+    console.log(
+      `Creating recipe ${recipe.title} for user ${context.user.id}...`
+    );
+    return await insertRecipe(context.user.id, recipe);
+  });

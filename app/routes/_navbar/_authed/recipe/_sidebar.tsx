@@ -17,35 +17,42 @@ function RecipesComponent() {
   //        `matches` argument in beforeLoad seems an option.
   const isDefault = Object.keys(Route.useMatch().params).length == 0;
 
+  const noRecipes = recipes.length == 0;
+
   return (
     <div className="flex min-h-full">
-      <div
-        className={cn(
-          'no-scrollbar border-right text-muted-foreground flex min-h-full min-w-40 grow-1 flex-col overflow-y-hidden border-r border-gray-200 sm:max-w-80',
-          {
-            'hidden sm:flex': !isDefault
-          }
-        )}
-      >
-        {recipes.map(({ id, title }) => (
-          <Link
-            key={id}
-            className="hover:bg-muted hover:text-accent-foreground items-center px-4 py-2 whitespace-nowrap"
-            to="/recipe/$recipeId"
-            params={{
-              recipeId: id
-            }}
-            activeProps={{
-              className: 'text-accent-foreground font-bold bg-muted'
-            }}
+      {
+        // FIXME: To verify on mobile.
+        !noRecipes ? (
+          <div
+            className={cn(
+              'no-scrollbar border-right text-muted-foreground flex min-h-full min-w-40 grow-1 flex-col overflow-y-hidden border-r border-gray-200 sm:max-w-80',
+              {
+                'hidden sm:flex': !isDefault
+              }
+            )}
           >
-            {title}
-          </Link>
-        ))}
-      </div>
+            {recipes.map(({ id, title }) => (
+              <Link
+                key={id}
+                className="hover:bg-muted hover:text-accent-foreground items-center px-4 py-2 whitespace-nowrap"
+                to="/recipe/$recipeId"
+                params={{
+                  recipeId: id
+                }}
+                activeProps={{
+                  className: 'text-accent-foreground font-bold bg-muted'
+                }}
+              >
+                {title}
+              </Link>
+            ))}
+          </div>
+        ) : null
+      }
       <div
         className={cn('grow-4 sm:flex', {
-          hidden: isDefault
+          hidden: !noRecipes && isDefault
         })}
       >
         <div className="m-12 grow">
