@@ -3,7 +3,7 @@ import { getRecipeTitles, getRecipe } from '@/db/queries';
 import { authMiddleware } from '@/lib/auth/middleware';
 import { delay } from '@/lib/utils';
 import { recipeSchema } from '@/lib/validators/recipe';
-import { insertRecipe } from '@/db/mutations';
+import { deleteRecipeById, insertRecipe } from '@/db/mutations';
 
 // TODO: Check on createIsomophicFn.
 
@@ -11,7 +11,7 @@ export const fetchRecipe = createServerFn({ method: 'GET' })
   .middleware([authMiddleware])
   .validator((recipeId: string) => recipeId)
   .handler(async ({ context, data: recipeId }) => {
-    console.info(`Fetching recipe ${recipeId} for user ${context.user.id}...`);
+    console.log(`Fetching recipe ${recipeId} for user ${context.user.id}...`);
     await delay(process.env.FETCH_RECIPE_DELAY);
     return await getRecipe(context.user.id, recipeId);
   });
@@ -32,4 +32,12 @@ export const createRecipe = createServerFn({ method: 'POST' })
       `Creating recipe ${recipe.title} for user ${context.user.id}...`
     );
     return await insertRecipe(context.user.id, recipe);
+  });
+
+export const deleteRecipe = createServerFn({ method: 'POST' })
+  .middleware([authMiddleware])
+  .validator((recipeId: string) => recipeId)
+  .handler(async ({ context, data: recipeId }) => {
+    console.log(`Deleting recipe ${recipeId}`);
+    await deleteRecipeById(context.user.id, recipeId);
   });

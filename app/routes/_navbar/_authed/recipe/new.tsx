@@ -7,14 +7,15 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { recipeSchema } from '@/lib/validators/recipe';
 import { useForm } from '@tanstack/react-form';
-import { createFileRoute } from '@tanstack/react-router';
+import { createFileRoute, useRouter } from '@tanstack/react-router';
 import { toast } from 'sonner';
 
-export const Route = createFileRoute('/_navbar/_authed/recipe/_sidebar/new')({
+export const Route = createFileRoute('/_navbar/_authed/recipe/new')({
   component: RouteComponent
 });
 
 function RouteComponent() {
+  const router = useRouter();
   const navigate = Route.useNavigate();
   const form = useForm({
     defaultValues: {
@@ -28,6 +29,7 @@ function RouteComponent() {
       const recipe = await createRecipe({ data: value });
       if (recipe) {
         console.log('Recipe created', recipe);
+        router.invalidate();
         navigate({
           to: '/recipe/$recipeId',
           params: { recipeId: recipe.id }
@@ -39,7 +41,7 @@ function RouteComponent() {
   });
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="m-12 flex flex-col items-center">
       <Form
         className="mx-12 w-full sm:mx-0 sm:w-1/3 lg:w-1/5"
         onSubmit={form.handleSubmit}

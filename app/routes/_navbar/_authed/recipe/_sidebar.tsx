@@ -1,6 +1,8 @@
 import { Link, Outlet, createFileRoute } from '@tanstack/react-router';
 import { fetchRecipeTitles } from '@/api/recipes';
 import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
+import { Plus } from 'lucide-react';
 
 export const Route = createFileRoute('/_navbar/_authed/recipe/_sidebar')({
   staleTime: 30_000, // Prevent refetching all recipes at every route load.
@@ -47,6 +49,11 @@ function RecipesComponent() {
                 {title}
               </Link>
             ))}
+            <Button className="fixed right-5 bottom-5 sm:hidden">
+              <Link to="/recipe/new">
+                <Plus />
+              </Link>
+            </Button>
           </div>
         ) : null
       }

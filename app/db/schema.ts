@@ -1,7 +1,7 @@
 import { uuid, pgTable, varchar, timestamp, text } from 'drizzle-orm/pg-core';
 import { user } from './auth-schema';
 
-export const recipe = pgTable('recipe', {
+export const recipes = pgTable('recipe', {
   id: uuid().primaryKey().defaultRandom(),
   userId: text()
     .notNull()
@@ -12,5 +12,5 @@ export const recipe = pgTable('recipe', {
   updatedAt: timestamp().notNull().defaultNow()
 });
 
-export type Recipe = typeof recipe.$inferSelect;
-export type RecipeInsert = typeof recipe.$inferInsert;
+export type Recipe = typeof recipes.$inferSelect;
+export type RecipeInsert = typeof recipes.$inferInsert;

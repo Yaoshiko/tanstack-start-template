@@ -15,7 +15,7 @@ export const getUser = createIsomorphicFn()
       }
     });
     const user = session?.user;
-    console.log('Fetched logged-in user', user);
+    console.log('Fetched logged-in user', user?.email);
     return user;
   })
   // FIXME: Fix type error.
@@ -23,6 +23,6 @@ export const getUser = createIsomorphicFn()
     console.debug('Fetching logged-in user on client');
     const session = await queryClient.fetchQuery(fetchUserOpts);
     const user = session?.data?.user;
-    console.log('Fetched logged-in user on client', user);
+    console.log('Fetched logged-in user on client', user?.email);
     return user;
   });

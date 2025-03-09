@@ -54,15 +54,15 @@ async function main() {
 
   console.log('Adding recipes...');
   await Promise.all(
-    (await db.select().from(apiSchema.recipe)).map(async (recipe, idx) => {
+    (await db.select().from(apiSchema.recipes)).map(async (recipe, idx) => {
       const ai_recipe = AI_RECIPES[idx % AI_RECIPES.length];
       await db
-        .update(apiSchema.recipe)
+        .update(apiSchema.recipes)
         .set({
           title: ai_recipe.title,
           content: ai_recipe.content
         })
-        .where(eq(apiSchema.recipe.id, recipe.id));
+        .where(eq(apiSchema.recipes.id, recipe.id));
     })
   );
 

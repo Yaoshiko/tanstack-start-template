@@ -1,19 +1,19 @@
 import { and, eq } from 'drizzle-orm';
-import { db, recipe } from './index';
+import { db, recipes } from './index';
 
 export function getRecipeTitles(userId: string) {
   return db
-    .select({ id: recipe.id, title: recipe.title })
-    .from(recipe)
-    .where(eq(recipe.userId, userId))
-    .orderBy(recipe.createdAt);
+    .select({ id: recipes.id, title: recipes.title })
+    .from(recipes)
+    .where(eq(recipes.userId, userId))
+    .orderBy(recipes.createdAt);
 }
 
 export async function getRecipe(userId: string, recipeId: string) {
   return (
     await db
       .select()
-      .from(recipe)
-      .where(and(eq(recipe.userId, userId), eq(recipe.id, recipeId)))
+      .from(recipes)
+      .where(and(eq(recipes.userId, userId), eq(recipes.id, recipeId)))
   )[0]!;
 }

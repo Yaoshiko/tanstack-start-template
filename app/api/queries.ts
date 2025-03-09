@@ -5,7 +5,12 @@ import { fetchRecipe } from './recipes';
 
 export function fetchRecipeOpts(recipeId: string) {
   return queryOptions({
-    queryKey: ['recipeId', recipeId],
+    staleTime: 30_000,
+    queryKey: getRecipeQueryKey(recipeId),
     queryFn: () => fetchRecipe({ data: recipeId })
   });
+}
+
+export function getRecipeQueryKey(recipeId: string) {
+  return ['recipeId', recipeId];
 }
