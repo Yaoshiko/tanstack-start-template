@@ -1,4 +1,4 @@
-import { setResponseStatus } from '@tanstack/start/server';
+import { setResponseStatus } from '@tanstack/react-start/server';
 import { db } from '.';
 import { recipes, RecipeInsert } from './schema';
 import { eq } from 'drizzle-orm';

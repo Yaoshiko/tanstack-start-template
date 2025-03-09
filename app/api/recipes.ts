@@ -1,4 +1,4 @@
-import { createServerFn } from '@tanstack/start';
+import { createServerFn } from '@tanstack/react-start';
 import { getRecipeTitles, getRecipe } from '@/db/queries';
 import { authMiddleware } from '@/lib/auth/middleware';
 import { delay } from '@/lib/utils';
