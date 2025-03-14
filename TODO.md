@@ -1,6 +1,8 @@
 # TODO
 
-- [ ] Implement mail sender
+- [x] Implement mail sender
+- [ ] Re-implement mail templates with mjml
+- [ ] Reset password pages
 - [ ] Deploy:
   - [ ] Evaluate provider (Netlify vs Vercel vs Cloudflare pages)
   - [ ] Create free-tier DB (Neon Postgres? Cloudflare R2?)

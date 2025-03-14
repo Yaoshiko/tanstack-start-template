@@ -11,6 +11,12 @@ declare global {
 
       // Data layer.
       DATABASE_URL: string;
+      // Mail service.
+      SMTP_SERVICE: string;
+      SMTP_HOST: string;
+      SMTP_PORT: number;
+      SMTP_USER: string;
+      SMTP_PASSWORD: string;
 
       // App-specific.
       // Emulated delay to explore TanStack SWR features.
