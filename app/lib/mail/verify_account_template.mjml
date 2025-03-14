@@ -1,0 +1,42 @@
+<mjml>
+  <mj-head>
+    <mj-preview>Verify your account</mj-preview>
+    <mj-style inline="inline">
+      .verification-button { background-color: #007bff; color: #ffffff; padding:
+      12px 24px; border-radius: 5px; text-decoration: none; font-weight: bold; }
+    </mj-style>
+  </mj-head>
+  <mj-body background-color="#d3d3d3">
+    <mj-section padding="20px"> </mj-section>
+    <mj-section background-color="#f5f5f5" border-radius="10px" padding="20px">
+      <mj-column>
+        <mj-image
+          width="100px"
+          src="http://localhost:3000/donut.svg"
+          alt="Company Logo"
+        />
+        <mj-text font-size="20px" font-weight="bold" align="center"
+          >Verify Your Account</mj-text
+        >
+        <mj-text line-height="1.6"
+          >Hello {{user_name}}!<br />Verify your account by clicking the button
+          below to keep browsing amazing useless features!</mj-text
+        >
+        <mj-button href="{{verification_link}}" class="verification-button"
+          >Verify Account</mj-button
+        >
+        <mj-text font-size="14px" color="#555"
+          >If you didn't request this, you can safely ignore this
+          email.</mj-text
+        >
+      </mj-column>
+    </mj-section>
+    <mj-section>
+      <mj-column>
+        <mj-text font-size="12px" color="#999"
+          >&copy; 2025 Tanstack Starter. All rights reserved.</mj-text
+        >
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

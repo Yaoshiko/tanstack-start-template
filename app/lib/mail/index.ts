@@ -1,10 +1,11 @@
 import nodemailer from 'nodemailer';
+import mjml from 'mjml';
 import { useEnvironment } from '../environment';
 import { useLogger } from '../logger';
 import { User } from '@/db/auth-schema';
 
-import resetPasswordTemplate from './reset_password_template.html?raw';
-import verifyAccountTemplate from './verify_account_template.html?raw';
+import resetPasswordTemplate from './reset_password_template.mjml?raw';
+import verifyAccountTemplate from './verify_account_template.mjml?raw';
 
 const { logger } = useLogger();
 const { serverEnv } = useEnvironment();
@@ -31,10 +32,10 @@ export function useAuthEmail() {
           from: `Tanstack starter <${serverEnv!.SMTP_USER}>`,
           to: user.email,
           subject: 'Please verify your email',
-          html: verifyAccountTemplate
-            .replace('{{logo_url}}', logoUrl)
+          html: mjml(verifyAccountTemplate)
+            .html.replace('{{logo_url}}', logoUrl)
             .replace('{{user_name}}', user.firstName)
-            .replace('{{verify_link}}', url)
+            .replace('{{verification_link}}', url)
         });
         logger.debug(`Verification email sent to ${user.email}`);
       } catch (e) {
@@ -47,8 +48,8 @@ export function useAuthEmail() {
         from: serverEnv!.SMTP_FROM,
         to: user.email,
         subject: 'Reset your password',
-        html: resetPasswordTemplate
-          .replace('{{logo_url}}', logoUrl)
+        html: mjml(resetPasswordTemplate)
+          .html.replace('{{logo_url}}', logoUrl)
           .replace('{{user_name}}', user.firstName)
           .replace('{{reset_link}}', url)
       });

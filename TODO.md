@@ -1,7 +1,7 @@
 # TODO
 
 - [x] Implement mail sender
-- [ ] Re-implement mail templates with mjml
+- [x] Re-implement mail templates with mjml
 - [ ] Reset password pages
 - [ ] Deploy:
   - [ ] Evaluate provider (Netlify vs Vercel vs Cloudflare pages)
