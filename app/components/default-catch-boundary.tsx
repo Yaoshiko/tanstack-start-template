@@ -1,3 +1,4 @@
+import { useLogger } from '@/lib/logger';
 import {
   ErrorComponent,
   Link,
@@ -7,13 +8,15 @@ import {
 } from '@tanstack/react-router';
 import type { ErrorComponentProps } from '@tanstack/react-router';
 
+const { logger } = useLogger();
+
 export function DefaultCatchBoundary({ error }: ErrorComponentProps) {
   const router = useRouter();
   const isRoot = useMatch({
     strict: false,
     select: (state) => state.id === rootRouteId
   });
-  console.error(error);
+  logger.error(error);
 
   return (
     <div className="flex min-w-0 flex-1 flex-col items-center justify-center gap-6 p-4">

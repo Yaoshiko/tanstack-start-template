@@ -16,12 +16,15 @@ import {
 } from '@/components/ui/alert-dialog';
 import { AlertDialogTitle } from '@radix-ui/react-alert-dialog';
 import { deleteRecipe } from '@/api/recipes';
+import { useLogger } from '@/lib/logger';
+
+const { logger } = useLogger();
 
 export const Route = createFileRoute(
   '/_navbar/_authed/recipe/_sidebar/$recipeId'
 )({
   loader: ({ context, params: { recipeId } }) => {
-    console.log('Loader recipe ', recipeId);
+    logger.info('Loader recipe ', recipeId);
     context.queryClient.prefetchQuery(fetchRecipeOpts(recipeId));
   },
   component: RecipeComponent
@@ -47,13 +50,13 @@ function Deferred() {
   const recipe = useSuspenseQuery(fetchRecipeOpts(recipeId));
 
   const onDelete = async () => {
-    console.log('Query client', queryClient);
+    logger.info('Query client', queryClient);
     try {
       await deleteRecipe({ data: recipeId });
       navigate({ to: '/recipe' });
       router.invalidate();
     } catch (error) {
-      console.error('Failed to delete recipe', error);
+      logger.warn('Failed to delete recipe', error);
       toast.error('Failed to delete recipe');
     }
   };

@@ -3,11 +3,14 @@ import { fetchRecipeTitles } from '@/api/recipes';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
+import { useLogger } from '@/lib/logger';
+
+const { logger } = useLogger();
 
 export const Route = createFileRoute('/_navbar/_authed/recipe/_sidebar')({
   staleTime: 30_000, // Prevent refetching all recipes at every route load.
   loader: async () => {
-    console.log('Loading all recipes...');
+    logger.info('Loading all recipes...');
     return await fetchRecipeTitles();
   },
   component: RecipesComponent

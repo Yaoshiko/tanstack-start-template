@@ -1,7 +1,8 @@
 // Define environment variables types.
 declare global {
   namespace NodeJS {
-    interface ProcessEnv {
+    interface ProcessEnv extends CommonEnv {
+      LOG_LEVEL: string;
       // Better-auth.
       BETTER_AUTH_SECRET: string;
       BETTER_AUTH_URL: string;
@@ -16,6 +17,10 @@ declare global {
       FETCH_RECIPES_DELAY: number;
       FETCH_RECIPE_DELAY: number;
     }
+  }
+
+  interface ImportMetaEnv extends CommonEnv {
+    VITE_LOG_LEVEL: string;
   }
 }
 

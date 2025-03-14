@@ -11,7 +11,7 @@ export const Route = createFileRoute('/_navbar/')({
 function Home() {
   return (
     <div className="container mx-auto">
-      <section className="relative overflow-hidden py-32">
+      <section className="relative overflow-hidden px-8 py-32">
         <div className="container">
           <div className="magicpattern absolute inset-x-0 top-0 -z-10 flex h-full w-full items-center justify-center opacity-100" />
           <div className="mx-auto flex max-w-5xl flex-col items-center">

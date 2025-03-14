@@ -5,10 +5,13 @@ import { Form } from '@/components/form/form';
 import { LoadingButton } from '@/components/loading-button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { useLogger } from '@/lib/logger';
 import { recipeSchema } from '@/lib/validators/recipe';
 import { useForm } from '@tanstack/react-form';
 import { createFileRoute, useRouter } from '@tanstack/react-router';
 import { toast } from 'sonner';
+
+const { logger } = useLogger();
 
 export const Route = createFileRoute('/_navbar/_authed/recipe/new')({
   component: RouteComponent
@@ -28,7 +31,7 @@ function RouteComponent() {
     onSubmit: async ({ value }) => {
       const recipe = await createRecipe({ data: value });
       if (recipe) {
-        console.log('Recipe created', recipe);
+        logger.info('Recipe created', recipe);
         router.invalidate();
         navigate({
           to: '/recipe/$recipeId',

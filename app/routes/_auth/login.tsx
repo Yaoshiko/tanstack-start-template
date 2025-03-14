@@ -15,6 +15,9 @@ import { FieldSet } from '@/components/form/field-set';
 import { FieldError } from '@/components/form/field-error';
 import { LoadingButton } from '@/components/loading-button';
 import { toast } from 'sonner';
+import { useLogger } from '@/lib/logger';
+
+const { logger } = useLogger();
 
 const searchParamsSchema = z.object({
   redirect: z
@@ -61,7 +64,7 @@ function SignUp() {
         password: value.password
       });
       if (res.data) {
-        console.log('User signed in', res.data.user);
+        logger.info('User signed in', res.data.user);
         await invalidateAuthCache(router, queryClient);
         navigate({
           to: redirect,

@@ -22,6 +22,9 @@ import { Label } from '@/components/ui/label';
 import { authClient, invalidateAuthCache } from '@/lib/auth/client';
 import { toast } from 'sonner';
 import { useState } from 'react';
+import { useLogger } from '@/lib/logger';
+
+const { logger } = useLogger();
 
 export const Route = createFileRoute('/_navbar')({
   component: RootComponent
@@ -57,7 +60,7 @@ function Navbar() {
   const handleLogout = async () => {
     setOpen(false);
     const res = await authClient.signOut();
-    console.log('User signed out', res);
+    logger.info('User signed out', res);
     if (res.data) {
       await invalidateAuthCache(router, queryClient);
       navigate({ to: '/' });
