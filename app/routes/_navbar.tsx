@@ -1,4 +1,9 @@
-import { createFileRoute, Link, Outlet } from '@tanstack/react-router';
+import {
+  createFileRoute,
+  Link,
+  Outlet,
+  useRouter
+} from '@tanstack/react-router';
 import { Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
@@ -35,6 +40,7 @@ function RootComponent() {
 }
 
 function Navbar() {
+  const router = useRouter();
   const { queryClient, user } = Route.useRouteContext();
   const navigate = Route.useNavigate();
   const [open, setOpen] = useState<boolean>(false);
@@ -53,7 +59,7 @@ function Navbar() {
     const res = await authClient.signOut();
     console.log('User signed out', res);
     if (res.data) {
-      await invalidateAuthCache(queryClient);
+      await invalidateAuthCache(router, queryClient);
       navigate({ to: '/' });
     } else {
       toast.error(res.error?.message ?? 'Sign out failed');

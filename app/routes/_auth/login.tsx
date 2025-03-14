@@ -1,4 +1,9 @@
-import { createFileRoute, Link, redirect } from '@tanstack/react-router';
+import {
+  createFileRoute,
+  Link,
+  redirect,
+  useRouter
+} from '@tanstack/react-router';
 import { authClient, invalidateAuthCache } from '@/lib/auth/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -38,6 +43,7 @@ export const Route = createFileRoute('/_auth/login')({
 });
 
 function SignUp() {
+  const router = useRouter();
   const { queryClient } = Route.useRouteContext();
   const { redirect } = Route.useSearch();
   const navigate = Route.useNavigate();
@@ -56,7 +62,7 @@ function SignUp() {
       });
       if (res.data) {
         console.log('User signed in', res.data.user);
-        await invalidateAuthCache(queryClient);
+        await invalidateAuthCache(router, queryClient);
         navigate({
           to: redirect,
           replace: true

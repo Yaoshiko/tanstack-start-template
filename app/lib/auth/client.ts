@@ -1,6 +1,7 @@
 import { QueryClient, queryOptions } from '@tanstack/react-query';
 import { createAuthClient } from 'better-auth/react';
 import { inferAdditionalFields } from 'better-auth/client/plugins';
+import { RegisteredRouter } from '@tanstack/react-router';
 
 const AUTH_QUERY_KEY = 'user';
 
@@ -35,7 +36,12 @@ export const fetchUserOpts = queryOptions({
 });
 
 // TODO: Export better APIs (signIn, signOut, ...) to hide the cache implementation.
-export function invalidateAuthCache(queryClient: QueryClient) {
-  console.log('Invalidating auth cache', queryClient);
-  return queryClient.invalidateQueries({ queryKey: [AUTH_QUERY_KEY] });
+export async function invalidateAuthCache(
+  router: RegisteredRouter,
+  queryClient: QueryClient
+) {
+  console.log('Invalidating auth cache');
+  // Ensure cached data is invalidated.
+  await queryClient.invalidateQueries({ queryKey: [AUTH_QUERY_KEY] });
+  router.invalidate();
 }

@@ -1,5 +1,10 @@
-import { createFileRoute, Link, redirect } from '@tanstack/react-router';
-import { authClient } from '@/lib/auth/client';
+import {
+  createFileRoute,
+  Link,
+  redirect,
+  useRouter
+} from '@tanstack/react-router';
+import { authClient, invalidateAuthCache } from '@/lib/auth/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useForm } from '@tanstack/react-form';
@@ -46,6 +51,8 @@ export const Route = createFileRoute('/_auth/signup')({
 });
 
 function SignUp() {
+  const router = useRouter();
+  const { queryClient } = Route.useRouteContext();
   const { redirect } = Route.useSearch();
   const navigate = Route.useNavigate();
   const form = useForm({
@@ -68,6 +75,7 @@ function SignUp() {
         password: value.password
       });
       if (res.data) {
+        await invalidateAuthCache(router, queryClient);
         navigate({
           to: redirect,
           replace: true

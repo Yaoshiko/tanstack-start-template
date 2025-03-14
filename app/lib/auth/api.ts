@@ -5,7 +5,8 @@ import { QueryClient } from '@tanstack/react-query';
 import { fetchUserOpts } from './client';
 
 export const getUser = createIsomorphicFn()
-  .server(async () => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  .server(async (queryClient: QueryClient) => {
     console.debug('Fetching logged-in user');
     const { headers } = getWebRequest()!;
     const session = await auth.api.getSession({
@@ -20,9 +21,8 @@ export const getUser = createIsomorphicFn()
   })
   // FIXME: Fix type error.
   .client(async (queryClient: QueryClient) => {
-    console.debug('Fetching logged-in user on client');
     const session = await queryClient.fetchQuery(fetchUserOpts);
     const user = session?.data?.user;
-    console.log('Fetched logged-in user on client', user?.email);
+    console.log('Session retrieved', user?.email);
     return user;
   });
