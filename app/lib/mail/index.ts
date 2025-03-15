@@ -45,7 +45,7 @@ export function useAuthEmail() {
     sendResetPassword: async (user: User, url: string) => {
       logger.info(`Sending reset password email to ${user.email}`);
       client.sendMail({
-        from: serverEnv!.SMTP_FROM,
+        from: `Tanstack starter <${serverEnv!.SMTP_USER}>`,
         to: user.email,
         subject: 'Reset your password',
         html: mjml(resetPasswordTemplate)

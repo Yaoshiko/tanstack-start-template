@@ -2,7 +2,7 @@
 
 - [x] Implement mail sender
 - [x] Re-implement mail templates with mjml
-- [ ] Reset password pages
+- [x] Reset password pages
 - [ ] Deploy:
   - [ ] Evaluate provider (Netlify vs Vercel vs Cloudflare pages)
   - [ ] Create free-tier DB (Neon Postgres? Cloudflare R2?)
@@ -12,3 +12,4 @@
 - [ ]Auth providers:
   - [ ] Google
   - [ ] GitHub
+- [ ] README

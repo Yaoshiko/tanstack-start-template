@@ -18,6 +18,8 @@ import { Route as NavbarImport } from './routes/_navbar'
 import { Route as NavbarIndexImport } from './routes/_navbar/index'
 import { Route as NavbarAuthedImport } from './routes/_navbar/_authed'
 import { Route as AuthSignupImport } from './routes/_auth/signup'
+import { Route as AuthPasswordResetImport } from './routes/_auth/password-reset'
+import { Route as AuthPasswordForgotImport } from './routes/_auth/password-forgot'
 import { Route as AuthLoginImport } from './routes/_auth/login'
 import { Route as NavbarAuthedRecipeNewImport } from './routes/_navbar/_authed/recipe/new'
 import { Route as NavbarAuthedRecipeSidebarImport } from './routes/_navbar/_authed/recipe/_sidebar'
@@ -55,6 +57,18 @@ const NavbarAuthedRoute = NavbarAuthedImport.update({
 const AuthSignupRoute = AuthSignupImport.update({
   id: '/_auth/signup',
   path: '/signup',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AuthPasswordResetRoute = AuthPasswordResetImport.update({
+  id: '/_auth/password-reset',
+  path: '/password-reset',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AuthPasswordForgotRoute = AuthPasswordForgotImport.update({
+  id: '/_auth/password-forgot',
+  path: '/password-forgot',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -118,6 +132,20 @@ declare module '@tanstack/react-router' {
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof AuthLoginImport
+      parentRoute: typeof rootRoute
+    }
+    '/_auth/password-forgot': {
+      id: '/_auth/password-forgot'
+      path: '/password-forgot'
+      fullPath: '/password-forgot'
+      preLoaderRoute: typeof AuthPasswordForgotImport
+      parentRoute: typeof rootRoute
+    }
+    '/_auth/password-reset': {
+      id: '/_auth/password-reset'
+      path: '/password-reset'
+      fullPath: '/password-reset'
+      preLoaderRoute: typeof AuthPasswordResetImport
       parentRoute: typeof rootRoute
     }
     '/_auth/signup': {
@@ -240,6 +268,8 @@ export interface FileRoutesByFullPath {
   '': typeof NavbarAuthedRouteWithChildren
   '/sandbox': typeof SandboxRoute
   '/login': typeof AuthLoginRoute
+  '/password-forgot': typeof AuthPasswordForgotRoute
+  '/password-reset': typeof AuthPasswordResetRoute
   '/signup': typeof AuthSignupRoute
   '/': typeof NavbarIndexRoute
   '/recipe': typeof NavbarAuthedRecipeSidebarRouteWithChildren
@@ -251,6 +281,8 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/sandbox': typeof SandboxRoute
   '/login': typeof AuthLoginRoute
+  '/password-forgot': typeof AuthPasswordForgotRoute
+  '/password-reset': typeof AuthPasswordResetRoute
   '/signup': typeof AuthSignupRoute
   '': typeof NavbarAuthedRouteWithChildren
   '/': typeof NavbarIndexRoute
@@ -264,6 +296,8 @@ export interface FileRoutesById {
   '/_navbar': typeof NavbarRouteWithChildren
   '/sandbox': typeof SandboxRoute
   '/_auth/login': typeof AuthLoginRoute
+  '/_auth/password-forgot': typeof AuthPasswordForgotRoute
+  '/_auth/password-reset': typeof AuthPasswordResetRoute
   '/_auth/signup': typeof AuthSignupRoute
   '/_navbar/_authed': typeof NavbarAuthedRouteWithChildren
   '/_navbar/': typeof NavbarIndexRoute
@@ -280,6 +314,8 @@ export interface FileRouteTypes {
     | ''
     | '/sandbox'
     | '/login'
+    | '/password-forgot'
+    | '/password-reset'
     | '/signup'
     | '/'
     | '/recipe'
@@ -290,6 +326,8 @@ export interface FileRouteTypes {
   to:
     | '/sandbox'
     | '/login'
+    | '/password-forgot'
+    | '/password-reset'
     | '/signup'
     | ''
     | '/'
@@ -301,6 +339,8 @@ export interface FileRouteTypes {
     | '/_navbar'
     | '/sandbox'
     | '/_auth/login'
+    | '/_auth/password-forgot'
+    | '/_auth/password-reset'
     | '/_auth/signup'
     | '/_navbar/_authed'
     | '/_navbar/'
@@ -316,6 +356,8 @@ export interface RootRouteChildren {
   NavbarRoute: typeof NavbarRouteWithChildren
   SandboxRoute: typeof SandboxRoute
   AuthLoginRoute: typeof AuthLoginRoute
+  AuthPasswordForgotRoute: typeof AuthPasswordForgotRoute
+  AuthPasswordResetRoute: typeof AuthPasswordResetRoute
   AuthSignupRoute: typeof AuthSignupRoute
 }
 
@@ -323,6 +365,8 @@ const rootRouteChildren: RootRouteChildren = {
   NavbarRoute: NavbarRouteWithChildren,
   SandboxRoute: SandboxRoute,
   AuthLoginRoute: AuthLoginRoute,
+  AuthPasswordForgotRoute: AuthPasswordForgotRoute,
+  AuthPasswordResetRoute: AuthPasswordResetRoute,
   AuthSignupRoute: AuthSignupRoute,
 }
 
@@ -339,6 +383,8 @@ export const routeTree = rootRoute
         "/_navbar",
         "/sandbox",
         "/_auth/login",
+        "/_auth/password-forgot",
+        "/_auth/password-reset",
         "/_auth/signup"
       ]
     },
@@ -354,6 +400,12 @@ export const routeTree = rootRoute
     },
     "/_auth/login": {
       "filePath": "_auth/login.tsx"
+    },
+    "/_auth/password-forgot": {
+      "filePath": "_auth/password-forgot.tsx"
+    },
+    "/_auth/password-reset": {
+      "filePath": "_auth/password-reset.tsx"
     },
     "/_auth/signup": {
       "filePath": "_auth/signup.tsx"
