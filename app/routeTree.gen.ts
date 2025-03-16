@@ -15,6 +15,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { Route as rootRoute } from './routes/__root'
 import { Route as SandboxImport } from './routes/sandbox'
 import { Route as NavbarImport } from './routes/_navbar'
+import { Route as AuthImport } from './routes/_auth'
 import { Route as NavbarIndexImport } from './routes/_navbar/index'
 import { Route as NavbarAuthedImport } from './routes/_navbar/_authed'
 import { Route as AuthSignupImport } from './routes/_auth/signup'
@@ -43,6 +44,11 @@ const NavbarRoute = NavbarImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const AuthRoute = AuthImport.update({
+  id: '/_auth',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const NavbarIndexRoute = NavbarIndexImport.update({
   id: '/',
   path: '/',
@@ -55,27 +61,27 @@ const NavbarAuthedRoute = NavbarAuthedImport.update({
 } as any)
 
 const AuthSignupRoute = AuthSignupImport.update({
-  id: '/_auth/signup',
+  id: '/signup',
   path: '/signup',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => AuthRoute,
 } as any)
 
 const AuthPasswordResetRoute = AuthPasswordResetImport.update({
-  id: '/_auth/password-reset',
+  id: '/password-reset',
   path: '/password-reset',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => AuthRoute,
 } as any)
 
 const AuthPasswordForgotRoute = AuthPasswordForgotImport.update({
-  id: '/_auth/password-forgot',
+  id: '/password-forgot',
   path: '/password-forgot',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => AuthRoute,
 } as any)
 
 const AuthLoginRoute = AuthLoginImport.update({
-  id: '/_auth/login',
+  id: '/login',
   path: '/login',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => AuthRoute,
 } as any)
 
 const NavbarAuthedRecipeRoute = NavbarAuthedRecipeImport.update({
@@ -113,6 +119,13 @@ const NavbarAuthedRecipeSidebarRecipeIdRoute =
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/_auth': {
+      id: '/_auth'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof AuthImport
+      parentRoute: typeof rootRoute
+    }
     '/_navbar': {
       id: '/_navbar'
       path: ''
@@ -132,28 +145,28 @@ declare module '@tanstack/react-router' {
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof AuthLoginImport
-      parentRoute: typeof rootRoute
+      parentRoute: typeof AuthImport
     }
     '/_auth/password-forgot': {
       id: '/_auth/password-forgot'
       path: '/password-forgot'
       fullPath: '/password-forgot'
       preLoaderRoute: typeof AuthPasswordForgotImport
-      parentRoute: typeof rootRoute
+      parentRoute: typeof AuthImport
     }
     '/_auth/password-reset': {
       id: '/_auth/password-reset'
       path: '/password-reset'
       fullPath: '/password-reset'
       preLoaderRoute: typeof AuthPasswordResetImport
-      parentRoute: typeof rootRoute
+      parentRoute: typeof AuthImport
     }
     '/_auth/signup': {
       id: '/_auth/signup'
       path: '/signup'
       fullPath: '/signup'
       preLoaderRoute: typeof AuthSignupImport
-      parentRoute: typeof rootRoute
+      parentRoute: typeof AuthImport
     }
     '/_navbar/_authed': {
       id: '/_navbar/_authed'
@@ -208,6 +221,22 @@ declare module '@tanstack/react-router' {
 }
 
 // Create and export the route tree
+
+interface AuthRouteChildren {
+  AuthLoginRoute: typeof AuthLoginRoute
+  AuthPasswordForgotRoute: typeof AuthPasswordForgotRoute
+  AuthPasswordResetRoute: typeof AuthPasswordResetRoute
+  AuthSignupRoute: typeof AuthSignupRoute
+}
+
+const AuthRouteChildren: AuthRouteChildren = {
+  AuthLoginRoute: AuthLoginRoute,
+  AuthPasswordForgotRoute: AuthPasswordForgotRoute,
+  AuthPasswordResetRoute: AuthPasswordResetRoute,
+  AuthSignupRoute: AuthSignupRoute,
+}
+
+const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 
 interface NavbarAuthedRecipeSidebarRouteChildren {
   NavbarAuthedRecipeSidebarRecipeIdRoute: typeof NavbarAuthedRecipeSidebarRecipeIdRoute
@@ -279,12 +308,12 @@ export interface FileRoutesByFullPath {
 }
 
 export interface FileRoutesByTo {
+  '': typeof NavbarAuthedRouteWithChildren
   '/sandbox': typeof SandboxRoute
   '/login': typeof AuthLoginRoute
   '/password-forgot': typeof AuthPasswordForgotRoute
   '/password-reset': typeof AuthPasswordResetRoute
   '/signup': typeof AuthSignupRoute
-  '': typeof NavbarAuthedRouteWithChildren
   '/': typeof NavbarIndexRoute
   '/recipe': typeof NavbarAuthedRecipeSidebarIndexRoute
   '/recipe/new': typeof NavbarAuthedRecipeNewRoute
@@ -293,6 +322,7 @@ export interface FileRoutesByTo {
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
+  '/_auth': typeof AuthRouteWithChildren
   '/_navbar': typeof NavbarRouteWithChildren
   '/sandbox': typeof SandboxRoute
   '/_auth/login': typeof AuthLoginRoute
@@ -324,18 +354,19 @@ export interface FileRouteTypes {
     | '/recipe/'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | ''
     | '/sandbox'
     | '/login'
     | '/password-forgot'
     | '/password-reset'
     | '/signup'
-    | ''
     | '/'
     | '/recipe'
     | '/recipe/new'
     | '/recipe/$recipeId'
   id:
     | '__root__'
+    | '/_auth'
     | '/_navbar'
     | '/sandbox'
     | '/_auth/login'
@@ -353,21 +384,15 @@ export interface FileRouteTypes {
 }
 
 export interface RootRouteChildren {
+  AuthRoute: typeof AuthRouteWithChildren
   NavbarRoute: typeof NavbarRouteWithChildren
   SandboxRoute: typeof SandboxRoute
-  AuthLoginRoute: typeof AuthLoginRoute
-  AuthPasswordForgotRoute: typeof AuthPasswordForgotRoute
-  AuthPasswordResetRoute: typeof AuthPasswordResetRoute
-  AuthSignupRoute: typeof AuthSignupRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
+  AuthRoute: AuthRouteWithChildren,
   NavbarRoute: NavbarRouteWithChildren,
   SandboxRoute: SandboxRoute,
-  AuthLoginRoute: AuthLoginRoute,
-  AuthPasswordForgotRoute: AuthPasswordForgotRoute,
-  AuthPasswordResetRoute: AuthPasswordResetRoute,
-  AuthSignupRoute: AuthSignupRoute,
 }
 
 export const routeTree = rootRoute
@@ -380,8 +405,14 @@ export const routeTree = rootRoute
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
+        "/_auth",
         "/_navbar",
-        "/sandbox",
+        "/sandbox"
+      ]
+    },
+    "/_auth": {
+      "filePath": "_auth.tsx",
+      "children": [
         "/_auth/login",
         "/_auth/password-forgot",
         "/_auth/password-reset",
@@ -399,16 +430,20 @@ export const routeTree = rootRoute
       "filePath": "sandbox.tsx"
     },
     "/_auth/login": {
-      "filePath": "_auth/login.tsx"
+      "filePath": "_auth/login.tsx",
+      "parent": "/_auth"
     },
     "/_auth/password-forgot": {
-      "filePath": "_auth/password-forgot.tsx"
+      "filePath": "_auth/password-forgot.tsx",
+      "parent": "/_auth"
     },
     "/_auth/password-reset": {
-      "filePath": "_auth/password-reset.tsx"
+      "filePath": "_auth/password-reset.tsx",
+      "parent": "/_auth"
     },
     "/_auth/signup": {
-      "filePath": "_auth/signup.tsx"
+      "filePath": "_auth/signup.tsx",
+      "parent": "/_auth"
     },
     "/_navbar/_authed": {
       "filePath": "_navbar/_authed.tsx",

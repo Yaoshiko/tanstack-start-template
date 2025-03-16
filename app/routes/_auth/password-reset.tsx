@@ -1,55 +1,37 @@
-import { createFileRoute, redirect } from '@tanstack/react-router';
+import { createFileRoute } from '@tanstack/react-router';
 import { authClient } from '@/lib/auth/client';
-import { Input } from '@/components/ui/input';
-import { useForm } from '@tanstack/react-form';
 import { z } from 'zod';
-import { Form } from '@/components/form/form';
-import { FieldSet } from '@/components/form/field-set';
-import { FieldError } from '@/components/form/field-error';
-import { LoadingButton } from '@/components/loading-button';
 import { toast } from 'sonner';
 import { useLogger } from '@/lib/logger';
+import { useAppForm } from '@/components/form';
 
 const { logger } = useLogger();
 
-const searchParamsSchema = z.object({
-  token: z.string()
-});
-
-const schema = z
-  .object({
-    password: z.string().min(8),
-    confirmPassword: z.string()
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: 'Passwords do not match',
-    path: ['confirmPassword']
-  });
-
 export const Route = createFileRoute('/_auth/password-reset')({
-  validateSearch: searchParamsSchema,
-  beforeLoad: async ({ context }) => {
-    if (context.user) {
-      // User already logged in.
-      throw redirect({
-        to: '/',
-        replace: true
-      });
-    }
-  },
+  validateSearch: z.object({
+    token: z.string()
+  }),
   component: PasswordReset
 });
 
 function PasswordReset() {
   const { token } = Route.useSearch();
   const navigate = Route.useNavigate();
-  const form = useForm({
+  const form = useAppForm({
     defaultValues: {
       password: '',
       confirmPassword: ''
     },
     validators: {
-      onChange: schema
+      onChange: z
+        .object({
+          password: z.string().min(8),
+          confirmPassword: z.string()
+        })
+        .refine((data) => data.password === data.confirmPassword, {
+          message: 'Passwords do not match',
+          path: ['confirmPassword']
+        })
     },
     onSubmit: async ({ value }) => {
       const res = await authClient.resetPassword({
@@ -70,79 +52,34 @@ function PasswordReset() {
 
   return (
     <div className="flex h-screen items-center justify-center">
-      <Form
-        className="mx-12 w-full sm:mx-0 sm:w-1/3 lg:w-1/5"
-        onSubmit={form.handleSubmit}
-      >
-        <div className="flex flex-col items-center gap-2 text-center">
-          <h1 className="text-2xl font-bold">Reset password</h1>
-          <p className="text-muted-foreground text-sm text-balance">
-            Enter your new password
-          </p>
-        </div>
-        <FieldSet label="Password">
-          <form.Field name="password">
-            {(field) => (
-              <>
-                <Input
-                  type="password"
-                  id={field.name}
-                  placeholder="******"
-                  value={field.state.value}
-                  onChange={(e) => field.handleChange(e.target.value)}
-                  onBlur={field.handleBlur}
-                  required
-                />
-                <FieldError
-                  isDirty={field.state.meta.isDirty}
-                  isBlurred={field.state.meta.isBlurred}
-                  error={field.state.meta.errors
-                    .map((e) => e?.message)
-                    .find((e) => !!e)}
-                />
-              </>
-            )}
-          </form.Field>
-        </FieldSet>
-        <FieldSet label="Confirm password">
-          <form.Field name="confirmPassword">
-            {(field) => (
-              <>
-                <Input
-                  type="password"
-                  id={field.name}
-                  placeholder="******"
-                  value={field.state.value}
-                  onChange={(e) => field.handleChange(e.target.value)}
-                  onBlur={field.handleBlur}
-                  required
-                />
-                <FieldError
-                  isDirty={field.state.meta.isDirty}
-                  isBlurred={field.state.meta.isBlurred}
-                  error={field.state.meta.errors
-                    .map((e) => e?.message)
-                    .find((e) => !!e)}
-                />
-              </>
-            )}
-          </form.Field>
-        </FieldSet>
-        <form.Subscribe
-          selector={(state) => [state.canSubmit, state.isSubmitting]}
+      <form.AppForm>
+        <form.FormWrapper
+          label="Reset password"
+          description="Enter your new password"
+          className="mx-12 w-full sm:mx-0 sm:w-1/3 lg:w-1/5"
+          onSubmit={form.handleSubmit}
         >
-          {([canSubmit, isSubmitting]) => (
-            <LoadingButton
-              type="submit"
-              className="w-full"
-              loading={isSubmitting}
-              disabled={!canSubmit}
-            >
-              Reset password
-            </LoadingButton>
-          )}
-        </form.Subscribe>
-      </Form>
+          <form.AppField name="password">
+            {(field) => (
+              <field.TextField
+                label="Password"
+                type="password"
+                placeholder="******"
+              />
+            )}
+          </form.AppField>
+          <form.AppField name="confirmPassword">
+            {(field) => (
+              <field.TextField
+                label="Confirm password"
+                type="password"
+                placeholder="******"
+              />
+            )}
+          </form.AppField>
+          <form.SubmitButton label="Reset password" />
+        </form.FormWrapper>
+      </form.AppForm>
     </div>
   );
 }
