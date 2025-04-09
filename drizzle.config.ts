@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import { useEnvironment } from '@/lib/environment';
 import { defineConfig } from 'drizzle-kit';
 

@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import * as apiSchema from './schema';
 import * as authSchema from './auth-schema';
 import { db } from './index';
