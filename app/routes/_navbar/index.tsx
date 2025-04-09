@@ -51,19 +51,6 @@ function Home() {
                     )}
                   >
                     <img
-                      src="https://shadcnblocks.com/images/block/logos/shadcn-ui-small.svg"
-                      alt="company logo"
-                      className="h-6 saturate-0 transition-all group-hover:saturate-100"
-                    />
-                  </a>
-                  <a
-                    href="#"
-                    className={cn(
-                      buttonVariants({ variant: 'outline' }),
-                      'group px-3'
-                    )}
-                  >
-                    <img
                       src="https://shadcnblocks.com/images/block/logos/typescript-small.svg"
                       alt="company logo"
                       className="h-6 saturate-0 transition-all group-hover:saturate-100"

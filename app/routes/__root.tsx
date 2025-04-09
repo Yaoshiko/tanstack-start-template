@@ -1,5 +1,4 @@
 // react-scan must be imported before React and TanStack Start
-import { scan } from 'react-scan';
 import {
   HeadContent,
   Outlet,
@@ -12,7 +11,6 @@ import { NotFound } from '@/components/not-found';
 import { Toaster } from '@/components/ui/sonner';
 import css from '@/styles/app.css?url';
 import { seo } from '@/lib/seo';
-import { useEffect } from 'react';
 import { getUser } from '@/lib/auth/api';
 import { QueryClient } from '@tanstack/react-query';
 
@@ -70,13 +68,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 );
 
 function RootComponent() {
-  useEffect(() => {
-    // Make sure to run this only after hydration
-    scan({
-      enabled: true
-    });
-  }, []);
-
   return (
     <html>
       <head>

@@ -1,3 +1,5 @@
+import 'dotenv/config';
+
 export function useEnvironment() {
   const isServer = !!process.env;
 

@@ -1,10 +1,12 @@
 import { defineConfig } from '@tanstack/react-start/config';
 import tsConfigPaths from 'vite-tsconfig-paths';
-import { cloudflare } from 'unenv';
 import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
   vite: {
+    optimizeDeps: {
+      exclude: ['pg-native']
+    },
     plugins: [
       tailwindcss(),
       tsConfigPaths({
@@ -13,7 +15,6 @@ export default defineConfig({
     ]
   },
   server: {
-    preset: 'cloudflare-pages',
-    unenv: cloudflare
+    preset: 'node-server'
   }
 });
