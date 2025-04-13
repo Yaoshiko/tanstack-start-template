@@ -1,7 +1,6 @@
 services:
   postgres:
     image: postgres:16.4-alpine
-    container_name: postgres
     environment:
       POSTGRES_DB: postgres
       POSTGRES_USER: postgres
@@ -17,7 +16,6 @@ services:
     build:
       context: ..
       dockerfile: container/app.dockerfile
-    container_name: node-app
     environment:
       # FIXME: Use docker swarm secrets.
       DB_HOST: postgres
