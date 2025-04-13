@@ -1,15 +1,19 @@
 FROM node:23-slim
 
 COPY ./package.json ./
-RUN npm install -g pnpm && pnpm install
+COPY ./pnpm-lock.yaml ./
 
-COPY ./ ./
+# Install dependencies.
+RUN npm install -g pnpm \
+    && pnpm install --frozen-lockfile --prod
 
 # Build in production mode.
+COPY ./ ./
 RUN pnpm build
 
 # Migrate database.
-RUN pnpm db:migrate
+# FIXME: To be moved in a one-off container, to be run by the yml in the proper environment.
+# RUN pnpm db:migrate
 
 EXPOSE 3000
 

@@ -62,9 +62,6 @@ importers:
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
-      dotenv:
-        specifier: ^16.4.7
-        version: 16.4.7
       drizzle-orm:
         specifier: ^0.40.0
         version: 0.40.1(gel@2.0.2)(kysely@0.27.6)(pg@8.14.1)

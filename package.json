@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vinxi dev | pino-pretty",
     "build": "vinxi build",
-    "start": "node --env-file=.env .output/server/index.mjs",
+    "start": "node --env-file=.env .output/server/index.mjs | pino-pretty",
     "prisma-generate": "prisma generate",
     "lint": "eslint app --ignore-pattern .gitignore",
     "lint:fix": "eslint app --fix --ignore-pattern .gitignore",
