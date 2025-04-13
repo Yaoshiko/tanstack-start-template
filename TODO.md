@@ -17,3 +17,4 @@
   - [ ] Configure public hostname
   - [ ] Configure observability tools
   - [ ] Configure logging tools
+  - [ ] Manage VLAN tags, firewall, ...
