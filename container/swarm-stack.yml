@@ -12,26 +12,26 @@ services:
     networks:
       - app-network
 
-  app:
-    build:
-      context: ..
-      dockerfile: container/app.dockerfile
-    environment:
-      # FIXME: Use docker swarm secrets.
-      DB_HOST: postgres
-      DB_USER: postgres
-      DB_PASSWORD: postgres
-      DB_NAME: postgres
-    ports:
-      - '3000:3000'
-    depends_on:
-      - postgres
-    networks:
-      - app-network
+# FIXME: Need to build in Portainer.
+#   app:
+#     build:
+#       context: ..
+#       dockerfile: container/app.dockerfile
+#     environment:
+#       # FIXME: Use docker swarm secrets.
+#       DB_HOST: postgres
+#       DB_USER: postgres
+#       DB_PASSWORD: postgres
+#       DB_NAME: postgres
+#     ports:
+#       - '3000:3000'
+#     depends_on:
+#       - postgres
+#     networks:
+#       - app-network
 
 volumes:
   postgres_data:
 
 networks:
   app-network:
-    driver: bridge
