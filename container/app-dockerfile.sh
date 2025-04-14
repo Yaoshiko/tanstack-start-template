@@ -3,9 +3,6 @@
 echo "Removing node_modules folders, if any"
 rm -rf */node_modules
 
-echo "Debug"
-ls -lart
-
 echo "Installing dependencies"
 npm install -g pnpm
 pnpm install --frozen-lockfile --prod
