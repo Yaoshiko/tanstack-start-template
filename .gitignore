@@ -8,6 +8,7 @@ yarn.lock
 .vercel
 .output
 .vinxi
+.pnpm-store
 
 /build/
 /api/
