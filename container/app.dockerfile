@@ -15,8 +15,7 @@ COPY ./ ./
 RUN pnpm build
 
 # Migrate database.
-# FIXME: To be moved in a one-off container, to be run by the yml in the proper environment.
-# RUN pnpm db:migrate
+RUN pnpm db:migrate
 
 EXPOSE 3000
 
