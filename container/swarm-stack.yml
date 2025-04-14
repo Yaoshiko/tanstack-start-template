@@ -12,10 +12,14 @@ services:
     networks:
       - app-network
 
+  # FIXME: Workaround to bypass Swarm inability to build Dockerfiles.
+  # TODO: Push Docker images in a registry and refer to them in the stack.
   app:
-    build:
-      context: ..
-      dockerfile: container/app.dockerfile
+    image: node:23-slim
+    working_dir: /app
+    volumes:
+      - ..:/app
+    command: sh container/app-dockerfile.sh
     environment:
       # FIXME: Use docker swarm secrets.
       DB_HOST: postgres
@@ -23,11 +27,31 @@ services:
       DB_PASSWORD: postgres
       DB_NAME: postgres
     ports:
-      - '3000:3000'
+      - target: 3000
+        published: 3000
+        protocol: tcp
+        mode: host
     depends_on:
       - postgres
     networks:
       - app-network
+
+  # app:
+  #   build:
+  #     context: ..
+  #     dockerfile: container/app.dockerfile
+  #   environment:
+  #     # FIXME: Use docker swarm secrets.
+  #     DB_HOST: postgres
+  #     DB_USER: postgres
+  #     DB_PASSWORD: postgres
+  #     DB_NAME: postgres
+  #   ports:
+  #     - '3000:3000'
+  #   depends_on:
+  #     - postgres
+  #   networks:
+  #     - app-network
 
 volumes:
   postgres_data:

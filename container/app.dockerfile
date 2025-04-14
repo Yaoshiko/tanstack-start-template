@@ -1,3 +1,6 @@
+# Note: This Dockerfile is not currently used.
+#       In case, we need to use it to push an image in a Docker registry to refer use it in a Swarm.
+
 FROM node:23-slim
 
 COPY ./package.json ./
