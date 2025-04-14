@@ -18,7 +18,7 @@ services:
     image: node:23-slim
     working_dir: /app
     volumes:
-      - ..:/app
+      - .:/app
     command: sh container/app-dockerfile.sh
     environment:
       # FIXME: Use docker swarm secrets.
