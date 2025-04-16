@@ -1,5 +1,7 @@
 #!/bin/sh
 
+cd ..
+
 echo "Removing node_modules folders, if any"
 rm -rf */node_modules
 
