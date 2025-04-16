@@ -15,7 +15,7 @@ services:
   app:
     build:
       context: .
-      dockerfile: container/app.dockerfile
+      dockerfile: app.dockerfile
     environment:
       # FIXME: Use docker swarm secrets.
       DB_HOST: postgres

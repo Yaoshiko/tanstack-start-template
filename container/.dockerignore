@@ -3,3 +3,4 @@ node_modules
 .vinxi
 .pnpm-store
 .output
+.vscode
