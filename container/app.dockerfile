@@ -15,7 +15,7 @@ COPY ./ ./
 RUN pnpm build
 
 # Migrate database.
-RUN pnpm db:migrate
+# RUN pnpm db:migrate
 
 EXPOSE 3000
 
