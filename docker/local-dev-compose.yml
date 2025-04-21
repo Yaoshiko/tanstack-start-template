@@ -1,3 +1,5 @@
+# This Docker compose is used to create dependencies in local environment for development purposes.
+
 services:
   postgres:
     image: postgres:16.4-alpine
@@ -7,7 +9,7 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     ports:
-      - '5432:5432'
+      - 5432:5432
     volumes:
       - postgres_data:/var/lib/postgresql/data
 

@@ -1,0 +1,16 @@
+type: application
+language: typescript
+tasks:
+  test:
+    description: Run the test suite.
+    command: |
+      echo Here $DOCKER_REGISTRY $VITE_LOG_LEVEL
+  docker-build:
+    description: Build the Docker image for the app.
+    options:
+      envFile: '/.env'
+    command: |
+      docker build \
+        -t $DOCKER_REGISTRY/tanstack-start-template:latest \
+        -f ./node.dockerfile \
+        .

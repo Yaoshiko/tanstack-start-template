@@ -2,7 +2,6 @@ node_modules
 package-lock.json
 yarn.lock
 
-.env
 .DS_Store
 .cache
 .vercel
@@ -24,3 +23,7 @@ yarn.lock
 
 /dist/
 ./app.config.timestamp*.js
+
+# moon
+.moon/cache
+.moon/docker
