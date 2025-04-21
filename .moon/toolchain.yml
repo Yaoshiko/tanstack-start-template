@@ -1,5 +1,5 @@
 node:
-  version: "22.13.1"
-  packageManager: "pnpm"
+  version: '22.13.1'
+  packageManager: 'pnpm'
   pnpm:
-    version: "10.8.0"
+    version: '10.8.0'

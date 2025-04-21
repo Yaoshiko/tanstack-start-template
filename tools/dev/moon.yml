@@ -1,0 +1,38 @@
+type: tool
+
+tasks:
+  db:
+    local: true
+    description: Run the database container.
+    command: |
+      docker run \
+        --name tanstack-start-template-db \
+        -e POSTGRES_USER=postgres \
+        -e POSTGRES_PASSWORD=postgres \
+        -e POSTGRES_DB=tanstack-start-template \
+        -p 5432:5432 \
+        -d postgres:latest
+
+  db-stop:
+    local: true
+    description: Stop the database container.
+    command: |
+      docker stop tanstack-start-template-db
+
+  db-reset:
+    local: true
+    description: Reset the database container.
+    command: |
+      docker rm -f tanstack-start-template-db
+
+  db-logs:
+    local: true
+    description: View the database container logs.
+    command: |
+      docker logs tanstack-start-template-db
+
+  db-connect:
+    local: true
+    description: Connect to the database container.
+    command: |
+      docker exec -it tanstack-start-template-db psql -U postgres -d tanstack-start-template

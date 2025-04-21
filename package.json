@@ -1,0 +1,26 @@
+{
+  "name": "monorepo-template",
+  "private": true,
+  "sideEffects": false,
+  "type": "module",
+  "scripts": {
+    "dev": "vinxi dev | pino-pretty",
+    "build": "vinxi build",
+    "start": "node --env-file=.env .output/server/index.mjs | pino-pretty",
+    "prisma-generate": "prisma generate",
+    "lint": "eslint app --ignore-pattern .gitignore",
+    "lint:fix": "eslint app --fix --ignore-pattern .gitignore",
+    "check-types": "tsc --project tsconfig.json --pretty --noEmit",
+    "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc",
+    "local-env:run": "docker compose -f container/local-dev.yml up -d",
+    "local-env:stop": "docker compose -f container/local-dev.yml up -d",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:studio": "drizzle-kit studio",
+    "db:seed": "npx tsx app/db/seed.ts"
+  },
+  "devDependencies": {
+    "drizzle-kit": "^0.30.5",
+    "prettier": "3.5.3"
+  }
+}
