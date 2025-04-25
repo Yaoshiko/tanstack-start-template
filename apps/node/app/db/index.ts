@@ -1,12 +1,9 @@
 import { useEnvironment } from '@/lib/environment';
-import { drizzle } from 'drizzle-orm/node-postgres';
+import { getDatabase } from 'drizzle-db';
 
 const { serverEnv } = useEnvironment();
-
 if (!serverEnv!.DB_URL) {
   throw new Error('DB_URL environment variable is not set');
 }
 
-export const db = drizzle(serverEnv!.DB_URL);
-
-export * from './schema';
+export const db = getDatabase(serverEnv!.DB_URL);

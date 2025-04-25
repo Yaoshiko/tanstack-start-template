@@ -1,15 +1,15 @@
 import { setResponseStatus } from '@tanstack/react-start/server';
 import { db } from '.';
-import { recipes, RecipeInsert } from './schema';
 import { eq } from 'drizzle-orm';
+import { appSchema } from 'drizzle-db';
 
 export async function insertRecipe(
   userId: string,
-  recipeInsert: Omit<RecipeInsert, 'userId'>
+  recipeInsert: Omit<appSchema.RecipeInsert, 'userId'>
 ) {
   return (
     await db
-      .insert(recipes)
+      .insert(appSchema.recipes)
       .values({ userId, ...recipeInsert })
       .returning()
   )[0];
@@ -17,7 +17,10 @@ export async function insertRecipe(
 
 export async function deleteRecipeById(userId: string, recipeId: string) {
   const recipe = (
-    await db.select().from(recipes).where(eq(recipes.id, recipeId))
+    await db
+      .select()
+      .from(appSchema.recipes)
+      .where(eq(appSchema.recipes.id, recipeId))
   )[0];
   if (!recipe) {
     setResponseStatus(404);
@@ -27,5 +30,5 @@ export async function deleteRecipeById(userId: string, recipeId: string) {
     setResponseStatus(401);
     throw new Error('Unauthorized');
   }
-  await db.delete(recipes).where(eq(recipes.id, recipeId));
+  await db.delete(appSchema.recipes).where(eq(appSchema.recipes.id, recipeId));
 }

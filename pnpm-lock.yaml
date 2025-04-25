@@ -74,12 +74,12 @@ importers:
       dotenv:
         specifier: ^16.5.0
         version: 16.5.0
+      drizzle-db:
+        specifier: workspace:^
+        version: link:../../packages/drizzle
       drizzle-orm:
         specifier: ^0.40.0
         version: 0.40.1(gel@2.0.2)(kysely@0.27.6)(pg@8.14.1)
-      drizzle-seed:
-        specifier: ^0.3.1
-        version: 0.3.1(drizzle-orm@0.40.1(gel@2.0.2)(kysely@0.27.6)(pg@8.14.1))
       lucide-react:
         specifier: ^0.482.0
         version: 0.482.0(react@19.1.0)
@@ -147,9 +147,6 @@ importers:
       '@types/react-dom':
         specifier: ^19.0.4
         version: 19.1.2(@types/react@19.1.2)
-      drizzle-kit:
-        specifier: ^0.30.5
-        version: 0.30.6
       eslint:
         specifier: ^9.22.0
         version: 9.25.0(jiti@2.4.2)
@@ -187,7 +184,7 @@ importers:
         specifier: ^5.1.4
         version: 5.1.4(typescript@5.8.3)(vite@6.3.2(@types/node@22.14.1)(jiti@2.4.2)(lightningcss@1.29.2)(terser@5.39.0)(tsx@4.19.3))
 
-  packages/db-schema:
+  packages/drizzle:
     dependencies:
       dotenv:
         specifier: ^16.5.0
@@ -205,6 +202,9 @@ importers:
       drizzle-kit:
         specifier: ^0.30.5
         version: 0.30.6
+      tsx:
+        specifier: ^4.19.3
+        version: 4.19.3
 
 packages:
 

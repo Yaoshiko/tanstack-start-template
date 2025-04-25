@@ -1,11 +1,13 @@
 import 'dotenv/config';
-import * as apiSchema from './schema';
-import * as authSchema from './auth-schema';
-import { db } from './index';
+import * as apiSchema from './src/schema';
+import * as authSchema from './src/auth-schema';
 import { reset, seed } from 'drizzle-seed';
 import { eq } from 'drizzle-orm';
+import { getDatabase } from './src';
 
 const SEED = 11;
+
+const db = getDatabase(process.env.DB_URL!);
 
 // Recipes kindly provided by AI, no blame.
 const AI_RECIPES = [

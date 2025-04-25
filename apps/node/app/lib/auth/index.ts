@@ -1,9 +1,9 @@
 import { betterAuth } from 'better-auth';
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
 import { db } from '@/db';
-import * as authSchema from '@/db/auth-schema';
 import { useEnvironment } from '../environment';
 import { useAuthEmail } from '../mail';
+import { authSchema } from 'drizzle-db';
 
 const { serverEnv } = useEnvironment();
 const { sendVerificationEmail, sendResetPassword } = useAuthEmail();

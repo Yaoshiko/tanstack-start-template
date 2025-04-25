@@ -1,19 +1,25 @@
 import { and, eq } from 'drizzle-orm';
-import { db, recipes } from './index';
+import { appSchema } from 'drizzle-db';
+import { db } from '.';
 
 export function getRecipeTitles(userId: string) {
   return db
-    .select({ id: recipes.id, title: recipes.title })
-    .from(recipes)
-    .where(eq(recipes.userId, userId))
-    .orderBy(recipes.createdAt);
+    .select({ id: appSchema.recipes.id, title: appSchema.recipes.title })
+    .from(appSchema.recipes)
+    .where(eq(appSchema.recipes.userId, userId))
+    .orderBy(appSchema.recipes.createdAt);
 }
 
 export async function getRecipe(userId: string, recipeId: string) {
   return (
     await db
       .select()
-      .from(recipes)
-      .where(and(eq(recipes.userId, userId), eq(recipes.id, recipeId)))
+      .from(appSchema.recipes)
+      .where(
+        and(
+          eq(appSchema.recipes.userId, userId),
+          eq(appSchema.recipes.id, recipeId)
+        )
+      )
   )[0]!;
 }

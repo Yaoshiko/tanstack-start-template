@@ -35,7 +35,10 @@ tasks:
 
   seed:
     description: Seed the database.
-    command: npx tsx app/db/seed.ts
+    command: npx tsx seed.ts
     local: true
+    options:
+      envFile:
+        - '/.env'
     inputs:
-      - 'app/db/seed.ts'
+      - './seed.ts'
