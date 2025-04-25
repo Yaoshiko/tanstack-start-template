@@ -1,5 +1,7 @@
 type: library
 language: typescript
+tags:
+  - docker
 
 fileGroups:
   inputs:
@@ -12,7 +14,6 @@ tasks:
   generate:
     description: Generate the database schema.
     command: drizzle-kit generate
-    local: true
     inputs:
       - '@globs(inputs)'
     outputs:
@@ -30,15 +31,29 @@ tasks:
 
   studio:
     description: Open the database studio.
-    command: drizzle-kit studio
     local: true
+    options:
+      envFile:
+        - '/.env'
+    command: drizzle-kit studio
 
   seed:
     description: Seed the database.
     command: npx tsx seed.ts
-    local: true
     options:
       envFile:
         - '/.env'
     inputs:
       - './seed.ts'
+
+  docker-build:
+    deps:
+      - '~:generate'
+    inputs:
+      - '@globs(migrations)'
+    env:
+      DOCKER_NAME: tanstack-start-template
+
+  docker-push:
+    env:
+      DOCKER_NAME: tanstack-start-template

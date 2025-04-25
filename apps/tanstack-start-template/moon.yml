@@ -1,2 +1,38 @@
 type: application
 language: typescript
+tags:
+  - docker
+
+dependsOn:
+  - 'drizzle'
+
+fileGroups:
+  build:
+    - '.output/**'
+
+tasks:
+  build:
+    description: Build the app.
+    command: pnpm build
+    deps:
+      - '~:install'
+    inputs:
+      - '@globs(sources)'
+    outputs:
+      - '@globs(build)'
+    options:
+      envFile:
+        - '/.env'
+        - '.env'
+
+  docker-build:
+    deps:
+      - '~:build'
+    inputs:
+      - '@globs(build)'
+    env:
+      DOCKER_NAME: tanstack-start-template
+
+  docker-push:
+    env:
+      DOCKER_NAME: tanstack-start-template

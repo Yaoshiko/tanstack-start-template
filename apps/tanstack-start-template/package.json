@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vinxi dev | pino-pretty",
     "build": "vinxi build",
-    "start": "node --env-file=.env .output/server/index.mjs | pino-pretty"
+    "start": "node --env-file=.env .output/server/index.mjs"
   },
   "dependencies": {
     "@radix-ui/react-alert-dialog": "^1.1.6",

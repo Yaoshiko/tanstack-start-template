@@ -15,10 +15,13 @@ tasks:
   lint:
     description: Run ESLint on the app directory
     command: eslint app --ignore-pattern .gitignore
+    local: true
 
   lint-fix:
     description: Fix linting errors
-    command: eslint app --ignore-pattern .gitignore --fix
+    extends: 'lint'
+    args: '--fix'
+    local: true
 
   format:
     description: Format the app directory with Prettier

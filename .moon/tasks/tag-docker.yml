@@ -1,0 +1,23 @@
+tasks:
+  docker-build:
+    description: Build a Docker image.
+    options:
+      envFile:
+        - '/.env'
+    command: |
+      docker build \
+        -t $DOCKER_REGISTRY/$DOCKER_NAME:latest \
+        -f ./Dockerfile \
+        .
+
+  docker-push:
+    description: Push a Docker image to the registry.
+    deps:
+      - '~:docker-build'
+    inputs:
+      - './Dockerfile'
+    options:
+      envFile:
+        - '/.env'
+    command: |
+      docker push $DOCKER_REGISTRY/$DOCKER_NAME:latest
