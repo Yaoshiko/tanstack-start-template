@@ -6,16 +6,14 @@ tasks:
     description: Start the development server.
     local: true
     deps:
-      - 'node:install'
+      - '^:install'
       - '~:db-run'
-      - 'node:dev'
+      - '^:dev'
 
   db-run:
     description: Run the database container.
     options:
       envFile: '/.env'
-    deps:
-      - '~:db-rm'
     command: |
       docker run \
         --name $DB_CONTAINER \
@@ -23,7 +21,7 @@ tasks:
         -e POSTGRES_PASSWORD=$DB_PASSWORD \
         -e POSTGRES_DB=$DB_NAME \
         -p 5432:5432 \
-        -d postgres:latest
+        -d postgres:latest || true
 
   db-rm:
     description: Remove the database container.

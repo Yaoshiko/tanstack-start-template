@@ -1,5 +1,6 @@
 fileGroups:
   sources:
+    - 'src/**/*'
     - 'app/**/*'
     - 'public/**/*'
     - '.env'
