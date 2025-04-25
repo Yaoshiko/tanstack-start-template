@@ -10,7 +10,7 @@ declare global {
       BETTER_AUTH_COOKIE_CACHE: number;
 
       // Data layer.
-      DATABASE_URL: string;
+      DB_URL: string;
       // Mail service.
       SMTP_SERVICE: string;
       SMTP_HOST: string;

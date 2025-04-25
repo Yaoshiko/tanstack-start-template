@@ -6,11 +6,7 @@
   "scripts": {
     "dev": "vinxi dev | pino-pretty",
     "build": "vinxi build",
-    "start": "node --env-file=.env .output/server/index.mjs | pino-pretty",
-    "db:generate": "drizzle-kit generate",
-    "db:migrate": "drizzle-kit migrate",
-    "db:studio": "drizzle-kit studio",
-    "db:seed": "npx tsx app/db/seed.ts"
+    "start": "node --env-file=.env .output/server/index.mjs | pino-pretty"
   },
   "dependencies": {
     "@radix-ui/react-alert-dialog": "^1.1.6",
@@ -58,7 +54,6 @@
     "@types/nodemailer": "6.4.17",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
-    "drizzle-kit": "^0.30.5",
     "eslint": "^9.22.0",
     "eslint-import-resolver-typescript": "^3.9.0",
     "eslint-plugin-import": "^2.31.0",

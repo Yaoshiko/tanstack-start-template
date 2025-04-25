@@ -9,6 +9,10 @@ tasks:
     description: Start the development server.
     command: pnpm dev
     local: true
+    options:
+      envFile:
+        - '/.env'
+        - '.env'
     inputs:
       - 'package.json'
       - 'pnpm-lock.yaml'

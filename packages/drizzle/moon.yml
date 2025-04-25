@@ -1,0 +1,41 @@
+type: library
+language: typescript
+
+fileGroups:
+  inputs:
+    - './src/**/*'
+    - './drizzle.config.ts'
+  migrations:
+    - './migrations/**/*'
+
+tasks:
+  generate:
+    description: Generate the database schema.
+    command: drizzle-kit generate
+    local: true
+    inputs:
+      - '@globs(inputs)'
+    outputs:
+      - '@globs(migrations)'
+
+  migrate:
+    description: Run the database migrations.
+    command: drizzle-kit migrate
+    local: true
+    options:
+      envFile:
+        - '/.env'
+    inputs:
+      - '@globs(migrations)'
+
+  studio:
+    description: Open the database studio.
+    command: drizzle-kit studio
+    local: true
+
+  seed:
+    description: Seed the database.
+    command: npx tsx app/db/seed.ts
+    local: true
+    inputs:
+      - 'app/db/seed.ts'
