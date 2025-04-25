@@ -1,23 +1,2 @@
 type: application
 language: typescript
-
-fileGroups:
-  sources:
-    - 'app/**/*'
-    - 'public/**/*'
-    - '.env'
-
-tasks:
-  docker-build:
-    description: Build the Docker image for the app.
-    options:
-      envFile: '/.env'
-    inputs:
-      - '@globs(sources)'
-    outputs:
-      - .output
-    command: |
-      docker build \
-        -t $DOCKER_REGISTRY/tanstack-start-template:latest \
-        -f ./node.dockerfile \
-        .

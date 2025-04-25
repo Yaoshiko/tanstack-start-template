@@ -1,0 +1,31 @@
+fileGroups:
+  sources:
+    - 'app/**/*'
+    - 'public/**/*'
+    - '.env'
+
+tasks:
+  dev:
+    description: Start the development server.
+    command: pnpm dev
+    local: true
+    inputs:
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - '@globs(sources)'
+
+  docker-build:
+    description: Build the Docker image for the app.
+    options:
+      envFile:
+        - '/.env'
+        - '.env'
+    inputs:
+      - '@globs(sources)'
+    outputs:
+      - .output
+    command: |
+      docker build \
+        -t $DOCKER_REGISTRY/$APP_NAME:latest \
+        -f ./Dockerfile \
+        .

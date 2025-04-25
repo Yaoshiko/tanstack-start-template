@@ -1,0 +1,25 @@
+tasks:
+  install:
+    description: Install dependencies
+    command: pnpm install
+    inputs:
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+    outputs:
+      - node_modules
+
+  types-check:
+    description: Run TypeScript type checking
+    command: tsc --project tsconfig.json --pretty --noEmit
+
+  lint:
+    description: Run ESLint on the app directory
+    command: eslint app --ignore-pattern .gitignore
+
+  lint-fix:
+    description: Fix linting errors
+    command: eslint app --ignore-pattern .gitignore --fix
+
+  format:
+    description: Format the app directory with Prettier
+    command: prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc
