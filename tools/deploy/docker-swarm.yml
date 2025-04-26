@@ -17,10 +17,11 @@ services:
       - postgres_data:/var/lib/postgresql/data
     networks:
       - app-network
-    command: >
+    entrypoint: >
       bash -c "
         source /usr/local/bin/load-secrets.sh DB_PASSWORD;
-        export POSTGRES_PASSWORD=$DB_PASSWORD && exec docker-entrypoint.sh postgres
+        export POSTGRES_PASSWORD=$$DB_PASSWORD;
+        exec $$@
       "
 
   drizzle:
