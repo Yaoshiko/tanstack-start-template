@@ -20,7 +20,7 @@ services:
     command: >
       bash -c "
         source /usr/local/bin/load-secrets.sh DB_PASSWORD;
-        POSTGRES_PASSWORD=$DB_PASSWORD docker-entrypoint.sh postgres
+        export POSTGRES_PASSWORD=$DB_PASSWORD && exec docker-entrypoint.sh postgres
       "
 
   drizzle:
