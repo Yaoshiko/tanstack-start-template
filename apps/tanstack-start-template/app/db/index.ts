@@ -2,8 +2,7 @@ import { useEnvironment } from 'app/lib/environment';
 import { getDatabase } from 'drizzle-db';
 
 const { serverEnv } = useEnvironment();
-if (!serverEnv!.DB_URL) {
-  throw new Error('DB_URL environment variable is not set');
-}
 
-export const db = getDatabase(serverEnv!.DB_URL);
+const db_url = `postgres://${serverEnv!.DB_USER}:${serverEnv!.DB_PASSWORD}@${serverEnv!.DB_HOST}:${serverEnv!.DB_PORT}/${serverEnv!.DB_NAME}`;
+
+export const db = getDatabase(db_url);

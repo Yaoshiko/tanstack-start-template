@@ -2,29 +2,67 @@ version: '3.8'
 services:
   postgres:
     image: postgres:16.4-alpine
+    secrets:
+      - DB_PASSWORD
+    configs:
+      - source: load-secrets.sh
+        target: /usr/local/bin/load-secrets.sh
+        mode: 0555
     environment:
-      POSTGRES_DB: postgres
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
     ports:
       - '5432:5432'
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
       - app-network
+    command: >
+      bash -c "
+        source /usr/local/bin/load-secrets.sh DB_PASSWORD;
+        POSTGRES_PASSWORD=$DB_PASSWORD docker-entrypoint.sh postgres
+      "
+
+  drizzle:
+    image: ${DOCKER_REGISTRY}/tanstack-start-template/drizzle:latest
+    secrets:
+      - DB_PASSWORD
+    configs:
+      - source: load-secrets.sh
+        target: /usr/local/bin/load-secrets.sh
+        mode: 0555
+    environment:
+      DB_USER: ${DB_USER}
+      DB_NAME: ${DB_NAME}
+      DB_HOST: postgres
+      DB_PORT: 5432
+    depends_on:
+      - postgres
+    networks:
+      - app-network
+    # One-off task to run DB migrations.
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: none
 
   app:
-    image: 192.168.1.30:5000/tanstack-start-template:latest
+    image: ${DOCKER_REGISTRY}/tanstack-start-template/app:latest
+    secrets:
+      - DB_PASSWORD
+    configs:
+      - source: load-secrets.sh
+        target: /usr/local/bin/load-secrets.sh
+        mode: 0555
     environment:
-      # FIXME: Use docker swarm secrets.
+      DB_USER: ${DB_USER}
+      DB_NAME: ${DB_NAME}
       DB_HOST: postgres
-      DB_USER: postgres
-      DB_PASSWORD: postgres
-      DB_NAME: postgres
+      DB_PORT: 5432
     ports:
       - '3000:3000'
     depends_on:
-      - postgres
+      - migrations
     networks:
       - app-network
 
@@ -33,3 +71,11 @@ volumes:
 
 networks:
   app-network:
+
+secrets:
+  DB_PASSWORD:
+    external: true
+
+configs:
+  load-secrets.sh:
+    external: true

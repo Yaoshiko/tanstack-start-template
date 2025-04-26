@@ -1,21 +1,26 @@
 tasks:
+  # TODO: Manage image versioning and retention.
   docker-build:
     description: Build a Docker image.
+    inputs:
+      - './Dockerfile'
     options:
       envFile:
         - '/.env'
     command: |
-      docker build \
-        -t $DOCKER_REGISTRY/$DOCKER_NAME:latest \
-        -f ./Dockerfile \
-        .
+      bash -c "
+        docker build \
+          -t $DOCKER_REGISTRY/$DOCKER_NAME:latest \
+          -t $DOCKER_REGISTRY/$DOCKER_NAME:$(date +%Y%m%d%H%M%S) \
+          -t $DOCKER_REGISTRY/$DOCKER_NAME:$(git rev-parse HEAD) \
+          -f ./Dockerfile \
+          .
+      "
 
   docker-push:
     description: Push a Docker image to the registry.
     deps:
       - '~:docker-build'
-    inputs:
-      - './Dockerfile'
     options:
       envFile:
         - '/.env'

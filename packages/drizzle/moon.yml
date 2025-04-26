@@ -6,6 +6,7 @@ tags:
 fileGroups:
   inputs:
     - './src/**/*'
+    - 'package.json'
     - './drizzle.config.ts'
   migrations:
     - './migrations/**/*'
@@ -50,10 +51,11 @@ tasks:
     deps:
       - '~:generate'
     inputs:
+      - '@globs(inputs)'
       - '@globs(migrations)'
     env:
-      DOCKER_NAME: tanstack-start-template
+      DOCKER_NAME: tanstack-start-template/drizzle
 
   docker-push:
     env:
-      DOCKER_NAME: tanstack-start-template
+      DOCKER_NAME: tanstack-start-template/drizzle

@@ -1,1 +1,24 @@
 type: automation
+language: bash
+tags:
+  - swarm
+
+dependsOn:
+  - 'tanstack-start-template'
+  - 'drizzle'
+
+tasks:
+  docker-stack:
+    description: Deploy the app to Docker Swarm.
+    deps:
+      - '^:docker-push'
+    options:
+      envFile:
+        - '/.env'
+    local: true
+    command: docker stack deploy -c docker-swarm.yml tanstack-start-template
+
+  docker-stack-rm:
+    description: Remove the app from Docker Swarm.
+    local: true
+    command: docker stack rm tanstack-start-template
