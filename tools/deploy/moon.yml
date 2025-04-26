@@ -6,6 +6,7 @@ tags:
 dependsOn:
   - 'tanstack-start-template'
   - 'drizzle'
+  - 'database'
 
 tasks:
   docker-stack:

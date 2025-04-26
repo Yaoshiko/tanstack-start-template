@@ -5,12 +5,12 @@ tags:
 
 fileGroups:
   inputs:
-    - './load-db-password.sh'
+    - './*.sh'
 
 tasks:
   docker-build:
     inputs:
-      - '@files(inputs)'
+      - '@globs(inputs)'
     env:
       DOCKER_NAME: tanstack-start-template/database
 
