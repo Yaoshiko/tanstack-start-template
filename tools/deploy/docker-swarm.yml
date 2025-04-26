@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   postgres:
-    image: postgres:16.4-alpine
+    image: ${DOCKER_REGISTRY}/tanstack-start-template/database:latest
     secrets:
       - DB_PASSWORD
     configs:
@@ -17,12 +17,6 @@ services:
       - postgres_data:/var/lib/postgresql/data
     networks:
       - app-network
-    entrypoint: >
-      bash -c "
-        source /usr/local/bin/load-secrets.sh DB_PASSWORD;
-        export POSTGRES_PASSWORD=$$DB_PASSWORD;
-        exec $$@
-      "
 
   drizzle:
     image: ${DOCKER_REGISTRY}/tanstack-start-template/drizzle:latest

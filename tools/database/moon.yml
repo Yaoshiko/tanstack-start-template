@@ -1,0 +1,19 @@
+type: library
+language: typescript
+tags:
+  - docker
+
+fileGroups:
+  inputs:
+    - './load-db-password.sh'
+
+tasks:
+  docker-build:
+    inputs:
+      - '@files(inputs)'
+    env:
+      DOCKER_NAME: tanstack-start-template/database
+
+  docker-push:
+    env:
+      DOCKER_NAME: tanstack-start-template/database
