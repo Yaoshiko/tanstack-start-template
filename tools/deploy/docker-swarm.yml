@@ -10,10 +10,10 @@ services:
   postgres:
     image: ${DOCKER_REGISTRY}/tanstack-start-template/database:latest
     secrets:
-      - ${PROJECT_NAME}_DB_PASSWORD
+      - tanstack-start-template_DB_PASSWORD
     <<: *load-secrets-config
     environment:
-      PROJECT_NAME: ${PROJECT_NAME}
+      PROJECT_NAME: tanstack-start-template
       POSTGRES_DB: ${DB_NAME}
       POSTGRES_USER: ${DB_USER}
     ports:
@@ -26,10 +26,10 @@ services:
   drizzle:
     image: ${DOCKER_REGISTRY}/tanstack-start-template/drizzle:latest
     secrets:
-      - ${PROJECT_NAME}_DB_PASSWORD
+      - tanstack-start-template_DB_PASSWORD
     <<: *load-secrets-config
     environment:
-      PROJECT_NAME: ${PROJECT_NAME}
+      PROJECT_NAME: tanstack-start-template
       DB_USER: ${DB_USER}
       DB_NAME: ${DB_NAME}
       DB_HOST: postgres
@@ -47,7 +47,7 @@ services:
   app:
     image: ${DOCKER_REGISTRY}/tanstack-start-template/app:latest
     secrets:
-      - ${PROJECT_NAME}_DB_PASSWORD
+      - tanstack-start-template_DB_PASSWORD
     <<: *load-secrets-config
     environment:
       DB_USER: ${DB_USER}
@@ -68,11 +68,11 @@ networks:
   app-network:
 
 secrets:
-  ${PROJECT_NAME}_DB_PASSWORD:
+  tanstack-start-template_DB_PASSWORD:
     external: true
-  ${PROJECT_NAME}_BETTER_AUTH_SECRET:
+  tanstack-start-template_BETTER_AUTH_SECRET:
     external: true
-  ${PROJECT_NAME}_SMTP_PASSWORD:
+  tanstack-start-template_SMTP_PASSWORD:
     external: true
 
 configs:
