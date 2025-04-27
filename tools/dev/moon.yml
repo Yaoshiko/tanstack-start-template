@@ -1,5 +1,8 @@
-type: tool
 language: shell
+
+dependsOn:
+  - 'drizzle'
+  - 'tanstack-start-template'
 
 tasks:
   dev:
@@ -7,13 +10,14 @@ tasks:
     local: true
     deps:
       - '^:install'
-      - '~:db-run'
-      - '^:dev'
+      - 'drizzle:migrate'
+      - 'tanstack-start-template:dev'
 
   db-run:
     description: Run the database container.
     options:
-      envFile: '/.env'
+      envFile: '.env'
+    local: true
     command: |
       docker run \
         --name $DB_CONTAINER \
@@ -21,33 +25,38 @@ tasks:
         -e POSTGRES_PASSWORD=$DB_PASSWORD \
         -e POSTGRES_DB=$DB_NAME \
         -p 5432:5432 \
-        -d postgres:latest || true
+        -d \
+        postgres:latest || true
 
   db-rm:
     description: Remove the database container.
     options:
-      envFile: '/.env'
+      envFile: '.env'
+    local: true
     command: |
       docker rm -f $DB_CONTAINER
 
   db-stop:
     description: Stop the database container.
     options:
-      envFile: '/.env'
+      envFile: '.env'
+    local: true
     command: |
       docker stop $DB_CONTAINER
 
   db-reset:
     description: Reset the database container.
     options:
-      envFile: '/.env'
+      envFile: '.env'
+    local: true
     command: |
       docker rm -f $DB_CONTAINER
 
   db-logs:
     description: View the database container logs.
     options:
-      envFile: '/.env'
+      envFile: '.env'
+    local: true
     command: |
       docker logs $DB_CONTAINER
 
@@ -55,5 +64,6 @@ tasks:
     description: Connect to the database container.
     options:
       envFile: '/.env'
+    local: true
     command: |
       docker exec -it $DB_CONTAINER psql -U postgres -d tanstack-start-template

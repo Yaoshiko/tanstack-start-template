@@ -11,7 +11,7 @@ const { logger } = useLogger();
 const { serverEnv } = useEnvironment();
 
 export function useAuthEmail() {
-  const logoUrl = `${serverEnv!.BETTER_AUTH_URL}/donut.svg`;
+  const logoUrl = `${serverEnv!.PUBLIC_BASEURL}/donut.svg`;
   const client = nodemailer.createTransport({
     service: serverEnv!.STMP_SERVICE,
     host: serverEnv!.SMTP_HOST,

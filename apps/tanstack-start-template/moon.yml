@@ -36,3 +36,9 @@ tasks:
   docker-push:
     env:
       DOCKER_NAME: tanstack-start-template/app
+
+  dev:
+    options:
+      envFile:
+        - '.env.secrets'
+        - '/tools/dev/.env'

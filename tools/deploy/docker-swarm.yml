@@ -9,6 +9,7 @@ services:
         target: /usr/local/bin/load-secrets.sh
         mode: 0555
     environment:
+      PROJECT_NAME: ${PROJECT_NAME}
       POSTGRES_DB: ${DB_NAME}
       POSTGRES_USER: ${DB_USER}
     ports:
@@ -27,6 +28,7 @@ services:
         target: /usr/local/bin/load-secrets.sh
         mode: 0555
     environment:
+      PROJECT_NAME: ${PROJECT_NAME}
       DB_USER: ${DB_USER}
       DB_NAME: ${DB_NAME}
       DB_HOST: postgres

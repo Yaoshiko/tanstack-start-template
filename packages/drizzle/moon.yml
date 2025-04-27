@@ -3,6 +3,9 @@ language: typescript
 tags:
   - docker
 
+dependsOn:
+  - 'dev'
+
 fileGroups:
   inputs:
     - './src/**/*'
@@ -26,7 +29,9 @@ tasks:
     local: true
     options:
       envFile:
-        - '/.env'
+        - '/tools/dev/.env'
+    deps:
+      - 'dev:db-run'
     inputs:
       - '@globs(migrations)'
 
@@ -35,7 +40,7 @@ tasks:
     local: true
     options:
       envFile:
-        - '/.env'
+        - '/tools/dev/.env'
     command: drizzle-kit studio
 
   seed:
@@ -43,7 +48,7 @@ tasks:
     command: npx tsx seed.ts
     options:
       envFile:
-        - '/.env'
+        - '/tools/dev/.env'
     inputs:
       - './seed.ts'
 
