@@ -10,7 +10,7 @@ services:
   postgres:
     image: ${DOCKER_REGISTRY}/tanstack-start-template/database:latest
     secrets:
-      - DB_PASSWORD
+      - ${PROJECT_NAME}_DB_PASSWORD
     <<: *load-secrets-config
     environment:
       PROJECT_NAME: ${PROJECT_NAME}
@@ -26,7 +26,7 @@ services:
   drizzle:
     image: ${DOCKER_REGISTRY}/tanstack-start-template/drizzle:latest
     secrets:
-      - DB_PASSWORD
+      - ${PROJECT_NAME}_DB_PASSWORD
     <<: *load-secrets-config
     environment:
       PROJECT_NAME: ${PROJECT_NAME}
@@ -47,7 +47,7 @@ services:
   app:
     image: ${DOCKER_REGISTRY}/tanstack-start-template/app:latest
     secrets:
-      - DB_PASSWORD
+      - ${PROJECT_NAME}_DB_PASSWORD
     <<: *load-secrets-config
     environment:
       DB_USER: ${DB_USER}
