@@ -1,0 +1,5 @@
+# Define environment variables for all tasks by default.
+taskOptions:
+  envFile:
+    - '/tools/deploy/.env'
+    - '.env'

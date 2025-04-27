@@ -13,9 +13,6 @@ tasks:
     description: Deploy the app to Docker Swarm.
     deps:
       - '^:docker-push'
-    options:
-      envFile:
-        - '/.env'
     local: true
     command: docker stack deploy -c docker-swarm.yml tanstack-start-template
 

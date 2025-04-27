@@ -4,9 +4,6 @@ tasks:
     description: Build a Docker image.
     inputs:
       - './Dockerfile'
-    options:
-      envFile:
-        - '/.env'
     command: |
       bash -c "
         docker build \
@@ -21,8 +18,5 @@ tasks:
     description: Push a Docker image to the registry.
     deps:
       - '~:docker-build'
-    options:
-      envFile:
-        - '/.env'
     command: |
       docker push $DOCKER_REGISTRY/$DOCKER_NAME:latest

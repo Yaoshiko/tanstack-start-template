@@ -25,7 +25,9 @@ tasks:
 
   migrate:
     description: Run the database migrations.
-    command: drizzle-kit migrate
+    command: >
+      npx tsx wait-db.ts
+      drizzle-kit migrate
     local: true
     options:
       envFile:
@@ -38,17 +40,11 @@ tasks:
   studio:
     description: Open the database studio.
     local: true
-    options:
-      envFile:
-        - '/tools/dev/.env'
     command: drizzle-kit studio
 
   seed:
     description: Seed the database.
     command: npx tsx seed.ts
-    options:
-      envFile:
-        - '/tools/dev/.env'
     inputs:
       - './seed.ts'
 

@@ -20,10 +20,6 @@ tasks:
       - '@globs(sources)'
     outputs:
       - '@globs(build)'
-    options:
-      envFile:
-        - '/.env'
-        - '.env'
 
   docker-build:
     deps:
@@ -41,4 +37,3 @@ tasks:
     options:
       envFile:
         - '.env.secrets'
-        - '/tools/dev/.env'
