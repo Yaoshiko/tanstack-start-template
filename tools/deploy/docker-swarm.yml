@@ -8,7 +8,7 @@ x-load-secrets-config: &load-secrets-config
 
 services:
   postgres:
-    image: ${DOCKER_REGISTRY}/tanstack-start-template/database:latest
+    image: tanstack-start-template/database:latest
     secrets:
       - tanstack-start-template_DB_PASSWORD
     <<: *load-secrets-config
@@ -24,7 +24,7 @@ services:
       - app-network
 
   drizzle:
-    image: ${DOCKER_REGISTRY}/tanstack-start-template/drizzle:latest
+    image: tanstack-start-template/drizzle:latest
     secrets:
       - tanstack-start-template_DB_PASSWORD
     <<: *load-secrets-config
@@ -45,7 +45,7 @@ services:
         condition: none
 
   app:
-    image: ${DOCKER_REGISTRY}/tanstack-start-template/app:latest
+    image: tanstack-start-template/app:latest
     secrets:
       - tanstack-start-template_DB_PASSWORD
     <<: *load-secrets-config
