@@ -1,17 +1,17 @@
 version: '3.8'
 
 x-load-secrets-config: &load-secrets-config
-  - source: load-secrets.sh
-    target: /usr/local/bin/load-secrets.sh
-    mode: 0555
+  configs:
+    - source: load-secrets.sh
+      target: /usr/local/bin/load-secrets.sh
+      mode: 0555
 
 services:
   postgres:
     image: ${DOCKER_REGISTRY}/tanstack-start-template/database:latest
     secrets:
       - DB_PASSWORD
-    configs:
-      <<: *load-secrets-config
+    <<: *load-secrets-config
     environment:
       PROJECT_NAME: ${PROJECT_NAME}
       POSTGRES_DB: ${DB_NAME}
@@ -27,8 +27,7 @@ services:
     image: ${DOCKER_REGISTRY}/tanstack-start-template/drizzle:latest
     secrets:
       - DB_PASSWORD
-    configs:
-      <<: *load-secrets-config
+    <<: *load-secrets-config
     environment:
       PROJECT_NAME: ${PROJECT_NAME}
       DB_USER: ${DB_USER}
@@ -49,8 +48,7 @@ services:
     image: ${DOCKER_REGISTRY}/tanstack-start-template/app:latest
     secrets:
       - DB_PASSWORD
-    configs:
-      <<: *load-secrets-config
+    <<: *load-secrets-config
     environment:
       DB_USER: ${DB_USER}
       DB_NAME: ${DB_NAME}
