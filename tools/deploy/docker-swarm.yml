@@ -68,7 +68,11 @@ networks:
   app-network:
 
 secrets:
-  DB_PASSWORD:
+  ${PROJECT_NAME}_DB_PASSWORD:
+    external: true
+  ${PROJECT_NAME}_BETTER_AUTH_SECRET:
+    external: true
+  ${PROJECT_NAME}_SMTP_PASSWORD:
     external: true
 
 configs:
