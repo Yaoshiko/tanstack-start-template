@@ -45,7 +45,7 @@ services:
         condition: none
 
   app:
-    image: 192.168.1.30:5000/tanstack-start-template/app:1.0.0
+    image: 192.168.1.30:5000/tanstack-start-template/app:1.1.0
     secrets:
       - tanstack-start-template_DB_PASSWORD
       - tanstack-start-template_BETTER_AUTH_SECRET

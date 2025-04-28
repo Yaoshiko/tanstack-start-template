@@ -14,4 +14,8 @@ RUN npm install -g pino-pretty
 
 EXPOSE 3000
 
+# Load secrets.
+ENTRYPOINT ["/bin/bash", "-c", "source /usr/local/bin/load-secrets.sh DB_PASSWORD && exec \"$@\"", "--"]
+
+# Set the command to run the application.
 CMD ["npm", "run", "start"]
