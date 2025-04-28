@@ -52,6 +52,7 @@ services:
       - tanstack-start-template_SMTP_PASSWORD
     <<: *load-secrets-config
     environment:
+      PROJECT_NAME: tanstack-start-template
       DB_USER: app
       DB_NAME: tanstack-start-template
       DB_HOST: postgres

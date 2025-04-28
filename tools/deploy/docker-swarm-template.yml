@@ -52,6 +52,7 @@ services:
       - ${PROJECT_NAME}_SMTP_PASSWORD
     <<: *load-secrets-config
     environment:
+      PROJECT_NAME: ${PROJECT_NAME}
       DB_USER: ${DB_USER}
       DB_NAME: ${DB_NAME}
       DB_HOST: postgres

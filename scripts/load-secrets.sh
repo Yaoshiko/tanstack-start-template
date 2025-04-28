@@ -12,7 +12,7 @@ load_secrets() {
       export "$secret"="$(< "$file")"
       echo "Secret $secret loaded"
     else
-      echo "Warning: secret $secret not found"
+      echo -e "\e[31mError: secret $secret not found\e[0m"
     fi
   done
 }
