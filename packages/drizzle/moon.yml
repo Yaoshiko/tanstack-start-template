@@ -55,8 +55,8 @@ tasks:
       - '@globs(inputs)'
       - '@globs(migrations)'
     env:
-      DOCKER_NAME: tanstack-start-template/drizzle
+      DOCKER_NAME: drizzle
 
   docker-push:
     env:
-      DOCKER_NAME: tanstack-start-template/drizzle
+      DOCKER_NAME: drizzle

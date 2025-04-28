@@ -27,11 +27,11 @@ tasks:
     inputs:
       - '@globs(build)'
     env:
-      DOCKER_NAME: tanstack-start-template/app
+      DOCKER_NAME: app
 
   docker-push:
     env:
-      DOCKER_NAME: tanstack-start-template/app
+      DOCKER_NAME: app
 
   dev:
     options:

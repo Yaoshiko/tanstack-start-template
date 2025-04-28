@@ -12,8 +12,8 @@ tasks:
     inputs:
       - '@globs(inputs)'
     env:
-      DOCKER_NAME: tanstack-start-template/database
+      DOCKER_NAME: database
 
   docker-push:
     env:
-      DOCKER_NAME: tanstack-start-template/database
+      DOCKER_NAME: database

@@ -10,13 +10,32 @@ dependsOn:
 
 tasks:
   docker-stack:
-    description: Deploy the app to Docker Swarm.
+    description: Deploy the app to local Docker Swarm.
     deps:
       - '^:docker-push'
+      - '~:prepare-swarm-template'
     local: true
-    command: docker stack deploy -c docker-swarm.yml tanstack-start-template
+    command: docker stack deploy -c docker-swarm.yml $PROJECT_NAME
 
   docker-stack-rm:
-    description: Remove the app from Docker Swarm.
+    description: Remove the app from local Docker Swarm.
     local: true
-    command: docker stack rm tanstack-start-template
+    command: docker stack rm $PROJECT_NAME
+
+  prepare-swarm-template:
+    description: Update Docker Swarm template.
+    inputs:
+      - './docker-swarm-template.yml'
+    outputs:
+      - './docker-swarm.yml'
+    deps:
+      - '^:docker-push'
+    command: |
+      env
+      envsubst < docker-swarm-template.yml > docker-swarm.yml
+
+  deploy:
+    description: Deploy dockers and update Docker Swarm template.
+    deps:
+      - '^:docker-push'
+      - '~:prepare-swarm-template'

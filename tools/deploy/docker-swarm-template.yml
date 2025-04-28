@@ -8,14 +8,14 @@ x-load-secrets-config: &load-secrets-config
 
 services:
   postgres:
-    image: tanstack-start-template/database:1.6.0
+    image: ${PROJECT_NAME}/database:${database_VERSION}
     secrets:
-      - tanstack-start-template_DB_PASSWORD
+      - ${PROJECT_NAME}_DB_PASSWORD
     <<: *load-secrets-config
     environment:
-      PROJECT_NAME: tanstack-start-template
-      POSTGRES_DB: tanstack-start-template
-      POSTGRES_USER: app
+      PROJECT_NAME: ${PROJECT_NAME}
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
     ports:
       - '5432:5432'
     volumes:
@@ -24,14 +24,14 @@ services:
       - app-network
 
   drizzle:
-    image: tanstack-start-template/drizzle:1
+    image: ${PROJECT_NAME}/drizzle:${drizzle_VERSION}
     secrets:
-      - tanstack-start-template_DB_PASSWORD
+      - ${PROJECT_NAME}_DB_PASSWORD
     <<: *load-secrets-config
     environment:
-      PROJECT_NAME: tanstack-start-template
-      DB_USER: app
-      DB_NAME: tanstack-start-template
+      PROJECT_NAME: ${PROJECT_NAME}
+      DB_USER: ${DB_USER}
+      DB_NAME: ${DB_NAME}
       DB_HOST: postgres
       DB_PORT: 5432
     depends_on:
@@ -45,13 +45,13 @@ services:
         condition: none
 
   app:
-    image: tanstack-start-template/app:1
+    image: ${PROJECT_NAME}/app:${app_VERSION}
     secrets:
-      - tanstack-start-template_DB_PASSWORD
+      - ${PROJECT_NAME}_DB_PASSWORD
     <<: *load-secrets-config
     environment:
-      DB_USER: app
-      DB_NAME: tanstack-start-template
+      DB_USER: ${DB_USER}
+      DB_NAME: ${DB_NAME}
       DB_HOST: postgres
       DB_PORT: 5432
     ports:
@@ -68,11 +68,11 @@ networks:
   app-network:
 
 secrets:
-  tanstack-start-template_DB_PASSWORD:
+  ${PROJECT_NAME}_DB_PASSWORD:
     external: true
-  tanstack-start-template_BETTER_AUTH_SECRET:
+  ${PROJECT_NAME}_BETTER_AUTH_SECRET:
     external: true
-  tanstack-start-template_SMTP_PASSWORD:
+  ${PROJECT_NAME}_SMTP_PASSWORD:
     external: true
 
 configs:
