@@ -48,6 +48,8 @@ services:
     image: ${DOCKER_REGISTRY}/${PROJECT_NAME}/app:${app_VERSION}
     secrets:
       - ${PROJECT_NAME}_DB_PASSWORD
+      - ${PROJECT_NAME}_BETTER_AUTH_SECRET
+      - ${PROJECT_NAME}_SMTP_PASSWORD
     <<: *load-secrets-config
     environment:
       DB_USER: ${DB_USER}

@@ -48,6 +48,8 @@ services:
     image: 192.168.1.30:5000/tanstack-start-template/app:1.0.0
     secrets:
       - tanstack-start-template_DB_PASSWORD
+      - tanstack-start-template_BETTER_AUTH_SECRET
+      - tanstack-start-template_SMTP_PASSWORD
     <<: *load-secrets-config
     environment:
       DB_USER: app
