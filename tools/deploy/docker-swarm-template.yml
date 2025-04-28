@@ -8,7 +8,7 @@ x-load-secrets-config: &load-secrets-config
 
 services:
   postgres:
-    image: ${PROJECT_NAME}/database:${database_VERSION}
+    image: ${DOCKER_REGISTRY}/${PROJECT_NAME}/database:${database_VERSION}
     secrets:
       - ${PROJECT_NAME}_DB_PASSWORD
     <<: *load-secrets-config
@@ -24,7 +24,7 @@ services:
       - app-network
 
   drizzle:
-    image: ${PROJECT_NAME}/drizzle:${drizzle_VERSION}
+    image: ${DOCKER_REGISTRY}/${PROJECT_NAME}/drizzle:${drizzle_VERSION}
     secrets:
       - ${PROJECT_NAME}_DB_PASSWORD
     <<: *load-secrets-config
@@ -45,7 +45,7 @@ services:
         condition: none
 
   app:
-    image: ${PROJECT_NAME}/app:${app_VERSION}
+    image: ${DOCKER_REGISTRY}/${PROJECT_NAME}/app:${app_VERSION}
     secrets:
       - ${PROJECT_NAME}_DB_PASSWORD
     <<: *load-secrets-config
