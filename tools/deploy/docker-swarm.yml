@@ -2,7 +2,7 @@ version: '3.8'
 
 x-load-secrets-config: &load-secrets-config
   configs:
-    - source: scripts/load-secrets.sh
+    - source: load-secrets.sh
       target: /usr/local/bin/load-secrets.sh
       mode: 0555
 
