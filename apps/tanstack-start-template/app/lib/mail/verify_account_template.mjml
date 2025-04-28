@@ -10,11 +10,7 @@
     <mj-section padding="20px"> </mj-section>
     <mj-section background-color="#f5f5f5" border-radius="10px" padding="20px">
       <mj-column>
-        <mj-image
-          width="100px"
-          src="http://localhost:3000/donut.svg"
-          alt="Company Logo"
-        />
+        <mj-image width="100px" src="{{logo_url}}" alt="Company Logo" />
         <mj-text font-size="20px" font-weight="bold" align="center"
           >Verify Your Account</mj-text
         >
