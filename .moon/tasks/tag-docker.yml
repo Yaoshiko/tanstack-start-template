@@ -5,10 +5,10 @@ tasks:
     inputs:
       - '/scripts/docker-build.sh'
       - './Dockerfile'
-    command: bash $workspaceRoot/scripts/docker-build.sh $workspaceRoot/.env
+    command: bash $workspaceRoot/scripts/docker-build.sh $workspaceRoot/.versions
 
   docker-push:
     description: Push Docker images to the registry.
     deps:
       - '~:docker-build'
-    command: bash $workspaceRoot/scripts/docker-push.sh $workspaceRoot/.env
+    command: bash $workspaceRoot/scripts/docker-push.sh $workspaceRoot/.versions

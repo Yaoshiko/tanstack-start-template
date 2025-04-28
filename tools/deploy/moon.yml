@@ -30,8 +30,12 @@ tasks:
       - './docker-swarm.yml'
     deps:
       - '^:docker-push'
+    options:
+      envFile:
+        - '.env'
+        - '/.env'
+        - '/.versions'
     command: |
-      env
       envsubst < docker-swarm-template.yml > docker-swarm.yml
 
   deploy:
