@@ -9,37 +9,27 @@ dependsOn:
   - 'database'
 
 tasks:
-  docker-stack:
+  deploy-local:
     description: Deploy the app to local Docker Swarm.
     deps:
       - '^:docker-push'
-      - '~:prepare-swarm-template'
+      - '~:deploy'
     local: true
     command: docker stack deploy -c docker-swarm.yml $PROJECT_NAME
 
-  docker-stack-rm:
+  rm-stack-local:
     description: Remove the app from local Docker Swarm.
     local: true
     command: docker stack rm $PROJECT_NAME
 
-  prepare-swarm-template:
+  deploy:
     description: Update Docker Swarm template.
     inputs:
+      - '/.versions'
+      - '/scripts/prepare-docker-swarm.sh'
       - './docker-swarm-template.yml'
     outputs:
       - './docker-swarm.yml'
     deps:
       - '^:docker-push'
-    options:
-      envFile:
-        - '.env'
-        - '/.env'
-        - '/.versions'
-    command: |
-      envsubst < docker-swarm-template.yml > docker-swarm.yml
-
-  deploy:
-    description: Deploy dockers and update Docker Swarm template.
-    deps:
-      - '^:docker-push'
-      - '~:prepare-swarm-template'
+    command: bash $workspaceRoot/scripts/prepare-docker-swarm.sh $workspaceRoot/.versions
