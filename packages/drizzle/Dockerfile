@@ -13,12 +13,6 @@ RUN npm install
 COPY drizzle.config.ts ./
 COPY migrations/ ./migrations
 
-# Define required environment variables.
-ENV DB_USER=""
-ENV DB_HOST=""
-ENV DB_PORT=""
-ENV DB_NAME=""
-
 # Load secrets.
 ENTRYPOINT ["/bin/bash", "-c", "source /usr/local/bin/load-secrets.sh DB_PASSWORD && exec \"$@\"", "--"]
 
