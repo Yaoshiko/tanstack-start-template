@@ -1,4 +1,4 @@
-FROM", "node:23-slim
+FROM node:23-slim
 
 # Set the working directory.
 WORKDIR /app
