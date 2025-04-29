@@ -15,5 +15,3 @@ try {
   console.error(`Failed to connect to ${DB_HOST}:${DB_PORT} within 1 minute.`);
   process.exit(1);
 }
-
-console.log('Database ready');

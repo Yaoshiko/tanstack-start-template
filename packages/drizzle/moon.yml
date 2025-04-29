@@ -26,8 +26,7 @@ tasks:
   migrate:
     description: Run the database migrations.
     command: >
-      npx tsx wait-db.ts
-      drizzle-kit migrate
+      npx tsx wait-db.ts && drizzle-kit migrate
     local: true
     options:
       envFile:

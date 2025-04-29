@@ -1,4 +1,4 @@
-FROM node:23-slim
+FROM", "node:23-slim
 
 # Set the working directory.
 WORKDIR /app
@@ -23,4 +23,4 @@ ENV DB_NAME=""
 ENTRYPOINT ["/bin/bash", "-c", "source /usr/local/bin/load-secrets.sh DB_PASSWORD && exec \"$@\"", "--"]
 
 # Set the command to run the migration.
-CMD ["npx", "drizzle-kit", "migrate"]
+CMD ["npx", "tsx", "wait-db.ts", "&&", "drizzle-kit", "migrate"]
