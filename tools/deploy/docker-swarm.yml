@@ -42,7 +42,9 @@ services:
     deploy:
       replicas: 1
       restart_policy:
-        condition: none
+        condition: on-failure
+        delay: 3s
+        window: 120s
 
   app:
     image: 192.168.1.30:5000/tanstack-start-template/app:1.3.0

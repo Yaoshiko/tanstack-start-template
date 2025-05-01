@@ -17,4 +17,4 @@ COPY migrations/ ./migrations
 ENTRYPOINT ["/bin/bash", "-c", "source /usr/local/bin/load-secrets.sh DB_PASSWORD && exec \"$@\"", "--"]
 
 # Set the command to run the migration.
-CMD ["npx", "tsx", "wait-db.ts", "&&", "drizzle-kit", "migrate"]
+CMD ["drizzle-kit", "migrate"]

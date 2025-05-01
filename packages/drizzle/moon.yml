@@ -25,8 +25,7 @@ tasks:
 
   migrate:
     description: Run the database migrations.
-    command: >
-      npx tsx wait-db.ts && drizzle-kit migrate
+    command: bash @in(0) "npx drizzle-kit migrate"
     local: true
     options:
       envFile:
@@ -34,6 +33,7 @@ tasks:
     deps:
       - 'dev:db-run'
     inputs:
+      - '/scripts/retry.sh'
       - '@globs(migrations)'
 
   studio:

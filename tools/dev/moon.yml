@@ -22,7 +22,7 @@ tasks:
     description: Remove the database container.
     local: true
     command: |
-      docker rm -f $DB_CONTAINER
+      docker rm -fv $DB_CONTAINER
 
   db-logs:
     description: View the database container logs.
@@ -34,4 +34,4 @@ tasks:
     description: Connect to the database container.
     local: true
     command: |
-      docker exec -it $DB_CONTAINER psql -U postgres -d tanstack-start-template
+      docker exec -it $DB_CONTAINER psql -U postgres /bin/bash
