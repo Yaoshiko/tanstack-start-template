@@ -7,7 +7,7 @@ x-load-secrets-config: &load-secrets-config
       mode: 0555
 
 services:
-  postgres:
+  database:
     image: ${DOCKER_REGISTRY}/${PROJECT_NAME}/database:${database_VERSION}
     secrets:
       - ${PROJECT_NAME}_DB_PASSWORD
@@ -23,7 +23,7 @@ services:
     networks:
       - app-network
 
-  drizzle:
+  migrations:
     image: ${DOCKER_REGISTRY}/${PROJECT_NAME}/drizzle:${drizzle_VERSION}
     secrets:
       - ${PROJECT_NAME}_DB_PASSWORD
@@ -58,7 +58,7 @@ services:
       PROJECT_NAME: ${PROJECT_NAME}
       DB_USER: ${DB_USER}
       DB_NAME: ${DB_NAME}
-      DB_HOST: postgres
+      DB_HOST: database
       DB_PORT: 5432
     labels:
       - 'traefik.enable=true'
@@ -66,19 +66,15 @@ services:
       - 'traefik.http.routers.app.entrypoints=websecure'
       - 'traefik.http.routers.app.tls.certresolver=myresolver'
     depends_on:
-      - drizzle
+      - migrations
     networks:
       - app-network
       - traefik
 
-  traefik:
+  reverse-proxy:
     image: traefik:v3.3.6
-    labels:
-      - 'traefik.enable=true'
-      - 'traefik.http.routers.traefik.service=api@internal'
-      - 'traefik.http.routers.traefik.entrypoints=internal'
     command:
-      - '--providers.swarm.endpoint=tcp://127.0.0.1:2377'
+      - '--providers.swarm.endpoint=unix:///var/run/docker.sock'
       - '--providers.docker.exposedbydefault=false'
       - '--entrypoints.web.address=:80'
       - '--entrypoints.websecure.address=:443'
@@ -106,7 +102,14 @@ services:
     networks:
       - traefik
     deploy:
+      labels:
+        - 'traefik.enable=true'
+        - 'traefik.http.routers.traefik.service=api@internal'
+        - 'traefik.http.routers.traefik.entrypoints=internal'
       mode: global
+      placement:
+        constraints:
+          - node.role == manager
       restart_policy:
         condition: on-failure
 
