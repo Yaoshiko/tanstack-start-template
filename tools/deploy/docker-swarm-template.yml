@@ -92,8 +92,10 @@ services:
       - '--api.dashboard=true'
       # FIXME: Temporary. Remove this.
       - '--certificatesresolvers.myresolver.acme.caServer=https://acme-staging-v02.api.letsencrypt.org/directory'
+    secrets:
+      - ${PROJECT_NAME}_CF_DNS_API_TOKEN
     environment:
-      - CF_DNS_API_TOKEN=${CF_DNS_API_TOKEN}
+      - CF_DNS_API_TOKEN_FILE=/run/secrets/${PROJECT_NAME}_CF_DNS_API_TOKEN
     ports:
       - '80:80'
       - '443:443'
