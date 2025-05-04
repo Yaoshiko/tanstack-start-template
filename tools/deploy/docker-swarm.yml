@@ -38,7 +38,7 @@ services:
       - postgres
     networks:
       - app-network
-    # One-off task to run DB migrations.
+      - traefik
     deploy:
       replicas: 1
       restart_policy:
@@ -60,18 +60,56 @@ services:
       DB_NAME: tanstack-start-template
       DB_HOST: postgres
       DB_PORT: 5432
-    ports:
-      - '3000:3000'
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.http.routers.app.rule=Host(`https://donut.yaoshiko.com`)'
+      - 'traefik.http.routers.app.entrypoints=websecure'
+      - 'traefik.http.routers.app.tls.certresolver=myresolver'
     depends_on:
-      - migrations
+      - drizzle
     networks:
       - app-network
 
+  traefik:
+    image: traefik:v3.3.6
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.http.routers.traefik.service=api@internal'
+      - 'traefik.http.routers.traefik.entrypoints=websecure'
+      - 'traefik.http.routers.traefik.tls.certresolver=myresolver'
+    command:
+      - '--providers.docker.swarmMode=true'
+      - '--providers.docker.exposedbydefault=false'
+      - '--entrypoints.web.address=:80'
+      - '--entrypoints.websecure.address=:443'
+      - '--entrypoints.web.http.redirections.entryPoint.to=websecure'
+      - '--entrypoints.web.http.redirections.entryPoint.scheme=https'
+      - '--certificatesresolvers.myresolver.acme.tlschallenge=true'
+      - '--certificatesresolvers.myresolver.acme.email=nicola.barletta@outlook.it'
+      - '--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json'
+      - '--api.dashboard=true'
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - traefik-certificates:/letsencrypt
+    networks:
+      - traefik
+    deploy:
+      mode: global
+      restart_policy:
+        condition: on-failure
+    environment:
+      ACME_EMAIL: nicola.barletta@outlook.it
+
 volumes:
   postgres_data:
+  traefik-certificates:
 
 networks:
   app-network:
+  traefik:
 
 secrets:
   tanstack-start-template_DB_PASSWORD:

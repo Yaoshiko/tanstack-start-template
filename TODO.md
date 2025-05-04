@@ -13,8 +13,12 @@
   - [ ] README
   - [x] Form composition
 - Infra & DevOps
-  - [ ] Configure HTTP proxy (nginx or Traeffik)
-  - [ ] Configure public hostname
+  - [ ] Configure HTTP proxy (Traeffik)
+  - [ ] Configure cloudflare in swarm for HA / load balancing
+  - [x] Configure public hostname
   - [ ] Configure observability tools
   - [ ] Configure logging tools
   - [ ] Manage VLAN tags, firewall, ...
+  - [ ] GitHub CICD
+    - [ ] Configure GitHub workflow
+    - [ ] Setup GitHub runner in Proxmox
