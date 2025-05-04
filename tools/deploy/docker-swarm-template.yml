@@ -22,6 +22,9 @@ services:
       - postgres_data:/var/lib/postgresql/data
     networks:
       - app-network
+    deploy:
+      labels:
+        - 'traefik.enable=false'
 
   migrations:
     image: ${DOCKER_REGISTRY}/${PROJECT_NAME}/drizzle:${drizzle_VERSION}
@@ -38,13 +41,14 @@ services:
       - postgres
     networks:
       - app-network
-      - traefik
     deploy:
       replicas: 1
       restart_policy:
         condition: on-failure
         delay: 3s
         window: 120s
+      labels:
+        - 'traefik.enable=false'
 
   app:
     image: ${DOCKER_REGISTRY}/${PROJECT_NAME}/app:${app_VERSION}
@@ -65,11 +69,12 @@ services:
       - 'traefik.http.routers.app.rule=Host(`${PUBLIC_HOSTNAME}`)'
       - 'traefik.http.routers.app.entrypoints=websecure'
       - 'traefik.http.routers.app.tls.certresolver=myresolver'
+      - 'traefik.http.services.app.loadbalancer.server.port=3000'
     depends_on:
       - migrations
     networks:
       - app-network
-      - traefik
+      - reverse-proxy-network
 
   reverse-proxy:
     image: traefik:v3.3.6
@@ -100,12 +105,13 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - traefik-certificates:/letsencrypt
     networks:
-      - traefik
+      - reverse-proxy-network
     deploy:
       labels:
         - 'traefik.enable=true'
         - 'traefik.http.routers.traefik.service=api@internal'
         - 'traefik.http.routers.traefik.entrypoints=internal'
+        - 'traefik.http.services.traefik.loadbalancer.server.port=8080'
       mode: global
       placement:
         constraints:
@@ -119,7 +125,7 @@ volumes:
 
 networks:
   app-network:
-  traefik:
+  reverse-proxy-network:
 
 secrets:
   ${PROJECT_NAME}_DB_PASSWORD:
