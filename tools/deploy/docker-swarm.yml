@@ -62,28 +62,29 @@ services:
       DB_PORT: 5432
     labels:
       - 'traefik.enable=true'
-      - 'traefik.http.routers.app.rule=Host(`https://donut.yaoshiko.com`)'
+      - 'traefik.http.routers.app.rule=Host(`donut.yaoshiko.com`)'
       - 'traefik.http.routers.app.entrypoints=websecure'
       - 'traefik.http.routers.app.tls.certresolver=myresolver'
     depends_on:
       - drizzle
     networks:
       - app-network
+      - traefik
 
   traefik:
     image: traefik:v3.3.6
     labels:
       - 'traefik.enable=true'
       - 'traefik.http.routers.traefik.service=api@internal'
-      - 'traefik.http.routers.traefik.entrypoints=websecure'
-      - 'traefik.http.routers.traefik.tls.certresolver=myresolver'
+      - 'traefik.http.routers.traefik.entrypoints=internal'
     command:
       - '--providers.docker.swarmMode=true'
       - '--providers.docker.exposedbydefault=false'
       - '--entrypoints.web.address=:80'
       - '--entrypoints.websecure.address=:443'
-      - '--entrypoints.web.http.redirections.entryPoint.to=websecure'
-      - '--entrypoints.web.http.redirections.entryPoint.scheme=https'
+      - '--entrypoints.internal.address=:8080'
+      - '--entrypoints.web.http.redirections.entrypoint.to=websecure'
+      - '--entrypoints.web.http.redirections.entrypoint.scheme=https'
       - '--certificatesresolvers.myresolver.acme.tlschallenge=true'
       - '--certificatesresolvers.myresolver.acme.email=nicola.barletta@outlook.it'
       - '--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json'
@@ -91,6 +92,7 @@ services:
     ports:
       - '80:80'
       - '443:443'
+      - '8080:8080'
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - traefik-certificates:/letsencrypt
@@ -100,8 +102,6 @@ services:
       mode: global
       restart_policy:
         condition: on-failure
-    environment:
-      ACME_EMAIL: nicola.barletta@outlook.it
 
 volumes:
   postgres_data:
