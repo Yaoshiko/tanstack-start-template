@@ -81,6 +81,7 @@ services:
     command:
       - '--providers.swarm.endpoint=unix:///var/run/docker.sock'
       - '--providers.docker.exposedbydefault=false'
+      - '--providers.docker.network=reverse-proxy-network'
       - '--entrypoints.web.address=:80'
       - '--entrypoints.websecure.address=:443'
       - '--entrypoints.internal.address=:8080'
@@ -109,6 +110,7 @@ services:
     deploy:
       labels:
         - 'traefik.enable=true'
+        - 'traefik.http.routers.traefik.rule=Host(*)'
         - 'traefik.http.routers.traefik.service=api@internal'
         - 'traefik.http.routers.traefik.entrypoints=internal'
         - 'traefik.http.services.traefik.loadbalancer.server.port=8080'
