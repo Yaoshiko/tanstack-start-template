@@ -64,17 +64,21 @@ services:
       DB_NAME: ${DB_NAME}
       DB_HOST: database
       DB_PORT: 5432
-    labels:
-      - 'traefik.enable=true'
-      - 'traefik.http.routers.app.rule=Host(`${PUBLIC_HOSTNAME}`)'
-      - 'traefik.http.routers.app.entrypoints=websecure'
-      - 'traefik.http.routers.app.tls.certresolver=myresolver'
-      - 'traefik.http.services.app.loadbalancer.server.port=3000'
     depends_on:
       - migrations
     networks:
       - app-network
       - reverse-proxy-network
+    deploy:
+      labels:
+        - 'traefik.enable=true'
+        - 'traefik.http.routers.app.rule=Host(`${PUBLIC_HOSTNAME}`)'
+        - 'traefik.http.routers.app.entrypoints=websecure'
+        - 'traefik.http.routers.app.tls.certresolver=myresolver'
+        - 'traefik.http.services.app.loadbalancer.server.port=3000'
+      mode: global
+      restart_policy:
+        condition: on-failure
 
   reverse-proxy:
     image: traefik:v3.3.6
