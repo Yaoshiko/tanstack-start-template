@@ -125,6 +125,8 @@ secrets:
     external: true
   tanstack-start-template_SMTP_PASSWORD:
     external: true
+  tanstack-start-template_CF_DNS_API_TOKEN:
+    external: true
 
 configs:
   load-secrets.sh:

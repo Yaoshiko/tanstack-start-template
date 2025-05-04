@@ -125,6 +125,8 @@ secrets:
     external: true
   ${PROJECT_NAME}_SMTP_PASSWORD:
     external: true
+  ${PROJECT_NAME}_CF_DNS_API_TOKEN:
+    external: true
 
 configs:
   load-secrets.sh:
