@@ -78,7 +78,7 @@ services:
       - 'traefik.http.routers.traefik.service=api@internal'
       - 'traefik.http.routers.traefik.entrypoints=internal'
     command:
-      - '--providers.docker.swarmMode=true'
+      - '--providers.swarm.endpoint="tcp://127.0.0.1:2377"'
       - '--providers.docker.exposedbydefault=false'
       - '--entrypoints.web.address=:80'
       - '--entrypoints.websecure.address=:443'
