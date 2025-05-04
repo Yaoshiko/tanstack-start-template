@@ -78,17 +78,22 @@ services:
       - 'traefik.http.routers.traefik.service=api@internal'
       - 'traefik.http.routers.traefik.entrypoints=internal'
     command:
-      - '--providers.swarm.endpoint="tcp://127.0.0.1:2377"'
+      - '--providers.swarm.endpoint=tcp://127.0.0.1:2377'
       - '--providers.docker.exposedbydefault=false'
       - '--entrypoints.web.address=:80'
       - '--entrypoints.websecure.address=:443'
       - '--entrypoints.internal.address=:8080'
       - '--entrypoints.web.http.redirections.entrypoint.to=websecure'
       - '--entrypoints.web.http.redirections.entrypoint.scheme=https'
-      - '--certificatesresolvers.myresolver.acme.tlschallenge=true'
+      - '--certificatesresolvers.myresolver.acme.dnschallenge=true'
+      - '--certificatesresolvers.myresolver.acme.dnschallenge.provider=cloudflare'
       - '--certificatesresolvers.myresolver.acme.email=${ACME_EMAIL}'
       - '--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json'
       - '--api.dashboard=true'
+      # FIXME: Temporary. Remove this.
+      - '--certificatesresolvers.myresolver.acme.caServer=https://acme-staging-v02.api.letsencrypt.org/directory'
+    environment:
+      - CF_DNS_API_TOKEN=${CF_DNS_API_TOKEN}
     ports:
       - '80:80'
       - '443:443'
