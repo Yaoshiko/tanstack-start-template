@@ -80,8 +80,8 @@ services:
     image: traefik:v3.3.6
     command:
       - '--providers.swarm.endpoint=unix:///var/run/docker.sock'
-      - '--providers.docker.exposedbydefault=false'
-      - '--providers.docker.network=reverse-proxy-network'
+      - '--providers.swarm.exposedbydefault=false'
+      - '--providers.swarm.network=reverse-proxy-network'
       - '--entrypoints.web.address=:80'
       - '--entrypoints.websecure.address=:443'
       - '--entrypoints.internal.address=:8080'
@@ -91,6 +91,7 @@ services:
       - '--certificatesresolvers.myresolver.acme.dnschallenge.provider=cloudflare'
       - '--certificatesresolvers.myresolver.acme.email=nicola.barletta@outlook.it'
       - '--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json'
+      # TODO: Protect dashboard with auth.
       - '--api.dashboard=true'
       # FIXME: Temporary. Remove this.
       - '--certificatesresolvers.myresolver.acme.caServer=https://acme-staging-v02.api.letsencrypt.org/directory'
