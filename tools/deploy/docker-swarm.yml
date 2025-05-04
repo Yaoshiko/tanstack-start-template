@@ -24,7 +24,7 @@ services:
       - app-network
 
   drizzle:
-    image: 192.168.1.30:5000/tanstack-start-template/drizzle:1.0.0
+    image: 192.168.1.30:5000/tanstack-start-template/drizzle:1.1.0
     secrets:
       - tanstack-start-template_DB_PASSWORD
     <<: *load-secrets-config
@@ -47,7 +47,7 @@ services:
         window: 120s
 
   app:
-    image: 192.168.1.30:5000/tanstack-start-template/app:1.3.0
+    image: 192.168.1.30:5000/tanstack-start-template/app:1.4.0
     secrets:
       - tanstack-start-template_DB_PASSWORD
       - tanstack-start-template_BETTER_AUTH_SECRET

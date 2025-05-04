@@ -42,7 +42,9 @@ services:
     deploy:
       replicas: 1
       restart_policy:
-        condition: none
+        condition: on-failure
+        delay: 3s
+        window: 120s
 
   app:
     image: ${DOCKER_REGISTRY}/${PROJECT_NAME}/app:${app_VERSION}
@@ -52,6 +54,7 @@ services:
       - ${PROJECT_NAME}_SMTP_PASSWORD
     <<: *load-secrets-config
     environment:
+      PUBLIC_BASEURL: ${PUBLIC_BASEURL}
       PROJECT_NAME: ${PROJECT_NAME}
       DB_USER: ${DB_USER}
       DB_NAME: ${DB_NAME}
