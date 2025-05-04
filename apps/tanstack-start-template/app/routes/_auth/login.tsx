@@ -47,7 +47,7 @@ function SignUp() {
   });
 
   return (
-    <div className="flex h-screen items-center justify-center">
+    <div className="flex min-h-screen items-center justify-center overflow-y-auto py-20">
       <form.AppForm>
         <form.FormWrapper
           label="Sign in"
