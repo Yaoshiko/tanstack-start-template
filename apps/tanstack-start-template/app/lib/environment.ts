@@ -1,5 +1,5 @@
 export function useEnvironment() {
-  const isServer = !!process.env;
+  const isServer = import.meta.env.SSR;
 
   return {
     serverEnv: isServer ? process.env : undefined,

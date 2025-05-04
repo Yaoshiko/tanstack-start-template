@@ -36,4 +36,5 @@ tasks:
   dev:
     options:
       envFile:
+        - '.env.local'
         - '.env.secrets'

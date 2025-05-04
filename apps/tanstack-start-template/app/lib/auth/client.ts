@@ -3,11 +3,14 @@ import { createAuthClient } from 'better-auth/react';
 import { inferAdditionalFields } from 'better-auth/client/plugins';
 import { RegisteredRouter } from '@tanstack/react-router';
 import { useLogger } from '../logger';
+import { useEnvironment } from '../environment';
 
-const { logger } = useLogger();
 const AUTH_QUERY_KEY = 'user';
+const { logger } = useLogger();
+const { serverEnv } = useEnvironment();
 
 export const authClient = createAuthClient({
+  baseURL: serverEnv?.PUBLIC_BASEURL,
   plugins: [
     inferAdditionalFields({
       user: {

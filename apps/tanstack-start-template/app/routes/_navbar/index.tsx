@@ -1,8 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { Badge } from 'app/components/ui/badge';
-import { Button, buttonVariants } from 'app/components/ui/button';
-import { ExternalLink } from 'lucide-react';
-import { cn } from 'app/lib/utils';
 
 export const Route = createFileRoute('/_navbar/')({
   component: Home
@@ -31,59 +28,6 @@ function Home() {
                   <br /> But you can enjoy a beautiful meaningless app to be
                   used as a Tanstack Start template for whatever you need!
                 </p>
-              </div>
-              <div className="mt-4 flex justify-center gap-2">
-                <Button>Get Started</Button>
-                <Button variant="outline">
-                  Learn more <ExternalLink className="ml-2 h-4" />
-                </Button>
-              </div>
-              <div className="mt-20 flex flex-col items-center gap-4">
-                <p className="text-center: text-muted-foreground lg:text-left">
-                  Built with open-source technologies
-                </p>
-                <div className="flex flex-wrap items-center justify-center gap-4">
-                  <a
-                    href="#"
-                    className={cn(
-                      buttonVariants({ variant: 'outline' }),
-                      'group px-3'
-                    )}
-                  >
-                    <img
-                      src="https://shadcnblocks.com/images/block/logos/typescript-small.svg"
-                      alt="company logo"
-                      className="h-6 saturate-0 transition-all group-hover:saturate-100"
-                    />
-                  </a>
-
-                  <a
-                    href="#"
-                    className={cn(
-                      buttonVariants({ variant: 'outline' }),
-                      'group px-3'
-                    )}
-                  >
-                    <img
-                      src="https://shadcnblocks.com/images/block/logos/react-icon.svg"
-                      alt="company logo"
-                      className="h-6 saturate-0 transition-all group-hover:saturate-100"
-                    />
-                  </a>
-                  <a
-                    href="#"
-                    className={cn(
-                      buttonVariants({ variant: 'outline' }),
-                      'group px-3'
-                    )}
-                  >
-                    <img
-                      src="https://shadcnblocks.com/images/block/logos/tailwind-small.svg"
-                      alt="company logo"
-                      className="h-4 saturate-0 transition-all group-hover:saturate-100"
-                    />
-                  </a>
-                </div>
               </div>
             </div>
           </div>

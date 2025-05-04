@@ -22,7 +22,6 @@ export const getUser = createIsomorphicFn()
     logger.info('Fetched logged-in user', user?.email);
     return user;
   })
-  // FIXME: Fix type error.
   .client(async (queryClient: QueryClient) => {
     const session = await queryClient.fetchQuery(fetchUserOpts);
     const user = session?.data?.user;

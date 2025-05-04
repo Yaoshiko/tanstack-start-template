@@ -2,7 +2,7 @@ import nodemailer from 'nodemailer';
 import mjml from 'mjml';
 import { useEnvironment } from '../environment';
 import { useLogger } from '../logger';
-import { User } from '@/db/auth-schema';
+import { authSchema } from 'drizzle-db';
 
 import resetPasswordTemplate from './reset_password_template.mjml?raw';
 import verifyAccountTemplate from './verify_account_template.mjml?raw';
@@ -25,7 +25,7 @@ export function useAuthEmail() {
   });
 
   return {
-    sendVerificationEmail: async (user: User, url: string) => {
+    sendVerificationEmail: async (user: authSchema.User, url: string) => {
       logger.info(`Sending verification email to ${user.email}`);
       try {
         await client.sendMail({
@@ -42,7 +42,7 @@ export function useAuthEmail() {
         logger.warn(`Failed to send verification email to ${user.email}`, e);
       }
     },
-    sendResetPassword: async (user: User, url: string) => {
+    sendResetPassword: async (user: authSchema.User, url: string) => {
       logger.info(`Sending reset password email to ${user.email}`);
       client.sendMail({
         from: `Tanstack starter <${serverEnv!.SMTP_USER}>`,

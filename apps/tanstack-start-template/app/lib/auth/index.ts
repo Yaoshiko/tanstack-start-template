@@ -13,6 +13,7 @@ export const auth = betterAuth({
     provider: 'pg',
     schema: authSchema
   }),
+  trustedOrigins: [serverEnv!.PUBLIC_BASEURL],
   user: {
     additionalFields: {
       firstName: {

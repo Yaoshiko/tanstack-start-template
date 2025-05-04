@@ -53,7 +53,7 @@ function Navbar() {
   const logoSrc = '/donut.svg';
   const items = [
     { label: 'Recipes', href: '/recipe', light: false }
-    // TODO: Implement a sandbox as playground.
+    // TODO: Implement a sandbox playground.
     // { label: 'Sandbox', href: '/sandbox', light: true }
   ];
 
