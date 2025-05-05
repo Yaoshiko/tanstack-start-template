@@ -68,7 +68,7 @@ services:
       - migrations
     networks:
       - app-network
-      - reverse-proxy-network
+      - portainer_reverse-proxy-network
     deploy:
       labels:
         - 'traefik.enable=true'
@@ -85,7 +85,7 @@ volumes:
 
 networks:
   app-network:
-  reverse-proxy-network:
+  portainer_reverse-proxy-network:
     external: true
 
 secrets:
