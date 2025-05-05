@@ -80,59 +80,13 @@ services:
       restart_policy:
         condition: on-failure
 
-  reverse-proxy:
-    image: traefik:v3.3.6
-    command:
-      - '--providers.swarm.endpoint=unix:///var/run/docker.sock'
-      - '--providers.swarm.exposedbydefault=false'
-      - '--providers.swarm.network=reverse-proxy-network'
-      - '--entrypoints.web.address=:80'
-      - '--entrypoints.websecure.address=:443'
-      - '--entrypoints.internal.address=:8080'
-      - '--entrypoints.web.http.redirections.entrypoint.to=websecure'
-      - '--entrypoints.web.http.redirections.entrypoint.scheme=https'
-      - '--certificatesresolvers.myresolver.acme.dnschallenge=true'
-      - '--certificatesresolvers.myresolver.acme.dnschallenge.provider=cloudflare'
-      - '--certificatesresolvers.myresolver.acme.email=nicola.barletta@outlook.it'
-      - '--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json'
-      # TODO: Protect dashboard with auth.
-      - '--api.dashboard=true'
-      # FIXME: Temporary. Remove this.
-      - '--certificatesresolvers.myresolver.acme.caServer=https://acme-staging-v02.api.letsencrypt.org/directory'
-    secrets:
-      - tanstack-start-template_CF_DNS_API_TOKEN
-    environment:
-      - CF_DNS_API_TOKEN_FILE=/run/secrets/tanstack-start-template_CF_DNS_API_TOKEN
-    ports:
-      - '80:80'
-      - '443:443'
-      - '8080:8080'
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-      - traefik-certificates:/letsencrypt
-    networks:
-      - reverse-proxy-network
-    deploy:
-      labels:
-        - 'traefik.enable=true'
-        - 'traefik.http.routers.traefik.rule=PathPrefix(`/`)'
-        - 'traefik.http.routers.traefik.service=api@internal'
-        - 'traefik.http.routers.traefik.entrypoints=internal'
-        - 'traefik.http.services.traefik.loadbalancer.server.port=8080'
-      mode: global
-      placement:
-        constraints:
-          - node.role == manager
-      restart_policy:
-        condition: on-failure
-
 volumes:
   postgres_data:
-  traefik-certificates:
 
 networks:
   app-network:
   reverse-proxy-network:
+    external: true
 
 secrets:
   tanstack-start-template_DB_PASSWORD:
@@ -140,8 +94,6 @@ secrets:
   tanstack-start-template_BETTER_AUTH_SECRET:
     external: true
   tanstack-start-template_SMTP_PASSWORD:
-    external: true
-  tanstack-start-template_CF_DNS_API_TOKEN:
     external: true
 
 configs:

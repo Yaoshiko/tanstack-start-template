@@ -22,3 +22,4 @@
   - [ ] GitHub CICD
     - [ ] Configure GitHub workflow
     - [ ] Setup GitHub runner in Proxmox
+  - [ ] Change SMTP app-specific password and protect .env.secrets with git-crypt
