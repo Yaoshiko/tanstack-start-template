@@ -55,7 +55,7 @@ services:
     secrets:
       - ${PROJECT_NAME}_DB_PASSWORD
       - ${PROJECT_NAME}_BETTER_AUTH_SECRET
-      - ${PROJECT_NAME}_SMTP_PASSWORD
+      - ${PROJECT_NAME}_RESEND_API_KEY
     <<: *load-secrets-config
     environment:
       PUBLIC_BASEURL: ${PUBLIC_BASEURL}
@@ -93,7 +93,7 @@ secrets:
     external: true
   ${PROJECT_NAME}_BETTER_AUTH_SECRET:
     external: true
-  ${PROJECT_NAME}_SMTP_PASSWORD:
+  ${PROJECT_NAME}_RESEND_API_KEY:
     external: true
 
 configs:

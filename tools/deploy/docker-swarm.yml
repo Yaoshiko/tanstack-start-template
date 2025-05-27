@@ -51,11 +51,11 @@ services:
         - 'traefik.enable=false'
 
   app:
-    image: 192.168.1.30:5000/tanstack-start-template/app:1.4.0
+    image: 192.168.1.30:5000/tanstack-start-template/app:1.5.0
     secrets:
       - tanstack-start-template_DB_PASSWORD
       - tanstack-start-template_BETTER_AUTH_SECRET
-      - tanstack-start-template_SMTP_PASSWORD
+      - tanstack-start-template_RESEND_API_KEY
     <<: *load-secrets-config
     environment:
       PUBLIC_BASEURL: https://donut.yaoshiko.com
@@ -93,7 +93,7 @@ secrets:
     external: true
   tanstack-start-template_BETTER_AUTH_SECRET:
     external: true
-  tanstack-start-template_SMTP_PASSWORD:
+  tanstack-start-template_RESEND_API_KEY:
     external: true
 
 configs:

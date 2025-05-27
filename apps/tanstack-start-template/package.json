@@ -33,7 +33,7 @@
     "lucide-react": "^0.482.0",
     "mjml": "^4.15.3",
     "next-themes": "^0.4.6",
-    "nodemailer": "^6.10.0",
+    "resend": "4.5.1",
     "pg": "^8.14.1",
     "pino": "^9.6.0",
     "react": "^19.0.0",

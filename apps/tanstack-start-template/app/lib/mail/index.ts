@@ -1,5 +1,5 @@
-import nodemailer from 'nodemailer';
 import mjml from 'mjml';
+import { Resend } from 'resend';
 import { useEnvironment } from '../environment';
 import { useLogger } from '../logger';
 import { authSchema } from 'drizzle-db';
@@ -12,24 +12,15 @@ const { serverEnv } = useEnvironment();
 
 export function useAuthEmail() {
   const logoUrl = `${serverEnv!.PUBLIC_BASEURL}/donut.svg`;
-  const client = nodemailer.createTransport({
-    service: serverEnv!.STMP_SERVICE,
-    host: serverEnv!.SMTP_HOST,
-    port: serverEnv!.SMTP_PORT,
-    secureConnection: false,
-    requiresAuth: true,
-    auth: {
-      user: serverEnv!.SMTP_USER,
-      pass: serverEnv!.SMTP_PASSWORD
-    }
-  });
+
+  const resend = new Resend(serverEnv!.RESEND_API_KEY);
 
   return {
     sendVerificationEmail: async (user: authSchema.User, url: string) => {
       logger.info(`Sending verification email to ${user.email}`);
       try {
-        await client.sendMail({
-          from: `Tanstack starter <${serverEnv!.SMTP_USER}>`,
+        const { error } = await resend.emails.send({
+          from: `Best Donuts EU <${serverEnv!.SMTP_USER}>`,
           to: user.email,
           subject: 'Please verify your email',
           html: mjml(verifyAccountTemplate)
@@ -37,6 +28,9 @@ export function useAuthEmail() {
             .replace('{{user_name}}', user.firstName)
             .replace('{{verification_link}}', url)
         });
+        if (error) {
+          throw new Error(error.message);
+        }
         logger.debug(`Verification email sent to ${user.email}`);
       } catch (e) {
         logger.warn(`Failed to send verification email to ${user.email}`, e);
@@ -44,15 +38,23 @@ export function useAuthEmail() {
     },
     sendResetPassword: async (user: authSchema.User, url: string) => {
       logger.info(`Sending reset password email to ${user.email}`);
-      client.sendMail({
-        from: `Tanstack starter <${serverEnv!.SMTP_USER}>`,
-        to: user.email,
-        subject: 'Reset your password',
-        html: mjml(resetPasswordTemplate)
-          .html.replace('{{logo_url}}', logoUrl)
-          .replace('{{user_name}}', user.firstName)
-          .replace('{{reset_link}}', url)
-      });
+      try {
+        const { error } = await resend.emails.send({
+          from: `Best Donuts EU <${serverEnv!.SMTP_USER}>`,
+          to: user.email,
+          subject: 'Reset your password',
+          html: mjml(resetPasswordTemplate)
+            .html.replace('{{logo_url}}', logoUrl)
+            .replace('{{user_name}}', user.firstName)
+            .replace('{{reset_link}}', url)
+        });
+        if (error) {
+          throw new Error(error.message);
+        }
+        logger.debug(`Reset password email sent to ${user.email}`);
+      } catch (e) {
+        logger.warn(`Failed to send reset password email to ${user.email}`, e);
+      }
     }
   };
 }
