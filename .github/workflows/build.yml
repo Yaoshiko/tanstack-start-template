@@ -52,20 +52,28 @@ jobs:
 
       - name: Trigger deploy
         run: |
-          # Fetch all branches
+          # Stash any remaining local changes to avoid conflicts
+          git stash push -m "Temporary stash before deploy"
+
+          # Make sure we have the latest master (including our version commit)
           git fetch origin
+          git checkout master
+          git pull origin master
 
           # Check out the deploy branch
           git checkout deploy || git checkout -b deploy
 
-          # Merge master into deploy (without committing yet)
-          git merge origin/master --no-ff --no-commit -m "[CI] Deploy: Merge master with updated versions"
+          # Merge master into deploy with all changes
+          git merge origin/master --no-ff -m "[CI] Deploy: Merge master with updated versions"
 
-          # Add any changes made during the build process (like .versions)
+          # Apply any stashed changes back
+          git stash pop || echo "No stash to apply"
+
+          # Add any additional changes and commit if needed
           git add .
-
-          # Complete the merge commit
-          git commit -m "[CI] Deploy: Merge master with updated versions and build artifacts"
+          if ! git diff --staged --quiet; then
+            git commit -m "[CI] Add build artifacts to deploy"
+          fi
 
           # Push the deploy branch
           git push origin deploy
