@@ -4,3 +4,9 @@
 drizzle_VERSION=1.1.0
 database_VERSION=1.0.0
 app_VERSION=1.6.0
+# FIXME: Get version directly from Docker registry? How to manage major bump?
+# skopeo list-tags --tls-verify=false docker://192.168.1.30:5000/tanstack-start-template/app | \
+# jq -r '.Tags[]' | \
+# grep -v '^latest$' | \
+# sort -Vr | \
+# head -n1

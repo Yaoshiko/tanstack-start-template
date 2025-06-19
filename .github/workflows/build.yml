@@ -1,0 +1,45 @@
+name: Build images & trigger deploy
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # needed to merge branches
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install pnpm
+        run: npm i -g pnpm
+
+      - name: Install deps
+        run: pnpm install
+
+      - name: Build and push Docker images
+        run: pnpm moon run :setup-docker-swarm
+
+      - name: Trigger deploy
+        run: |
+          git config user.name "GitHub CI Bot"
+          git config user.email "ci@yaoshiko.com"
+
+          # Make sure all branches are up-to-date
+          git fetch origin
+
+          # Check out the deploy branch
+          git checkout deploy || git checkout -b deploy origin/deploy
+
+          # Merge master into deploy with a merge commit
+          git merge origin/master -m "[CI] Merge master into deploy"
+
+          # Push the merge commit to deploy branch
+          git push origin deploy
