@@ -1,4 +1,4 @@
-name: Trigger Portainer Deployment
+name: Deploy
 
 on:
   push:
@@ -10,6 +10,14 @@ jobs:
     runs-on: self-hosted
     steps:
       - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.13.1
+
+      - name: Install pnpm
+        run: npm i -g pnpm
 
       - name: Trigger Portainer Stack Redeploy
         id: redeploy
