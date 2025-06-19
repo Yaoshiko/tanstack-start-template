@@ -22,7 +22,7 @@ jobs:
         run: npm i -g pnpm
 
       - name: Install deps
-        run: pnpm install
+        run: pnpm install --frozen-lockfile
 
       - name: Verify Docker
         run: |
@@ -40,7 +40,7 @@ jobs:
             moon-${{ runner.os }}-
 
       - name: Run affected tests
-        run: pnpm moon run :test --affected
+        run: pnpm moon :test --affected
 
       - name: Build and push Docker images
         run: pnpm moon :setup-docker-swarm
