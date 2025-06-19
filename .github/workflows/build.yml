@@ -25,7 +25,7 @@ jobs:
         run: pnpm install
 
       - name: Build and push Docker images
-        run: pnpm moon run :setup-docker-swarm
+        run: moon run :setup-docker-swarm
 
       - name: Trigger deploy
         run: |
