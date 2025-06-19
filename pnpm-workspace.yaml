@@ -7,3 +7,6 @@ ignoredBuiltDependencies:
   - '@parcel/watcher'
   - esbuild
   - unrs-resolver
+
+onlyBuiltDependencies:
+  - '@moonrepo/cli'

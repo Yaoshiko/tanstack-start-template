@@ -21,14 +21,24 @@ jobs:
       - name: Install pnpm
         run: npm i -g pnpm
 
-      - name: Add moon to PATH
-        run: echo "$HOME/.moon/bin/moon" >> $GITHUB_PATH
+      - name: Cache Moon workspace
+        uses: actions/cache@v3
+        with:
+          path: |
+            .moon/cache
+            .moon/toolchain
+          key: moon-${{ runner.os }}-${{ hashFiles('.moon/workspace.yml') }}
+          restore-keys: |
+            moon-${{ runner.os }}-
+
+      - name: Run affected tests
+        run: pnpm moon run :test --affected
 
       - name: Install deps
         run: pnpm install
 
       - name: Build and push Docker images
-        run: moon :setup-docker-swarm
+        run: pnpm moon :setup-docker-swarm
 
       - name: Trigger deploy
         run: |

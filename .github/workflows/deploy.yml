@@ -13,4 +13,4 @@ jobs:
 
       - name: Trigger Portainer Stack Redeploy
         id: redeploy
-        run: moon :deploy
+        run: pnpm moon :deploy
