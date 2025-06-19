@@ -1,9 +1,9 @@
 # Image versions.
 # By default, minor get updated automatically at every build.
 # If you need to change major, just set the version here (e.g., service_VERSION=2).
-drizzle_VERSION=1.1.0
-database_VERSION=1.0.0
-app_VERSION=1.6.0
+drizzle_VERSION=1.2.0
+database_VERSION=1.1.0
+app_VERSION=1.7.0
 # FIXME: Get version directly from Docker registry? How to manage major bump?
 # skopeo list-tags --tls-verify=false docker://192.168.1.30:5000/tanstack-start-template/app | \
 # jq -r '.Tags[]' | \
