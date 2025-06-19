@@ -6,7 +6,7 @@ on:
       - deploy
 
 jobs:
-  trigger-portainer:
+  deploy:
     runs-on: self-hosted
     steps:
       - uses: actions/checkout@v4
