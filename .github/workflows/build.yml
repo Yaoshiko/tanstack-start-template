@@ -21,11 +21,14 @@ jobs:
       - name: Install pnpm
         run: npm i -g pnpm
 
+      - name: Add moon to PATH
+        run: echo "$HOME/.moon/bin/moon" >> $GITHUB_PATH
+
       - name: Install deps
         run: pnpm install
 
       - name: Build and push Docker images
-        run: moon run :setup-docker-swarm
+        run: moon :setup-docker-swarm
 
       - name: Trigger deploy
         run: |
