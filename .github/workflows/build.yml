@@ -24,6 +24,11 @@ jobs:
       - name: Install deps
         run: pnpm install
 
+      - name: Verify Docker
+        run: |
+          docker --version
+          docker-compose --version || echo "Docker Compose not available"
+
       - name: Cache Moon workspace
         uses: actions/cache@v3
         with:
@@ -40,19 +45,27 @@ jobs:
       - name: Build and push Docker images
         run: pnpm moon :setup-docker-swarm
 
-      - name: Trigger deploy
+      - name: Configure Git
         run: |
           git config user.name "GitHub CI Bot"
           git config user.email "ci@yaoshiko.com"
 
-          # Make sure all branches are up-to-date
+      - name: Trigger deploy
+        run: |
+          # Fetch all branches
           git fetch origin
 
           # Check out the deploy branch
-          git checkout deploy || git checkout -b deploy origin/deploy
+          git checkout deploy || git checkout -b deploy
 
-          # Merge master into deploy with a merge commit
-          git merge origin/master -m "[CI] Merge master into deploy"
+          # Merge master into deploy (without committing yet)
+          git merge origin/master --no-ff --no-commit -m "[CI] Deploy: Merge master with updated versions"
 
-          # Push the merge commit to deploy branch
+          # Add any changes made during the build process (like .versions)
+          git add .
+
+          # Complete the merge commit
+          git commit -m "[CI] Deploy: Merge master with updated versions and build artifacts"
+
+          # Push the deploy branch
           git push origin deploy
