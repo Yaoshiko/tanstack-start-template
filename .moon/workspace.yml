@@ -1,10 +1,30 @@
 # https://moonrepo.dev/docs/config/workspace
 $schema: './cache/schemas/workspace.json'
 
+# Version control integration
 vcs:
   manager: git
+  provider: github
+  defaultBranch: master
 
 projects:
   - 'apps/*'
   - 'tools/*'
   - 'packages/*'
+
+# Enhanced hash strategy for better change detection
+hasher:
+  ignorePatterns:
+    - '.git/**/*'
+    - 'node_modules/**/*'
+    - '**/.DS_Store'
+    - '**/Thumbs.db'
+    - '**/*.log'
+    - '.moon/cache/**/*'
+  # Include more files in hash calculation
+  warnOnMissingInputs: true
+
+# Better caching strategy
+runner:
+  # Inherit outputs from dependencies
+  inheritColorsForPipedTasks: true
