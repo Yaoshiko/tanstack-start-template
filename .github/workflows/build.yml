@@ -43,7 +43,7 @@ jobs:
         run: pnpm moon :test --affected
 
       - name: Build and push Docker images
-        run: pnpm moon :setup-docker-swarm
+        run: pnpm moon :setup-docker-swarm --affected
 
       - name: Configure Git
         run: |
