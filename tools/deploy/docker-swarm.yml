@@ -1,0 +1,101 @@
+version: '3.8'
+
+x-load-secrets-config: &load-secrets-config
+  configs:
+    - source: load-secrets.sh
+      target: /usr/local/bin/load-secrets.sh
+      mode: 0555
+
+services:
+  database:
+    image: 192.168.1.30:5000/tanstack-start-template/database:1.6.0
+    secrets:
+      - tanstack-start-template_DB_PASSWORD
+    <<: *load-secrets-config
+    environment:
+      PROJECT_NAME: tanstack-start-template
+      POSTGRES_DB: tanstack-start-template
+      POSTGRES_USER: app
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+    deploy:
+      labels:
+        - 'traefik.enable=false'
+
+  migrations:
+    image: 192.168.1.30:5000/tanstack-start-template/drizzle:1.6.0
+    secrets:
+      - tanstack-start-template_DB_PASSWORD
+    <<: *load-secrets-config
+    environment:
+      PROJECT_NAME: tanstack-start-template
+      DB_USER: app
+      DB_NAME: tanstack-start-template
+      DB_HOST: postgres
+      DB_PORT: 5432
+    depends_on:
+      - postgres
+    networks:
+      - app-network
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        delay: 3s
+        window: 120s
+      labels:
+        - 'traefik.enable=false'
+
+  app:
+    image: 192.168.1.30:5000/tanstack-start-template/app:1.7.0
+    secrets:
+      - tanstack-start-template_DB_PASSWORD
+      - tanstack-start-template_BETTER_AUTH_SECRET
+      - tanstack-start-template_RESEND_API_KEY
+    <<: *load-secrets-config
+    environment:
+      PUBLIC_BASEURL: https://donut.yaoshiko.com
+      PROJECT_NAME: tanstack-start-template
+      DB_USER: app
+      DB_NAME: tanstack-start-template
+      DB_HOST: database
+      DB_PORT: 5432
+    depends_on:
+      - migrations
+    networks:
+      - app-network
+      - portainer_reverse-proxy-network
+    deploy:
+      labels:
+        - 'traefik.enable=true'
+        - 'traefik.http.routers.app.rule=PathPrefix(`/`)'
+        - 'traefik.http.routers.app.entrypoints=websecure'
+        - 'traefik.http.routers.app.tls.certresolver=myresolver'
+        - 'traefik.http.services.app.loadbalancer.server.port=3000'
+      mode: global
+      restart_policy:
+        condition: on-failure
+
+volumes:
+  postgres_data:
+
+networks:
+  app-network:
+  portainer_reverse-proxy-network:
+    external: true
+
+secrets:
+  tanstack-start-template_DB_PASSWORD:
+    external: true
+  tanstack-start-template_BETTER_AUTH_SECRET:
+    external: true
+  tanstack-start-template_RESEND_API_KEY:
+    external: true
+
+configs:
+  load-secrets.sh:
+    external: true
