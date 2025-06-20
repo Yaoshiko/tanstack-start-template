@@ -41,9 +41,8 @@ jobs:
             **/.output
             **/dist
             **/build
-          key: moon-full-${{ runner.os }}-${{ hashFiles('.moon/workspace.yml', 'pnpm-lock.yaml') }}-${{ github.sha }}
+          key: moon-full-${{ runner.os }}-${{ hashFiles('.moon/workspace.yml', 'pnpm-lock.yaml') }}
           restore-keys: |
-            moon-full-${{ runner.os }}-${{ hashFiles('.moon/workspace.yml', 'pnpm-lock.yaml') }}-
             moon-full-${{ runner.os }}-${{ hashFiles('.moon/workspace.yml') }}-
             moon-full-${{ runner.os }}-
 
@@ -136,4 +135,4 @@ jobs:
             **/.output
             **/dist
             **/build
-          key: moon-full-${{ runner.os }}-${{ hashFiles('.moon/workspace.yml', 'pnpm-lock.yaml') }}-${{ github.sha }}
+          key: moon-full-${{ runner.os }}-${{ hashFiles('.moon/workspace.yml', 'pnpm-lock.yaml') }}
