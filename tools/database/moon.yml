@@ -8,12 +8,8 @@ fileGroups:
     - './*.sh'
 
 tasks:
-  docker-build:
+  push-image:
     inputs:
       - '@globs(inputs)'
-    env:
-      DOCKER_NAME: database
-
-  docker-push:
     env:
       DOCKER_NAME: database

@@ -24,14 +24,13 @@ tasks:
   setup-docker-swarm:
     description: Update Docker Swarm template.
     inputs:
-      - '/.versions'
       - '/scripts/prepare-docker-swarm.sh'
       - './docker-swarm-template.yml'
     outputs:
       - './docker-swarm.yml'
     deps:
-      - '^:docker-push'
-    command: bash $workspaceRoot/scripts/prepare-docker-swarm.sh $workspaceRoot/.versions
+      - '^:push-image'
+    command: bash $workspaceRoot/scripts/prepare-docker-swarm.sh
 
   deploy:
     description: Trigger a Portainer redeploy on deploy branch.

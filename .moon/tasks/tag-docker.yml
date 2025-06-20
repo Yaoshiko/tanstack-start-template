@@ -1,14 +1,7 @@
 tasks:
-  # TODO: Manage image versioning and retention.
-  docker-build:
-    description: Build a Docker image with semantic versioning.
+  push-image:
+    description: Build a Docker image with semantic versioning and push to the registry.
     inputs:
-      - '/scripts/docker-build.sh'
+      - '/scripts/push-image.sh'
       - './Dockerfile'
-    command: bash $workspaceRoot/scripts/docker-build.sh $workspaceRoot/.versions
-
-  docker-push:
-    description: Push Docker images to the registry.
-    deps:
-      - '~:docker-build'
-    command: bash $workspaceRoot/scripts/docker-push.sh $workspaceRoot/.versions
+    command: bash $workspaceRoot/scripts/push-image.sh

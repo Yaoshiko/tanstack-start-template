@@ -64,7 +64,7 @@ jobs:
           git checkout deploy || git checkout -b deploy
 
           # Merge master into deploy with all changes
-          git merge origin/master --no-ff -m "[CI] Deploy: Merge master with updated versions"
+          git merge origin/master --no-ff -m "[CI] Deploy"
 
           # Apply any stashed changes back
           git stash pop || echo "No stash to apply"

@@ -47,15 +47,11 @@ tasks:
     inputs:
       - './seed.ts'
 
-  docker-build:
+  push-image:
     deps:
       - '~:generate'
     inputs:
       - '@globs(inputs)'
       - '@globs(migrations)'
-    env:
-      DOCKER_NAME: drizzle
-
-  docker-push:
     env:
       DOCKER_NAME: drizzle

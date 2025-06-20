@@ -21,15 +21,11 @@ tasks:
     outputs:
       - '@globs(build)'
 
-  docker-build:
+  push-image:
     deps:
       - '~:build'
     inputs:
       - '@globs(build)'
-    env:
-      DOCKER_NAME: app
-
-  docker-push:
     env:
       DOCKER_NAME: app
 
