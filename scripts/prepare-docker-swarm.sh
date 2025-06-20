@@ -1,10 +1,6 @@
 #!/usr/bin/env bash
 
-# Import versions from the environment file.
-set -a
-source $1
-set +a
-
+set -e
 
 # Get latest version for each image from git tags.
 # The tags are expected to be in the format: <image_name>@<version>

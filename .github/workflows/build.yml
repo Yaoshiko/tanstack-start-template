@@ -53,7 +53,7 @@ jobs:
       - name: Trigger deploy
         run: |
           # Stash any remaining local changes to avoid conflicts
-          git stash push -m "Temporary stash before deploy"
+          git stash push -u -m "Temporary stash before deploy"
 
           # Make sure we have the latest master (including our version commit)
           git fetch origin
