@@ -16,7 +16,7 @@ fi
 echo "Running command: $*"
 
 attempt=1
-until "$@"; do
+until eval "$*"; do
   if (( attempt >= MAX_RETRIES )); then
     echo "❌ Command failed after $MAX_RETRIES attempts: $*"
     exit 1
