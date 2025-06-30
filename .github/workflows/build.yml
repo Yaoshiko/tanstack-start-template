@@ -80,28 +80,17 @@ jobs:
       - name: Trigger deploy
         if: steps.affected-check.outputs.has-affected == 'true'
         run: |
-          # Stash any remaining local changes to avoid conflicts
-          git stash push -u -m "Temporary stash before deploy"
-
-          # Make sure we have the latest master (including our version commit)
+          # Fetch all branches to ensure we have latest refs
           git fetch origin
-          git checkout master
-          git pull origin master
 
-          # Check out the deploy branch
-          git checkout deploy || git checkout -b deploy
+          # Create a fresh deploy branch from master (no merge conflicts)
+          git checkout -B deploy origin/master
 
-          # Merge master into deploy with all changes
-          git merge origin/master --no-ff -m "[CI] Deploy"
-
-          # Apply any stashed changes back
-          git stash pop || echo "No stash to apply"
-
-          # Add any additional changes and commit if needed
+          # Add your generated file(s) to the staged merge
           git add .
-          if ! git diff --staged --quiet; then
-            git commit -m "[CI] Add build artifacts to deploy"
-          fi
+
+          # Now commit everything together in a single commit
+          git commit -m "[CI] Deploy"
 
           # Push the deploy branch
           git push origin deploy

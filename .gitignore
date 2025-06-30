@@ -6,15 +6,12 @@ yarn.lock
 .DS_Store
 .cache
 .vercel
-.output
-.vinxi
 .pnpm-store
 
 /build/
 /api/
 /server/build
 /public/build
-.vinxi
 # Sentry Config File
 .env.sentry-build-plugin
 /test-results/
@@ -23,7 +20,6 @@ yarn.lock
 /playwright/.cache/
 
 /dist/
-./app.config.timestamp*.js
 
 # moon
 .moon/cache
