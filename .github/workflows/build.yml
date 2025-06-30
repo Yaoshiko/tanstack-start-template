@@ -57,19 +57,19 @@ jobs:
 
       - name: Run affected tests
         if: steps.affected-check.outputs.has-affected == 'true'
-        run: moon :test --affected
+        run: moon ci :test :lint
 
       - name: Build Docker images
         if: steps.affected-check.outputs.has-affected == 'true'
-        run: moon :build --affected
+        run: moon ci :build
 
       - name: Push Docker images
         if: steps.affected-check.outputs.has-affected == 'true'
-        run: moon :push-image --affected
+        run: moon ci :push-image
 
       - name: Setup Docker Swarm
         if: steps.affected-check.outputs.has-affected == 'true'
-        run: moon :setup-docker-swarm
+        run: moon ci :setup-docker-swarm
 
       - name: Configure Git
         if: steps.affected-check.outputs.has-affected == 'true'
