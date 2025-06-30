@@ -10,8 +10,5 @@
   "packageManager": "pnpm@10.8.0",
   "engines": {
     "node": "22.13.1"
-  },
-  "dependencies": {
-    "@moonrepo/cli": "^1.37.3"
   }
 }

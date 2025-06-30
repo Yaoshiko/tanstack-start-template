@@ -32,38 +32,12 @@ jobs:
           docker --version
           docker-compose --version || echo "Docker Compose not available"
 
-      - name: Cache Moon workspace and build artifacts
-        uses: actions/cache@v3
-        with:
-          path: |
-            .moon/cache
-            .moon/toolchain
-            .moon/workspace
-            .moon/states
-            **/node_modules/.cache
-            **/.output
-            **/dist
-            **/build
-          key: moon-full-${{ runner.os }}-${{ hashFiles('.moon/workspace.yml', 'pnpm-lock.yaml') }}
-          restore-keys: |
-            moon-full-${{ runner.os }}-${{ hashFiles('.moon/workspace.yml') }}-
-            moon-full-${{ runner.os }}-
-
-      # Create a baseline if this is the first run
-      - name: Initialize Moon baseline
-        run: |
-          if [ ! -f .moon/states/workspace.json ]; then
-            echo "No previous Moon state found, initializing baseline..."
-            # Run a dry-run build to establish state without actually building
-            pnpm moon :build --dry-run --affected || true
-          fi
-
       # Check what's actually affected before running tests
       - name: Check affected projects
         id: affected-check
         run: |
           # Get affected projects and handle Moon's JSON format properly
-          AFFECTED_OUTPUT=$(pnpm moon query projects --affected --json)
+          AFFECTED_OUTPUT=$(moon query projects --affected --json)
 
           # Extract just the project IDs from Moon's JSON response
           AFFECTED_COUNT=$(echo "$AFFECTED_OUTPUT" | jq '.projects | length')
@@ -83,11 +57,15 @@ jobs:
 
       - name: Run affected tests
         if: steps.affected-check.outputs.has-affected == 'true'
-        run: pnpm moon :test --affected
+        run: moon :test --affected
 
       - name: Build and push Docker images
         if: steps.affected-check.outputs.has-affected == 'true'
-        run: pnpm moon :setup-docker-swarm --affected
+        run: moon :push-image --affected
+
+      - name: Setup Docker Swarm
+        if: steps.affected-check.outputs.has-affected == 'true'
+        run: moon :setup-docker-swarm
 
       - name: Configure Git
         if: steps.affected-check.outputs.has-affected == 'true'
@@ -123,19 +101,3 @@ jobs:
 
           # Push the deploy branch
           git push origin deploy
-
-      # Always save the Moon state for next run
-      - name: Save Moon state for next run
-        if: always()
-        uses: actions/cache/save@v3
-        with:
-          path: |
-            .moon/cache
-            .moon/toolchain
-            .moon/workspace
-            .moon/states
-            **/node_modules/.cache
-            **/.output
-            **/dist
-            **/build
-          key: moon-full-${{ runner.os }}-${{ hashFiles('.moon/workspace.yml', 'pnpm-lock.yaml') }}
