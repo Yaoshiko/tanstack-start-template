@@ -61,7 +61,7 @@ jobs:
 
       - name: Build and push Docker images
         if: steps.affected-check.outputs.has-affected == 'true'
-        run: moon :push-image --affected
+        run: moon :push-image --affected --dependents
 
       - name: Setup Docker Swarm
         if: steps.affected-check.outputs.has-affected == 'true'
