@@ -23,13 +23,14 @@ tasks:
 
   setup-docker-swarm:
     description: Update Docker Swarm template.
+    options:
+      runInCI: true
+      cache: false
     inputs:
       - '/scripts/prepare-docker-swarm.sh'
       - './docker-swarm-template.yml'
     outputs:
       - './docker-swarm.yml'
-    deps:
-      - '^:push-image'
     command: bash $workspaceRoot/scripts/prepare-docker-swarm.sh
 
   deploy:
