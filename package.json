@@ -4,8 +4,8 @@
   "sideEffects": false,
   "type": "module",
   "devDependencies": {
-    "drizzle-kit": "^0.30.5",
-    "prettier": "3.5.3"
+    "drizzle-kit": "^0.31.4",
+    "prettier": "3.6.2"
   },
   "packageManager": "pnpm@10.8.0",
   "engines": {
