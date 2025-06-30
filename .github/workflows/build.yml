@@ -11,7 +11,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # needed to merge branches
+          fetch-depth: 0
+
+      - uses: 'moonrepo/setup-toolchain@v0'
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
