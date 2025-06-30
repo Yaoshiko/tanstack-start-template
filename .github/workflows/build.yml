@@ -87,7 +87,7 @@ jobs:
 
       - name: Build and push Docker images
         if: steps.affected-check.outputs.has-affected == 'true'
-        run: pnpm moon :setup-docker-swarm
+        run: pnpm moon :setup-docker-swarm --affected
 
       - name: Configure Git
         if: steps.affected-check.outputs.has-affected == 'true'
