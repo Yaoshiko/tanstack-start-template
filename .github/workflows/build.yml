@@ -80,17 +80,23 @@ jobs:
       - name: Trigger deploy
         if: steps.affected-check.outputs.has-affected == 'true'
         run: |
-          # Fetch all branches to ensure we have latest refs
-          git fetch origin
+          git fetch origin deploy || true
+          git checkout -B deploy origin/deploy || git checkout -b deploy
 
-          # Create a fresh deploy branch from master (no merge conflicts)
-          git checkout -B deploy origin/master
+          git merge --no-commit --no-ff $GITHUB_SHA || {
+            echo "Conflict detected, resolving in favor of master branch"
+            git checkout --theirs .
+            git add .
+          }
 
-          # Add your generated file(s) to the staged merge
-          git add .
+          if ! git diff --quiet tools/deploy/docker-swarm.yml; then
+            echo "Changes detected in deploy configuration, proceeding with deploy"
 
-          # Now commit everything together in a single commit
-          git commit -m "[CI] Deploy"
+            git add tools/deploy/docker-swarm.yml
+            git commit -m "[CI] Deploy"
+            git push origin deploy --force-with-lease
 
-          # Push the deploy branch
-          git push origin deploy
+          else
+            echo "No changes in deploy configuration, skipping deploy"
+            git merge --abort || true
+          fi
