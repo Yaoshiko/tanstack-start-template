@@ -51,7 +51,9 @@ jobs:
       - name: Trigger deploy
         id: trigger_deploy
         run: |
-          if [ ! -f tools/deploy/docker-swarm.yml ]; then
+          DOCKER_SWARM_PATH=tools/deploy/docker-swarm.yml
+
+          if [ ! -f ${DOCKER_SWARM_PATH} ]; then
             echo "No deploy configuration file found, skipping deploy"
             echo "should_deploy=false" >> $GITHUB_OUTPUT
             exit 0
@@ -63,13 +65,12 @@ jobs:
           git fetch origin deploy || true
 
           # Manually override docker swarm file to avoid conflicts
-          mv tools/deploy/docker-swarm.yml tools/deploy/docker-swarm.yml_TMP
+          mv ${DOCKER_SWARM_PATH} ${DOCKER_SWARM_PATH}_TMP
           git checkout deploy
-          mv tools/deploy/docker-swarm.yml_TMP tools/deploy/docker-swarm.yml
-          git add tools/deploy/docker-swarm.yml
+          mv ${DOCKER_SWARM_PATH}_TMP ${DOCKER_SWARM_PATH}
 
           # Check if the file actually changed compared to what's in the deploy branch
-          if git diff --quiet HEAD -- tools/deploy/docker-swarm.yml; then
+          if git diff --quiet HEAD -- ${DOCKER_SWARM_PATH}; then
             echo "No changes in deploy configuration, skipping deploy"
             echo "should_deploy=false" >> $GITHUB_OUTPUT
             exit 0
@@ -81,10 +82,10 @@ jobs:
           # Proceed with merge and deploy
           git merge --no-commit --no-ff $GITHUB_SHA || {
             echo "Conflict detected, resolving in favor of master branch"
+            git checkout --ours ${DOCKER_SWARM_PATH}
             git checkout --theirs .
             git add .
           }
 
-          git add tools/deploy/docker-swarm.yml
           git commit -m "[CI] Deploy"
           git push origin deploy --force-with-lease
