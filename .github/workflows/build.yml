@@ -32,76 +32,42 @@ jobs:
           docker --version
           docker-compose --version || echo "Docker Compose not available"
 
-      # Check what's actually affected before running tests
-      - name: Check affected projects
-        id: affected-check
-        run: |
-          # Get affected projects and handle Moon's JSON format properly
-          AFFECTED_OUTPUT=$(moon query projects --affected --json)
-
-          # Extract just the project IDs from Moon's JSON response
-          AFFECTED_COUNT=$(echo "$AFFECTED_OUTPUT" | jq '.projects | length')
-          AFFECTED_IDS=$(echo "$AFFECTED_OUTPUT" | jq -r '.projects[].id' | tr '\n' ',' | sed 's/,$//')
-
-          echo "affected-count=$AFFECTED_COUNT" >> $GITHUB_OUTPUT
-          echo "affected-ids=$AFFECTED_IDS" >> $GITHUB_OUTPUT
-
-          # Check if any projects are actually affected
-          if [ "$AFFECTED_COUNT" -eq 0 ]; then
-            echo "has-affected=false" >> $GITHUB_OUTPUT
-            echo "No projects affected, skipping builds"
-          else
-            echo "has-affected=true" >> $GITHUB_OUTPUT
-            echo "Found $AFFECTED_COUNT affected projects: $AFFECTED_IDS"
-          fi
-
       - name: Run affected tests
-        if: steps.affected-check.outputs.has-affected == 'true'
         run: moon ci :test :lint
 
       - name: Build Docker images
-        if: steps.affected-check.outputs.has-affected == 'true'
         run: moon ci :build
 
       - name: Push Docker images
-        if: steps.affected-check.outputs.has-affected == 'true'
         run: moon ci :push-image
 
       - name: Setup Docker Swarm
-        if: steps.affected-check.outputs.has-affected == 'true'
         run: moon ci :setup-docker-swarm
 
       - name: Configure Git
-        if: steps.affected-check.outputs.has-affected == 'true'
         run: |
           git config user.name "GitHub CI Bot"
           git config user.email "ci@yaoshiko.com"
 
       - name: Trigger deploy
-        if: steps.affected-check.outputs.has-affected == 'true'
         run: |
-          # Stash any remaining local changes to avoid conflicts
-          git stash push -u -m "Temporary stash before deploy"
+          git fetch origin deploy || true
+          git checkout -B deploy origin/deploy || git checkout -b deploy
 
-          # Make sure we have the latest master (including our version commit)
-          git fetch origin
-          git checkout master
-          git pull origin master
+          git merge --no-commit --no-ff $GITHUB_SHA || {
+            echo "Conflict detected, resolving in favor of master branch"
+            git checkout --theirs .
+            git add .
+          }
 
-          # Check out the deploy branch
-          git checkout deploy || git checkout -b deploy
+          if ! git diff --quiet tools/deploy/docker-swarm.yml; then
+            echo "Changes detected in deploy configuration, proceeding with deploy"
 
-          # Merge master into deploy with all changes
-          git merge origin/master --no-ff -m "[CI] Deploy"
+            git add tools/deploy/docker-swarm.yml
+            git commit -m "[CI] Deploy"
+            git push origin deploy --force-with-lease
 
-          # Apply any stashed changes back
-          git stash pop || echo "No stash to apply"
-
-          # Add any additional changes and commit if needed
-          git add .
-          if ! git diff --staged --quiet; then
-            git commit -m "[CI] Add build artifacts to deploy"
+          else
+            echo "No changes in deploy configuration, skipping deploy"
+            git merge --abort || true
           fi
-
-          # Push the deploy branch
-          git push origin deploy

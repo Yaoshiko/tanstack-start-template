@@ -9,7 +9,7 @@ dependsOn:
 fileGroups:
   inputs:
     - './src/**/*'
-    - 'package.json'
+    - './package.json'
     - './drizzle.config.ts'
   migrations:
     - './migrations/**/*'
@@ -36,17 +36,6 @@ tasks:
       - '/scripts/retry.sh'
       - '@globs(migrations)'
 
-  studio:
-    description: Open the database studio.
-    local: true
-    command: drizzle-kit studio
-
-  seed:
-    description: Seed the database.
-    command: npx tsx seed.ts
-    inputs:
-      - './seed.ts'
-
   push-image:
     deps:
       - '~:generate'
@@ -55,3 +44,15 @@ tasks:
       - '@globs(migrations)'
     env:
       DOCKER_NAME: drizzle
+
+  studio:
+    description: Open the database studio.
+    local: true
+    command: drizzle-kit studio
+
+  seed:
+    description: Seed the database.
+    local: true
+    command: npx tsx seed.ts
+    inputs:
+      - './seed.ts'
