@@ -8,6 +8,8 @@ on:
 jobs:
   build:
     runs-on: self-hosted
+    outputs:
+      should_deploy: ${{ steps.trigger_deploy.outputs.should_deploy }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -47,9 +49,11 @@ jobs:
         run: moon :setup-docker-swarm
 
       - name: Trigger deploy
+        id: trigger_deploy
         run: |
           if [ ! -f tools/deploy/docker-swarm.yml ]; then
             echo "No deploy configuration file found, skipping deploy"
+            echo "should_deploy=false" >> $GITHUB_OUTPUT
             exit 0
           fi
 
@@ -67,10 +71,12 @@ jobs:
           # Check if the file actually changed compared to what's in the deploy branch
           if git diff --quiet HEAD -- tools/deploy/docker-swarm.yml; then
             echo "No changes in deploy configuration, skipping deploy"
+            echo "should_deploy=false" >> $GITHUB_OUTPUT
             exit 0
           fi
 
           echo "Changes detected in deploy configuration, proceeding with deploy"
+          echo "should_deploy=true" >> $GITHUB_OUTPUT
 
           # Proceed with merge and deploy
           git merge --no-commit --no-ff $GITHUB_SHA || {
