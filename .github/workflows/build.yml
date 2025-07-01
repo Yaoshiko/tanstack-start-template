@@ -32,53 +32,24 @@ jobs:
           docker --version
           docker-compose --version || echo "Docker Compose not available"
 
-      # Check what's actually affected before running tests
-      - name: Check affected projects
-        id: affected-check
-        run: |
-          # Get affected projects and handle Moon's JSON format properly
-          AFFECTED_OUTPUT=$(moon query projects --affected --json)
-
-          # Extract just the project IDs from Moon's JSON response
-          AFFECTED_COUNT=$(echo "$AFFECTED_OUTPUT" | jq '.projects | length')
-          AFFECTED_IDS=$(echo "$AFFECTED_OUTPUT" | jq -r '.projects[].id' | tr '\n' ',' | sed 's/,$//')
-
-          echo "affected-count=$AFFECTED_COUNT" >> $GITHUB_OUTPUT
-          echo "affected-ids=$AFFECTED_IDS" >> $GITHUB_OUTPUT
-
-          # Check if any projects are actually affected
-          if [ "$AFFECTED_COUNT" -eq 0 ]; then
-            echo "has-affected=false" >> $GITHUB_OUTPUT
-            echo "No projects affected, skipping builds"
-          else
-            echo "has-affected=true" >> $GITHUB_OUTPUT
-            echo "Found $AFFECTED_COUNT affected projects: $AFFECTED_IDS"
-          fi
-
       - name: Run affected tests
-        if: steps.affected-check.outputs.has-affected == 'true'
         run: moon ci :test :lint
 
       - name: Build Docker images
-        if: steps.affected-check.outputs.has-affected == 'true'
         run: moon ci :build
 
       - name: Push Docker images
-        if: steps.affected-check.outputs.has-affected == 'true'
         run: moon ci :push-image
 
       - name: Setup Docker Swarm
-        if: steps.affected-check.outputs.has-affected == 'true'
         run: moon ci :setup-docker-swarm
 
       - name: Configure Git
-        if: steps.affected-check.outputs.has-affected == 'true'
         run: |
           git config user.name "GitHub CI Bot"
           git config user.email "ci@yaoshiko.com"
 
       - name: Trigger deploy
-        if: steps.affected-check.outputs.has-affected == 'true'
         run: |
           git fetch origin deploy || true
           git checkout -B deploy origin/deploy || git checkout -b deploy
