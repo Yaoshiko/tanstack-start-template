@@ -48,19 +48,21 @@ jobs:
 
       - name: Trigger deploy
         run: |
-          git fetch origin deploy || true
-          git stash -u
-          git checkout -B deploy origin/deploy || git checkout -b deploy
-          git stash pop
-
-          git merge --no-commit --no-ff $GITHUB_SHA || {
-            echo "Conflict detected, resolving in favor of master branch"
-            git checkout --theirs .
-            git add .
-          }
-
           if ! git diff --quiet tools/deploy/docker-swarm.yml; then
             echo "Changes detected in deploy configuration, proceeding with deploy"
+            
+            git fetch origin deploy || true
+            git stash --include-untracked tools/deploy/docker-swarm.yml
+            git clean -fdX
+            git checkout deploy
+            git rm tools/deploy/docker-swarm.yml || true
+            git stash pop
+            
+            git merge --no-commit --no-ff $GITHUB_SHA || {
+              echo "Conflict detected, resolving in favor of master branch"
+              git checkout --theirs .
+              git add .
+            }
 
             git add tools/deploy/docker-swarm.yml
             git commit -m "[CI] Deploy"
