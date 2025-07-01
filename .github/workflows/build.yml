@@ -82,7 +82,6 @@ jobs:
           # Proceed with merge and deploy
           git merge --no-commit --no-ff $GITHUB_SHA || {
             echo "Conflict detected, resolving in favor of master branch"
-            git checkout --ours ${DOCKER_SWARM_PATH}
             git checkout --theirs .
             git add .
           }
