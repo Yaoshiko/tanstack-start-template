@@ -1,5 +1,4 @@
 export function useEnvironment() {
-  console.log('here', import.meta);
   const isServer = import.meta.env.SSR;
 
   return {

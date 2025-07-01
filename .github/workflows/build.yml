@@ -57,9 +57,9 @@ jobs:
 
           # Prepare deploy branch
           git fetch origin deploy || true
-          git stash push --include-untracked tools/deploy/docker-swarm.yml
-          git clean -fdX
+          git stash push --include-untracked
           git checkout deploy
+          # Manually remove the file to avoid conflicts
           git rm tools/deploy/docker-swarm.yml || true
           git stash pop
           git add tools/deploy/docker-swarm.yml

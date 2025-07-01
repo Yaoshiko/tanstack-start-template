@@ -24,7 +24,6 @@ tasks:
   setup-docker-swarm:
     description: Update Docker Swarm template.
     options:
-      runInCI: true
       cache: false
     inputs:
       - '/scripts/prepare-docker-swarm.sh'
@@ -35,7 +34,8 @@ tasks:
 
   deploy:
     description: Trigger a Portainer redeploy on deploy branch.
-    local: true
+    options:
+      cache: false
     inputs:
       - '/scripts/deploy.sh'
     command: bash $workspaceRoot/scripts/deploy.sh
