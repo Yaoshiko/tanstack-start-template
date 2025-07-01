@@ -1,4 +1,5 @@
 .vinxi
 .tanstack
 .nitro
+.output
 ./app.config.timestamp*.js
