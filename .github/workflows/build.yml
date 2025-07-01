@@ -49,7 +49,9 @@ jobs:
       - name: Trigger deploy
         run: |
           git fetch origin deploy || true
+          git stash -u
           git checkout -B deploy origin/deploy || git checkout -b deploy
+          git stash pop
 
           git merge --no-commit --no-ff $GITHUB_SHA || {
             echo "Conflict detected, resolving in favor of master branch"
