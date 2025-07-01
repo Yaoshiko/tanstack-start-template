@@ -35,11 +35,8 @@ jobs:
       - name: Run affected tests
         run: moon ci :test :lint
 
-      - name: Build Docker images
-        run: moon ci :build
-
-      - name: Push Docker images
-        run: moon ci :push-image
+      - name: Build and push images
+        run: moon ci :build :push-image
 
       - name: Setup Docker Swarm
         run: moon ci :setup-docker-swarm
