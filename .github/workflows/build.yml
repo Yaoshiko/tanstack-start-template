@@ -64,7 +64,7 @@ jobs:
           git stash push --include-untracked
           git checkout deploy
           # Manually remove the file to avoid conflicts
-          git rm tools/deploy/docker-swarm.yml || true
+          rm tools/deploy/docker-swarm.yml || echo "Deploy configuration not found for removal"
           git stash pop
           git add tools/deploy/docker-swarm.yml
 
