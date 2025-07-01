@@ -44,7 +44,7 @@ jobs:
         run: moon ci :build :push-image
 
       - name: Setup Docker Swarm
-        run: moon ci :setup-docker-swarm
+        run: moon :setup-docker-swarm
 
       - name: Trigger deploy
         run: |
