@@ -6,7 +6,7 @@ export const Route = createFileRoute('/_navbar/')({
 });
 
 function Home() {
-  // Dummy change 10.
+  // Dummy change 11.
   return (
     <div className="container mx-auto">
       <section className="relative overflow-hidden px-8 py-32">
