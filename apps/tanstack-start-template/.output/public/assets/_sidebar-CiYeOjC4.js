@@ -1,0 +1,6 @@
+import{q as n,j as e,L as c,O as l}from"./main-BaTqZRWn.js";import{c as a}from"./utils-DEz_iieQ.js";import{B as d}from"./button-BANPkjqV.js";import{c as m}from"./createLucideIcon-DmztJrVS.js";/**
+ * @license lucide-react v0.525.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */const p=[["path",{d:"M5 12h14",key:"1ays0h"}],["path",{d:"M12 5v14",key:"s699le"}]],h=m("plus",p),b=function(){const s=n.useLoaderData(),o=Object.keys(n.useMatch().params).length==0,r=s.length==0;return e.jsxs("div",{className:"flex min-h-full",children:[r?null:e.jsxs("div",{className:a("no-scrollbar border-right text-muted-foreground flex min-h-full min-w-40 grow-1 flex-col overflow-y-hidden border-r border-gray-200 sm:max-w-80",{"hidden sm:flex":!o}),children:[s.map(({id:t,title:i})=>e.jsx(c,{className:"hover:bg-muted hover:text-accent-foreground items-center px-4 py-2 whitespace-nowrap",to:"/recipe/$recipeId",params:{recipeId:t},activeProps:{className:"text-accent-foreground font-bold bg-muted"},children:i},t)),e.jsx(d,{className:"fixed right-5 bottom-5 sm:hidden",children:e.jsx(c,{to:"/recipe/new",children:e.jsx(h,{})})})]}),e.jsx("div",{className:a("grow-4 sm:flex",{hidden:!r&&o}),children:e.jsx("div",{className:"m-12 grow",children:e.jsx(l,{})})})]})};export{b as component};
