@@ -32,6 +32,11 @@ jobs:
           docker --version
           docker-compose --version || echo "Docker Compose not available"
 
+      - name: Configure Git
+        run: |
+          git config user.name "GitHub CI Bot"
+          git config user.email "ci@yaoshiko.com"
+
       - name: Run affected tests
         run: moon ci :test :lint
 
@@ -40,11 +45,6 @@ jobs:
 
       - name: Setup Docker Swarm
         run: moon ci :setup-docker-swarm
-
-      - name: Configure Git
-        run: |
-          git config user.name "GitHub CI Bot"
-          git config user.email "ci@yaoshiko.com"
 
       - name: Trigger deploy
         run: |
