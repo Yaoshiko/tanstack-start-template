@@ -61,11 +61,11 @@ jobs:
 
           # Prepare deploy branch
           git fetch origin deploy || true
-          git stash push --include-untracked
+
+          # Manually override docker swarm file to avoid conflicts
+          mv tools/deploy/docker-swarm.yml tools/deploy/docker-swarm.yml_TMP
           git checkout deploy
-          # Manually remove the file to avoid conflicts
-          rm tools/deploy/docker-swarm.yml || echo "Deploy configuration not found for removal"
-          git stash pop
+          mv tools/deploy/docker-swarm.yml_TMP tools/deploy/docker-swarm.yml
           git add tools/deploy/docker-swarm.yml
 
           # Check if the file actually changed compared to what's in the deploy branch
