@@ -32,42 +32,53 @@ jobs:
           docker --version
           docker-compose --version || echo "Docker Compose not available"
 
-      - name: Run affected tests
-        run: moon ci :test :lint
-
-      - name: Build Docker images
-        run: moon ci :build
-
-      - name: Push Docker images
-        run: moon ci :push-image
-
-      - name: Setup Docker Swarm
-        run: moon ci :setup-docker-swarm
-
       - name: Configure Git
         run: |
           git config user.name "GitHub CI Bot"
           git config user.email "ci@yaoshiko.com"
 
+      - name: Run affected tests
+        run: moon ci :test :lint
+
+      - name: Build and push images
+        run: moon ci :build :push-image
+
+      - name: Setup Docker Swarm
+        run: moon :setup-docker-swarm
+
       - name: Trigger deploy
         run: |
-          git fetch origin deploy || true
-          git checkout -B deploy origin/deploy || git checkout -b deploy
+          if [ ! -f tools/deploy/docker-swarm.yml ]; then
+            echo "No deploy configuration file found, skipping deploy"
+            exit 0
+          fi
 
+          echo "Deploy configuration file found, preparing deploy branch"
+
+          # Prepare deploy branch
+          git fetch origin deploy || true
+          git stash push --include-untracked
+          git checkout deploy
+          # Manually remove the file to avoid conflicts
+          git rm tools/deploy/docker-swarm.yml || true
+          git stash pop
+          git add tools/deploy/docker-swarm.yml
+
+          # Check if the file actually changed compared to what's in the deploy branch
+          if git diff --quiet HEAD -- tools/deploy/docker-swarm.yml; then
+            echo "No changes in deploy configuration, skipping deploy"
+            exit 0
+          fi
+
+          echo "Changes detected in deploy configuration, proceeding with deploy"
+
+          # Proceed with merge and deploy
           git merge --no-commit --no-ff $GITHUB_SHA || {
             echo "Conflict detected, resolving in favor of master branch"
             git checkout --theirs .
             git add .
           }
 
-          if ! git diff --quiet tools/deploy/docker-swarm.yml; then
-            echo "Changes detected in deploy configuration, proceeding with deploy"
-
-            git add tools/deploy/docker-swarm.yml
-            git commit -m "[CI] Deploy"
-            git push origin deploy --force-with-lease
-
-          else
-            echo "No changes in deploy configuration, skipping deploy"
-            git merge --abort || true
-          fi
+          git add tools/deploy/docker-swarm.yml
+          git commit -m "[CI] Deploy"
+          git push origin deploy --force-with-lease
