@@ -1,4 +1,4 @@
-name: Build images
+name: Build
 
 on:
   push:
@@ -56,11 +56,7 @@ jobs:
           git checkout deploy
 
           # Merge changes from master into deploy
-          git merge --no-commit --no-ff master || {
-            echo "Conflict detected, resolving in favor of master branch"
-            git checkout --theirs .
-            git add .
-          }
+          git merge --no-commit --no-edit --no-ff master
 
       - name: Update Docker Swarm compose file
         run: moon :setup-docker-swarm
