@@ -51,7 +51,7 @@ services:
         - 'traefik.enable=false'
 
   app:
-    image: 192.168.1.30:5000/tanstack-start-template/app:2.21.0
+    image: 192.168.1.30:5000/tanstack-start-template/app:2.21.1
     secrets:
       - tanstack-start-template_DB_PASSWORD
       - tanstack-start-template_BETTER_AUTH_SECRET
