@@ -47,16 +47,12 @@ jobs:
 
       - name: Merge into deploy branch
         run: |
-          # Ensure we are on the master branch
-          git checkout master
-
-          # Create or update the deploy branch
-          git fetch origin deploy || git checkout --orphan deploy
-          git reset --hard origin/deploy || true
+          # Checkout deploy branch
           git checkout deploy
+          git pull -r
 
           # Merge changes from master into deploy
-          git merge --no-commit --no-edit --no-ff master
+          git merge --no-edit --no-ff -m "[CI] Deploy" master
 
       - name: Update Docker Swarm compose file
         run: moon :setup-docker-swarm
@@ -73,5 +69,5 @@ jobs:
 
           echo "Deploy configuration file found, preparing deploy branch"
 
-          git commit --edit -m "[CI] Deploy"
-          git push origin deploy --force-with-lease
+          git commit -a --amend --no-edit
+          git push
