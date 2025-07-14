@@ -53,6 +53,7 @@ jobs:
           # Create or update the deploy branch
           git fetch origin deploy || git checkout --orphan deploy
           git reset --hard origin/deploy || true
+          git checkout deploy
 
           # Merge changes from master into deploy
           git merge --no-commit --no-ff master || {
