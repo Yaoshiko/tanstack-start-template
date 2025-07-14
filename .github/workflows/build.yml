@@ -48,11 +48,14 @@ jobs:
       - name: Merge into deploy branch
         run: |
           # Checkout deploy branch
-          git fetch origin deploy || {
-            echo "Deploy branch not found"
-            exit 1
+          git fetch origin deploy:deploy || {
+            echo "Deploy branch does not exist, creating it"
+            git checkout -b deploy
           }
-          git checkout -B deploy origin/deploy
+          git checkout deploy
+          git reset --hard origin/deploy
+          git clean -fdx
+          git pull --rebase origin deploy
 
           # Merge changes from master into deploy
           git merge --no-edit --no-ff -m "[CI] Deploy" master
@@ -73,7 +76,4 @@ jobs:
           echo "Deploy configuration file found, preparing deploy branch"
 
           git commit -a --amend --no-edit
-          git push -u origin deploy --force-with-lease || {
-            echo "Failed to push changes to deploy branch, skipping deploy"
-            exit 0
-          }
+          git push
