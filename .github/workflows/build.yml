@@ -73,5 +73,5 @@ jobs:
 
           echo "Deploy configuration file found, preparing deploy branch"
 
-          git commit -m "[CI] Deploy"
+          git commit --edit -m "[CI] Deploy"
           git push origin deploy --force-with-lease
