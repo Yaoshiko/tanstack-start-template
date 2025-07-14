@@ -47,13 +47,11 @@ jobs:
 
       - name: Merge into deploy branch
         run: |
-          # Ensure we are on the master branch
-          git checkout master
-
           # Create or update the deploy branch
           git fetch origin deploy || git checkout --orphan deploy
           git reset --hard origin/deploy || true
           git checkout deploy
+          git pull -r || true
 
           # Merge changes from master into deploy
           git merge --no-edit --no-ff -m "[CI] Deploy" master
@@ -73,5 +71,5 @@ jobs:
 
           echo "Deploy configuration file found, preparing deploy branch"
 
-          git commit --amend --no-edit
-          git push origin deploy --force-with-lease
+          git commit -a --amend --no-edit
+          git push
