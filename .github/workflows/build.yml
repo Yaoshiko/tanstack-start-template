@@ -45,7 +45,23 @@ jobs:
       - name: Build and push images
         run: moon ci :build :push-image
 
-      - name: Setup Docker Swarm
+      - name: Merge into deploy branch
+        run: |
+          # Ensure we are on the master branch
+          git checkout master
+
+          # Create or update the deploy branch
+          git fetch origin deploy || git checkout --orphan deploy
+          git reset --hard origin/deploy || true
+
+          # Merge changes from master into deploy
+          git merge --no-commit --no-ff master || {
+            echo "Conflict detected, resolving in favor of master branch"
+            git checkout --theirs .
+            git add .
+          }
+
+      - name: Update Docker Swarm compose file
         run: moon :setup-docker-swarm
 
       - name: Trigger deploy
@@ -53,38 +69,12 @@ jobs:
         run: |
           DOCKER_SWARM_PATH=tools/deploy/docker-swarm.yml
 
-          if [ ! -f ${DOCKER_SWARM_PATH} ]; then
-            echo "No deploy configuration file found, skipping deploy"
-            echo "should_deploy=false" >> $GITHUB_OUTPUT
+          git add ${DOCKER_SWARM_PATH} || {
+            echo "No changes to deploy configuration file, skipping deploy"
             exit 0
-          fi
+          }
 
           echo "Deploy configuration file found, preparing deploy branch"
-
-          # Prepare deploy branch
-          git fetch origin deploy || true
-
-          # Manually override docker swarm file to avoid conflicts
-          mv ${DOCKER_SWARM_PATH} ${DOCKER_SWARM_PATH}_TMP
-          git checkout deploy
-          mv ${DOCKER_SWARM_PATH}_TMP ${DOCKER_SWARM_PATH}
-
-          # Check if the file actually changed compared to what's in the deploy branch
-          if git diff --quiet HEAD -- ${DOCKER_SWARM_PATH}; then
-            echo "No changes in deploy configuration, skipping deploy"
-            echo "should_deploy=false" >> $GITHUB_OUTPUT
-            exit 0
-          fi
-
-          echo "Changes detected in deploy configuration, proceeding with deploy"
-          echo "should_deploy=true" >> $GITHUB_OUTPUT
-
-          # Proceed with merge and deploy
-          git merge --no-commit --no-ff $GITHUB_SHA || {
-            echo "Conflict detected, resolving in favor of master branch"
-            git checkout --theirs .
-            git add .
-          }
 
           git commit -m "[CI] Deploy"
           git push origin deploy --force-with-lease

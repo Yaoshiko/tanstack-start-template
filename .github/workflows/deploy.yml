@@ -18,10 +18,7 @@ jobs:
   deploy:
     runs-on: self-hosted
     if: >
-      github.event_name == 'push' || 
-      (github.event_name == 'workflow_run' && 
-       github.event.workflow_run.conclusion == 'success' &&
-       github.event.workflow_run.outputs.should_deploy == 'true')
+      github.event_name == 'push' || github.event_name == 'workflow_run'
     steps:
       - uses: actions/checkout@v4
 
