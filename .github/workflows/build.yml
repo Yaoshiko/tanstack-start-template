@@ -70,4 +70,7 @@ jobs:
           echo "Deploy configuration file found, preparing deploy branch"
 
           git commit -a --amend --no-edit
-          git push
+          git push -u origin deploy || {
+            echo "Failed to push changes to deploy branch, skipping deploy"
+            exit 0
+          }
