@@ -8,7 +8,7 @@ x-load-secrets-config: &load-secrets-config
 
 services:
   database:
-    image: 192.168.1.30:5000/tanstack-start-template/database:1.6.0
+    image: 192.168.1.30:5000/tanstack-start-template/database:1.8.1
     secrets:
       - tanstack-start-template_DB_PASSWORD
     <<: *load-secrets-config
