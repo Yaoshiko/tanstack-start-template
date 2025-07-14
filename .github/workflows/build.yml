@@ -47,11 +47,15 @@ jobs:
 
       - name: Merge into deploy branch
         run: |
-          # Create or update the deploy branch
-          git fetch origin deploy || git checkout --orphan deploy
-          git reset --hard origin/deploy || true
+          # Checkout deploy branch
+          git fetch origin deploy:deploy || {
+            echo "Deploy branch does not exist, creating it"
+            git checkout -b deploy
+          }
           git checkout deploy
-          git pull -r || true
+          git reset --hard origin/deploy
+          git clean -fdx
+          git pull --rebase origin deploy
 
           # Merge changes from master into deploy
           git merge --no-edit --no-ff -m "[CI] Deploy" master
