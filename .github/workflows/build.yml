@@ -56,7 +56,7 @@ jobs:
           git checkout deploy
 
           # Merge changes from master into deploy
-          git merge --no-commit --no-edit --no-ff master
+          git merge --no-edit --no-ff -m "[CI] Deploy" master
 
       - name: Update Docker Swarm compose file
         run: moon :setup-docker-swarm
@@ -73,5 +73,5 @@ jobs:
 
           echo "Deploy configuration file found, preparing deploy branch"
 
-          git commit --edit -m "[CI] Deploy"
+          git commit --amend --no-edit
           git push origin deploy --force-with-lease
